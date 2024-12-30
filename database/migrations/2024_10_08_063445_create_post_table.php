@@ -11,30 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kategori', function (Blueprint $table) {
-            $table->id();
-            $table->string('kategori');
-        });
-        Schema::create('post', function (Blueprint $table) {
-            $table->id();
-            $table->string('judul');
-            $table->longText('media1')->charset('binary');
-            $table->longText('media2')->charset('binary')->nullable();
-            $table->longText('media3')->charset('binary')->nullable();
-            $table->longText('deskripsi1');
-            $table->longText('deskripsi2')->nullable();
-            $table->longText('deskripsi3')->nullable();
-            $table->foreignId('kategori_id')->constrained(
-                table:'kategori', indexName:'kategori_post_id'
-            );
-            $table->foreignId('user_id')->constrained(
-                table:'users', indexName:'author_id'
-            )->nullable();
-            $table->foreignId('contributor_id')->constrained(
-                table:'users', indexName:'contributor_id'
-            )->nullable();
-            $table->timestamps();
-        });
+        // Schema::create('kategori', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('kategori');
+        // });
+        // Schema::create('post', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('judul');
+        //     $table->longText('media1')->charset('binary');
+        //     $table->longText('media2')->charset('binary')->nullable();
+        //     $table->longText('media3')->charset('binary')->nullable();
+        //     $table->longText('deskripsi1');
+        //     $table->longText('deskripsi2')->nullable();
+        //     $table->longText('deskripsi3')->nullable();
+        //     $table->foreignId('kategori_id')->constrained(
+        //         table:'kategori', indexName:'kategori_post_id'
+        //     );
+        //     $table->foreignId('user_id')->constrained(
+        //         table:'users', indexName:'author_id'
+        //     )->nullable();
+        //     $table->foreignId('contributor_id')->constrained(
+        //         table:'users', indexName:'contributor_id'
+        //     )->nullable();
+        //     $table->timestamps();
+        // });
     }
 
     /**

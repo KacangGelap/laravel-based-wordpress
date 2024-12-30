@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Hash;
 use App\Models\User;
+use Image;
 class UserController extends Controller
 {
     public function index(){
@@ -29,6 +30,7 @@ class UserController extends Controller
             $user = new User();
             $user->name = $request->input('name');
             $user->email = $request->input('email');
+            $user->no_hp = $request->input('no_hp');
             $user->password = Hash::make($request->input('password'));
             // dd($user);
             $user->save();
@@ -44,38 +46,52 @@ class UserController extends Controller
     }
 
     public function update(Request $request, string $id){
+        $user = User::findOrFail($id);
+        $isEmailChanged = $user->email !== $request->input('email');
+
+        $rules = [
+            'profile'  => 'nullable|image|mimes:jpg,png|max:2000',
+            'no_hp'    => 'nullable|numeric|digits_between:11,13',
+            'name'     => 'string|max:25',
+            'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.])[A-Za-z\d@$!%*?&_\-.]+$/',
+        ];
+
+        $messages = [
+            'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (@, $, !, %, *, ?, &, _, -, .).',
+        ];
+
+        if ($isEmailChanged) {
+            $rules['email'] = 'string|email|unique:users';
+        } else {
+            $rules['email'] = 'string|email';
+        }
+
+        // Validate the request
+        $request->validate($rules, $messages);
+
         try {
-            $user = User::findOrFail($id);
-            $isEmailChanged = $user->email !== $request->input('email');
-            $rules = [
-                'profile'  => 'required|image|mimes:jpg,png|max:2000',
-                'no_hp'    => 'nullable|numeric|digits_between:11,13',
-                'name'     => 'string|max:25',
-                'password' => 'required|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.])[A-Za-z\d@$!%*?&_\-.]+$/',
-            ];
-            $messages = [
-                'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (@, $, !, %, *, ?, &, _, -, .).',
-            ];
-            if ($isEmailChanged) {
-                $rules['email'] = 'string|email|unique:users';
-            } else {
-                $rules['email'] = 'string|email';
+            // Handle the profile image if it exists
+            if ($request->hasFile('profile')) {
+                $image = $request->file('profile');
+
+                $img = Image::make($image->getPathname());
+                $img->resize(200, 200);
+                $base64Image = 'data:image/jpg;charset:utf8;base64,' . base64_encode($img->encode());
+                $user->profile = $base64Image;
             }
 
-            $request->validate($rules, $messages);
-
-            // Update user data
+            // Update the user data
             $user->update([
-                'profile'  => $request->has('profile') ? 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('profile'))) : $user->profile,
-                'name'     => $request->has('name') ? $request->input('name') : $user->name,
-                'no_hp'    => $request->has('no_hp') ? $request->input('no_hp') : $user->no_hp,
+                'name'     => $request->input('name', $user->name),
+                'no_hp'    => $request->input('no_hp', $user->no_hp),
                 'email'    => $isEmailChanged ? $request->input('email') : $user->email,
                 'password' => $request->has('password') ? Hash::make($request->input('password')) : $user->password,
             ]);
 
-            return redirect()->route('user.profile', $user->id)->with('sukses', 'Data berhasil diubah');
+            return redirect()->route('user.show', $user->id)->with('sukses', 'Data berhasil diubah');
         } catch (\Throwable $th) {
-            return redirect()->route('user.profile', $id)->with('gagal', 'Data gagal diubah');
+            throw $th;
+            return redirect()->route('user.show', $id)->with('gagal', 'Data gagal diubah');
         }
     }
 
@@ -99,37 +115,51 @@ class UserController extends Controller
     }
 
     public function update_profile(Request $request, string $id){
+        $user = User::findOrFail($id);
+        $isEmailChanged = $user->email !== $request->input('email');
+        $rules = [
+            'profile'  => 'nullable|image|mimes:jpg,png|max:2000',
+            'no_hp'    => 'nullable|numeric|digits_between:11,13',
+            'name'     => 'string|max:25',
+            'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.])[A-Za-z\d@$!%*?&_\-.]+$/',
+        ];
+
+        $messages = [
+            'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (@, $, !, %, *, ?, &, _, -, .).',
+        ];
+
+        if ($isEmailChanged) {
+            $rules['email'] = 'string|email|unique:users';
+        } else {
+            $rules['email'] = 'string|email';
+        }
+
+        // Validate the request
+        $request->validate($rules, $messages);
+
         try {
-            $user = User::findOrFail($id);
-            $isEmailChanged = $user->email !== $request->input('email');
-            $rules = [
-                'profile'  => 'required|image|mimes:jpg,png|max:2000',
-                'no_hp'    => 'nullable|numeric|digits_between:11,13',
-                'name'     => 'string|max:25',
-                'password' => 'required|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.])[A-Za-z\d@$!%*?&_\-.]+$/',
-            ];
-            $messages = [
-                'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (@, $, !, %, *, ?, &, _, -, .).',
-            ];
-            if ($isEmailChanged) {
-                $rules['email'] = 'string|email|unique:users';
-            } else {
-                $rules['email'] = 'string|email';
+            // Handle the profile image if it exists
+            if ($request->hasFile('profile')) {
+                $image = $request->file('profile');
+
+                // Use Intervention Image to process the image
+                $img = Image::make($image->getPathname());
+                $img->resize(200, 200);
+                $base64Image = 'data:image/jpg;charset:utf8;base64,' . base64_encode($img->encode());   
+                $user->profile = $base64Image;
             }
 
-            $request->validate($rules, $messages);
-
-            // Update user data
+            // Update the user data
             $user->update([
-                'profile'  => $request->has('profile') ? 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('profile'))) : $user->profile,
-                'name'     => $request->has('name') ? $request->input('name') : $user->name,
-                'no_hp'    => $request->has('no_hp') ? $request->input('no_hp') : $user->no_hp,
+                'name'     => $request->input('name', $user->name),
+                'no_hp'    => $request->input('no_hp', $user->no_hp),
                 'email'    => $isEmailChanged ? $request->input('email') : $user->email,
                 'password' => $request->has('password') ? Hash::make($request->input('password')) : $user->password,
             ]);
 
             return redirect()->route('user.profile', $user->id)->with('sukses', 'Data berhasil diubah');
         } catch (\Throwable $th) {
+            throw $th;
             return redirect()->route('user.profile', $id)->with('gagal', 'Data gagal diubah');
         }
     }

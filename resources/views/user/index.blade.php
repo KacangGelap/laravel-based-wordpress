@@ -7,26 +7,35 @@
                 <div class="card">
                     <div class="d-flex card-header justify-content-between">
                         <h3>Manajemen Pengguna</h3>
-                        <a href="{{ url()->previous() }}" class="btn btn-dark">&larr;back</a>
+                        <div>
+                            <a href="{{ route('user.create') }}" class="btn btn-primary">Tambah</a>
+                            <a href="{{ url()->previous() }}" class="btn btn-dark">&larr; Kembali</a>
+                        </div>
+                        
                     </div>
                     <div class="card-body">
-                        <a href="{{ route('user.create') }}" class="btn btn-primary">Tambah Pengguna</a>
                         <div class="table-responsive text-center">
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Nama Lengkap & Jabatan</th>
+                                        <th>No.</th>
+                                        <th>Nama Lengkap</th>
                                         <th>E-Mail</th>
                                         <th>No. HP / WA</th>
+                                        <th>Perangkat Daerah</th>
+                                        <th>Hak Akses</th>
                                         <th>Tindakan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($user as $item)
                                         <tr>
-                                            <td>{{ $item->name }}</td>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td class="text-sm-start">{{ $item->name }}</td>
                                             <td>{{ $item->email }}</td>
                                             <td>{{ $item->no_hp }}</td>
+                                            <td>{{ $item->opd }}</td>
+                                            <td>{{ $item->role }}</td>
                                             <td class="d-flex justify-content-start">
                                                 <a href="{{ route('user.show', $item->id) }}" class="btn btn-secondary mx-2">
                                                     <i class="bi-eye"></i>

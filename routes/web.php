@@ -38,6 +38,10 @@ Route::middleware(['auth'])->group( function () {
         Route::delete('/user/delete/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('user.delete');
         Route::get('/user/show/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('user.show');
 
+        //manajemen halaman
+        Route::get('/halaman',[App\Http\Controllers\halamanController::class,'menu'])->name('menu.index');
+
+
         //manajemen postingan
         Route::get('/post', [App\Http\Controllers\beritaController::class, 'index'])->name('post.index');
         Route::get('/post/create', [App\Http\Controllers\beritaController::class, 'create'])->name('post.create');

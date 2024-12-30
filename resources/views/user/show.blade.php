@@ -6,13 +6,18 @@
     <div class="container rounded bg-white mt-5 mb-5">
         <div class="row">
             <div class="text-end">
-                <a href="{{url()->previous()}}" class="btn btn-dark">&larr;Back</a>
+                <a href="{{Route::current()->getName() == 'user.show' ? route('user.index') : route('home')}}" class="btn btn-dark">&larr;Back</a>
             </div>
             <div class="col-md-4 border-right">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                    <img class="rounded-circle mt-5" width="150px" src="{{$user->profile==null ? 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg':$user->profile}}">
-                    <input class="form-control" type="file" name="profile">
-                    <p class="text-info">keterangan: format gambar 500x500 dengan format .jpg, .png</p>
+                    <img class="rounded-circle my-5" @if($user->profile == null)width="150px"@endif src="{{$user->profile ?? 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg'}}">
+                    <input class="form-control @error('profile') is-invalid @enderror" type="file" name="profile">
+                    @error('profile')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                    <p class="text-info">keterangan: format gambar berdimensi 1:1 dengan extensi .jpg, .png</p>
                     <span class="font-weight-bold">{{$user->name}}</span>
                     <span class="text-black-50">{{$user->email}}</span>
                     <span> </span>

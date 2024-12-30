@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use App\Models\menu, App\Models\submenu, App\Models\subsubmenu;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -11,7 +11,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // \DB::enableQueryLog();
+        // $menus = menu::with('subMenus.subSubMenus',)->get();
+        // dd(\DB::getQueryLog());
+
     }
 
     /**

@@ -4,17 +4,20 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use DB;
 
-class menu extends Seeder
+class Menu extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Menu::create(['menu' => 'TENTANG']);
-        Menu::create(['menu' => 'PROGRAM KERJA']);
-        Menu::create(['menu' => 'PPID']);
-        Menu::create(['menu' => 'INFORMASI']);
+        DB::table('menus')->insert([
+            ['menu' => 'TENTANG'],
+            ['menu' => 'PROGRAM KERJA'],
+            ['menu' => 'INFORMASI'],
+            ['menu' => 'LAYANAN'],
+        ]);
     }
 }

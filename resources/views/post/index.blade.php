@@ -5,25 +5,36 @@
             <div class="container">
                 <div class="card">
                     <div class="d-flex card-header justify-content-between">
-                        manajemen postingan
-                        <a href="{{url()->previous()}}" class="btn btn-dark">&larr;back</a>
+                        <h3>Manajemen Berita</h3>
+                        <div>
+                            <a href="{{route('post.create')}}" class="btn btn-primary">Tambah</a>
+                            <a href="{{url()->previous()}}" class="btn btn-dark">&larr; Kembali</a>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <a href="{{route('post.create')}}" class="btn btn-primary">Tambah Postingan</a>
+                        <div>
+                            <h5>Jumlah Kategori Berita :</h5>
+                            <p class="mb-1">Kegiatan = {{$kegiatan->count()}}</p>
+                            <p class="mb-1">Informasi = {{$informasi->count()}}</p>
+                            <p class="mb-1">Apel Pagi = {{$apelPagi->count()}}</p>
+                            <p class="mb-1">Kerja Bakti = {{$kerjaBakti->count()}}</p>
+                        </div>
                         <div class="table-responsive text-center">
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
+                                        <th>No.</th>
                                         <th>Judul</th>
                                         <th>Kategori</th>
-                                        <th>Diupdate tanggal</th>
-                                        <th>Aksi</th>
+                                        <th>Diunggah tanggal</th>
+                                        <th>Tindakan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $item)
-                                        <tr>
-                                            <td>{{Str::limit($item->judul,50)}}</td>
+                                        <tr style="font-size: 12px">
+                                            <td>{{$loop->iteration}}</td>
+                                            <td style="text-align: justify">{{Str::limit($item->judul,100)}}</td>
                                             <td>{{$item->kategori->kategori}}</td>
                                             <td>{{Carbon\Carbon::parse($item->updated_at)->translatedFormat('d M Y H:i T')}}</td>
                                             <td class="d-flex justify-content-evenly">

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('file_storage', function (Blueprint $table) {
-            $table->id();
-            $talbe->longtext('');
-            $table->timestamps();
-        });
+        // Schema::create('file_storage', function (Blueprint $table) {
+        //     $table->id();
+        //     $talbe->longtext('');
+        //     $table->timestamps();
+        // });
     }
 
     /**

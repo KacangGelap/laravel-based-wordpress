@@ -38,6 +38,13 @@ return new class extends Migration
             $table->longText('media')->charset('binary')->nullable();
             $table->timestamps();
         });
+        Schema::create('halaman',function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('menu_id')->constrained('menus')->onDelete('cascade');
+            $table->foreignId('sub_menu_id')->constrained('sub_menus')->onDelete('cascade');
+            $table->foreignId('sub_sub_menu_id')->constrained('sub_sub_menus')->onDelete('cascade')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

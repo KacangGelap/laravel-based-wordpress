@@ -9,7 +9,15 @@ class beritaController extends Controller
 {
     public function index(){
         $data = post::all();
-        return view('post.index')->with('data', $data);
+        $kegiatan = post::where('kategori_id', 1)->get();
+        $informasi = post::where('kategori_id', 2)->get();
+        $apelPagi = post::where('kategori_id', 3)->get();
+        $kerjaBakti = post::where('kategori_id', 4)->get();
+        return view('post.index')->with('data', $data)
+        ->with('kegiatan', $kegiatan)
+        ->with('informasi', $informasi)
+        ->with('apelPagi', $apelPagi)
+        ->with('kerjaBakti', $kerjaBakti);
     }
     public function create(){
         $kategori = kategori::all();
@@ -63,13 +71,13 @@ class beritaController extends Controller
     }
     public function update(Request $request, string $post){
         $request->validate([
-            'judul' => 'required|string|min:5',
+            'judul' => 'required|string|min:5|max:100',
             'media1'=> 'nullable|image|mimes:jpeg,png,jpg,bmp|max:3000',
             'media2'=> 'nullable|image|mimes:jpeg,png,jpg,bmp|max:3000',
             'media3'=> 'nullable|image|mimes:jpeg,png,jpg,bmp|max:3000',
             'deskripsi1'=>'nullable|string|min:20',
             'deskripsi2'=>'nullable|string|min:20',
-            'deskripsi3'=>'nullable|string|min:20',
+            'deskripsi3'=>'nullable|string',
             'kategori_id'=>'nullable|numeric'
         ]);
         // dd($request->has('kategori_id'));

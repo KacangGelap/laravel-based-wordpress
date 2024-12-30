@@ -35,8 +35,42 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav me-auto">
-                        </ul>
-
+                            
+                            {{-- @foreach ($menus as $menu)
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="menu{{ $menu->id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ $menu->menu }}
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="menu{{ $menu->id }}">
+                                        @foreach ($menu->subMenus as $subMenu)
+                                            @if ($subMenu->type === 'page')
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ route('page.show', $subMenu->id) }}">
+                                                        {{ $subMenu->sub_menu }}
+                                                    </a>
+                                                </li>
+                                            @elseif ($subMenu->type === 'dropdown')
+                                                <li class="dropdown-submenu">
+                                                    <a class="dropdown-item dropdown-toggle" href="#">
+                                                        {{ $subMenu->sub_menu }}
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        @foreach ($subMenu->subSubMenus as $subSubMenu)
+                                                            <li>
+                                                                <a class="dropdown-item" href="{{ route('page.show', $subSubMenu->id) }}">
+                                                                    {{ $subSubMenu->sub_sub_menu }}
+                                                                </a>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @endforeach --}}
+                        
+                        </ul>                    
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ms-auto">
                         </ul>

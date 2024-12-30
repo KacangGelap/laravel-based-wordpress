@@ -7,26 +7,29 @@
         <div class="col-lg-8">
             <!-- Post Title -->
             <h2 class="fw-bold">{{ $post->judul }}</h2>
-            <div class="d-flex align-items-center text-muted mb-3">
+            <div class="d-flex align-items-center text-muted mb-3" style="font-size: 12px">
                 <i class="bi bi-person-circle me-2"></i>
-                <span>{{ $post->user->name ?? 'Anonymous'}}</span>
+                <span>Editor: {{ $post->user->name ?? 'Anonymous'}}</span>
+                <span class="mx-2">•</span>
+                <i class="bi bi-person-circle me-2"></i>
+                <span>Kontributor: {{$post->deskripsi3}}</span>
                 <span class="mx-2">•</span>
                 <span>{{ ucfirst($post->kategori->kategori) ?? 'Uncategorized'}}</span>
                 <span class="mx-2">•</span>
                 <i class="bi bi-calendar me-2"></i>
-                <span>{{ \Carbon\Carbon::parse($post->created_at)->format('F d, Y') }}</span>
+                <span>{{ \Carbon\Carbon::parse($post->created_at)->format('d F, Y') }}</span>
             </div>
             <!-- Post Content -->
             <div class="mb-4">
                 <img src="{{ $post->media1 }}" alt="Post Image" class="w-100 img-fluid rounded mb-3">
-                <p class="text-muted">{{ $post->deskripsi1 }}</p>
+                <p class="text-muted" style="font-size: 14px">{{ $post->deskripsi1 }}</p>
                 @if($post->media2)
                     <img src="{{ $post->media2 }}" alt="Additional Image" class="img-fluid rounded mb-3">
                     <p class="text-muted">{{ $post->deskripsi2 }}</p>
                 @endif
                 @if($post->media3)
                     <img src="{{ $post->media3 }}" alt="Additional Image" class="img-fluid rounded mb-3">
-                    <p class="text-muted">{{ $post->deskripsi3 }}</p>
+                    <p class="text-muted">Kontributor: {{ $post->deskripsi3 }}</p>
                 @endif
             </div>
         </div>

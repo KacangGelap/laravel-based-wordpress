@@ -28,8 +28,8 @@
                         </a>
                         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                             <li class="nav-item">
-                                <a href=" {{ url('/') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
+                                <a href=" {{ url('/') }} " class="nav-link align-middle px-0 text-white w-100">
+                                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Beranda</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -39,10 +39,15 @@
                             </li>
                             <li class="nav-item">
                                 <a href=" {{ route('post.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-camera"></i> <span class="ms-1 d-none d-sm-inline">Postingan</span>
+                                    <i class="fs-4 bi-camera"></i> <span class="ms-1 d-none d-sm-inline">Berita</span>
                                 </a>
                             </li>
                             @if(Auth::user()->role == 'admin')
+                            <li>
+                                <a href=" {{ route('post.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-file-earmark-code"></i> <span class="ms-1 d-none d-sm-inline">Halaman</span>
+                                </a>
+                            </li>
                                 <li>
                                     <a href="{{route('user.index')}}" class="nav-link px-0 align-middle text-white">
                                         <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Pengguna</span> </a>
@@ -56,9 +61,8 @@
                                 <span class="d-none d-sm-inline mx-1">{{Str::limit(Auth::user()->name, 15)}}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                                <li><a class="dropdown-item" href="#">New project...</a></li>
-                                <li><a class="dropdown-item" href="#">Settings</a></li>
-                                <li><a class="dropdown-item" href="{{route('user.profile',Auth::Id())}}">Profile</a></li>
+                                @if(Auth::user()->role == 'admin')<li><a class="dropdown-item" href="#">Aktifitas Situs</a></li>@endif
+                                <li><a class="dropdown-item" href="{{route('user.profile',Auth::Id())}}">Profil</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
