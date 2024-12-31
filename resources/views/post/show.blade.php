@@ -12,7 +12,7 @@
                 <span>Editor: {{ $post->user->name ?? 'Anonymous'}}</span>
                 <span class="mx-2">•</span>
                 <i class="bi bi-person-circle me-2"></i>
-                <span>Kontributor: {{$post->deskripsi3}}</span>
+                <span>Kontributor: {{$post->contributor ?? 'Anonymous'}}</span>
                 <span class="mx-2">•</span>
                 <span>{{ ucfirst($post->kategori->kategori) ?? 'Uncategorized'}}</span>
                 <span class="mx-2">•</span>

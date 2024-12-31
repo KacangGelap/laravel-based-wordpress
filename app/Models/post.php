@@ -16,11 +16,12 @@ class post extends Model
         'media1',
         'media2',
         'media3',
+        'media4',
         'deskripsi1',
-        'deskripsi2',
-        'deskripsi3',
+        'contributor',
         'kategori_id',
-        'user_id'
+        'user_id',
+
     ];
     public function user(){
         return $this->belongsTo('App\Models\User');

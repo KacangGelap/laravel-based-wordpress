@@ -11,10 +11,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // \DB::enableQueryLog();
-        // $menus = menu::with('subMenus.subSubMenus',)->get();
-        // dd(\DB::getQueryLog());
-
+        //
     }
 
     /**
@@ -22,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Fetch the menus with eager loading of subMenus and subSubMenus
+        $menus = Menu::with('subMenus.subSubMenus')->get();
+
+        // Share the menus variable with all views
+        view()->share('menus', $menus);
     }
 }

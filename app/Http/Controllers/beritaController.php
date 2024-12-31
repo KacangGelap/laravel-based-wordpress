@@ -9,10 +9,10 @@ class beritaController extends Controller
 {
     public function index(){
         $data = post::all();
-        $kegiatan = post::where('kategori_id', 1)->get();
-        $informasi = post::where('kategori_id', 2)->get();
-        $apelPagi = post::where('kategori_id', 3)->get();
-        $kerjaBakti = post::where('kategori_id', 4)->get();
+        $kegiatan = post::where('kategori_id', 1)->count();
+        $informasi = post::where('kategori_id', 2)->count();
+        $apelPagi = post::where('kategori_id', 3)->count();
+        $kerjaBakti = post::where('kategori_id', 4)->count();
         return view('post.index')->with('data', $data)
         ->with('kegiatan', $kegiatan)
         ->with('informasi', $informasi)
@@ -29,9 +29,9 @@ class beritaController extends Controller
             'media1'=> 'required|image|mimes:jpeg,png,jpg,bmp|max:2000',
             'media2'=> 'nullable|image|mimes:jpeg,png,jpg,bmp|max:2000',
             'media3'=> 'nullable|image|mimes:jpeg,png,jpg,bmp|max:2000',
-            'deskripsi1'=>'required|string|min:20|max:365',
-            'deskripsi2'=>'nullable|string|min:20|max:365',
-            'deskripsi3'=>'nullable|string|min:20|max:365',
+            'deskripsi1'=>'required|string|min:20|max:500',
+            'deskripsi2'=>'nullable|string|min:20|max:500',
+            'deskripsi3'=>'nullable|string|min:5|max:500',
             'kategori_id'=>'required|numeric'
         ]);
         try {
@@ -69,7 +69,7 @@ class beritaController extends Controller
         $kategori = kategori::all();
         return view('post.edit')->with('post',$item)->with('kategori', $kategori);
     }
-    public function update(Request $request, string $post){
+    public function update(Request $request, string $post){        
         $request->validate([
             'judul' => 'required|string|min:5|max:100',
             'media1'=> 'nullable|image|mimes:jpeg,png,jpg,bmp|max:3000',
@@ -80,7 +80,6 @@ class beritaController extends Controller
             'deskripsi3'=>'nullable|string',
             'kategori_id'=>'nullable|numeric'
         ]);
-        // dd($request->has('kategori_id'));
         try {
             $post = post::findOrFail($post);
             $post->update([

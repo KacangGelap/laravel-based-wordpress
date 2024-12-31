@@ -9,8 +9,8 @@
                 {{-- <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Pilih Kategori Berita
                 </button> --}}
-                <select name="kategori_id" id="kategori_id" class="btn btn-light dropdown-toggle @error('kategori_id') is-invalid @enderror">
-                    <option value="NULL" data-bs-toggle="dropdown">[Pilih Kategori Berita]</option>
+                <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror">
+                    <option value="NULL">[Pilih Kategori Berita]</option>
                     <div class="dropdown">
                         <div class="dropdown-menu">
                             @foreach ($kategori as $item)
@@ -57,7 +57,7 @@
             @enderror
         </div>
         <div class="row justify-content-center">
-            <div class="col-3">
+            <div class="col-md-3">
                 {{-- media 1 --}}
                 <label for="media1" id="label-media1" class="d-flex flex-column justify-content-center align-items-center border border-dark rounded mb-3" style="height: 200px; cursor: pointer;">
                     <input type="file" id="media1" name="media1" class="d-none @error('media1') is-invalid @enderror">
@@ -73,7 +73,7 @@
                 </label>
             </div>
             {{-- media 2 --}}
-        <div class="col-3">
+        <div class="col-md-3">
             <label for="media2" id="label-media2" class="d-flex flex-column justify-content-center align-items-center border border-dark rounded mb-3" style="height: 200px; cursor: pointer;">
                 <input type="file" id="media2" name="media2" class="d-none @error('media2') is-invalid @enderror">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 50px; height: 50px;">
@@ -89,7 +89,7 @@
         </div>
         
         {{-- media 3 --}}
-        <div class="col-3">
+        <div class="col-md-3">
             <label for="media3" id="label-media3" class="d-flex flex-column justify-content-center align-items-center border border-dark rounded mb-3" style="height: 200px; cursor: pointer;">
                 <input type="file" id="media3" name="media3" class="d-none @error('media3') is-invalid @enderror">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 50px; height: 50px;">
@@ -104,7 +104,7 @@
             </label>
         </div>
         {{-- media 4 --}}
-        <div class="col-3">
+        <div class="col-md-3">
             <label for="media4" id="label-media4" class="d-flex flex-column justify-content-center align-items-center border border-dark rounded mb-3" style="height: 200px; cursor: pointer;">
                 <input type="file" id="media4" name="media4" class="d-none @error('media4') is-invalid @enderror">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 50px; height: 50px;">
@@ -137,6 +137,10 @@
     document.getElementById('media3').addEventListener('change', function () {
         var fileName = this.files[0] ? this.files[0].name : 'Pilih gambar 3';
         document.getElementById('text-media3').textContent = fileName;
+    });
+    document.getElementById('media4').addEventListener('change', function () {
+        var fileName = this.files[0] ? this.files[0].name : 'Pilih gambar 3';
+        document.getElementById('text-media4').textContent = fileName;
     });
 </script>
 

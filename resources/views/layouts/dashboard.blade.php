@@ -44,7 +44,7 @@
                             </li>
                             @if(Auth::user()->role == 'admin')
                             <li>
-                                <a href=" {{ route('post.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href=" {{ route('menu.index') }} " class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-file-earmark-code"></i> <span class="ms-1 d-none d-sm-inline">Halaman</span>
                                 </a>
                             </li>

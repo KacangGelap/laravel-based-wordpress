@@ -30,18 +30,15 @@
                                 <tbody>
                                     @foreach ($user as $item)
                                         <tr>
-                                            <td>{{$loop->iteration}}</td>
-                                            <td class="text-sm-start">{{ $item->name }}</td>
-                                            <td>{{ $item->email }}</td>
-                                            <td>{{ $item->no_hp }}</td>
-                                            <td>{{ $item->opd }}</td>
-                                            <td>{{ $item->role }}</td>
-                                            <td class="d-flex justify-content-start">
+                                            <td style="font-size: 12px">{{$loop->iteration}}</td>
+                                            <td class="text-sm-start" style="font-size: 12px">{{ $item->name }}</td>
+                                            <td style="font-size: 12px">{{ $item->email }}</td>
+                                            <td style="font-size: 12px">{{ $item->no_hp }}</td>
+                                            <td style="font-size: 12px">{{ $item->opd }}</td>
+                                            <td style="font-size: 12px">{{ $item->role }}</td>
+                                            <td class="d-flex justify-content-start" style="font-size: 12px">
                                                 <a href="{{ route('user.show', $item->id) }}" class="btn btn-secondary mx-2">
                                                     <i class="bi-eye"></i>
-                                                </a>
-                                                <a href="{{ route('user.edit', $item->id) }}" class="btn btn-warning mx-2">
-                                                    <i class="bi-pencil"></i>
                                                 </a>
                                                 @if ($item->id != Auth::user()->id)
                                                     <button class="btn btn-danger mx-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-user-id="{{ $item->id }}">

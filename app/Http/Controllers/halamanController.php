@@ -9,7 +9,6 @@ class halamanController extends Controller
     //index untuk menu, sub-menu, dan sub-sub-menu
     public function menu(){
         $menu = menu::all();
-
         return view('halaman.menu')->with('menu', $menu);
     }
     public function submenu(Request $request){
@@ -92,6 +91,8 @@ class halamanController extends Controller
         }
     }
     public function create_subsubmenu(Request $request){
-
+        $validate = $request->validate([
+            'sub_menu' => 'required|numeric'
+        ]);
     }
 }

@@ -53,3 +53,4 @@ Route::middleware(['auth'])->group( function () {
 });
 //FITUR TANPA AUTENTIKASI
 Route::get('/berita', [App\Http\Controllers\beritaController::class, 'show'])->name('post.view');
+Route::get('/page', [App\Http\Controllers\halamanController::class,'showpage'])->name('page.show');
