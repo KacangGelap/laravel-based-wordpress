@@ -28,7 +28,7 @@
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <label class="labels" for="name">Nama Lengkap</label>
-                            <input id="name" type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="enter your name" value="{{$user->name}}">
+                            <input id="name" type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="" value="{{$user->name}}" required>
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-md-12">
                             <label class="labels" for="no_hp">HP / WA</label>
-                            <input id="no_hp" type="text" name="no_hp" class="form-control @error('no_hp') is-invalid @enderror" placeholder="enter your no_hp" value="{{$user->no_hp}}">
+                            <input id="no_hp" type="text" name="no_hp" class="form-control @error('no_hp') is-invalid @enderror" placeholder="" value="{{$user->no_hp}}">
                             @error('no_hp')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -46,7 +46,7 @@
                         </div>
                         <div class="col-md-12">
                             <label class="labels" for="opd">Perangkat Daerah</label>
-                            <input id="opd" type="text" name="opd" class="form-control @error('opd') is-invalid @enderror" placeholder="" value="{{$user->opd}}">
+                            <input id="opd" type="text" name="opd" class="form-control @error('opd') is-invalid @enderror" placeholder="" value="{{$user->opd}}" required>
                             @error('opd')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-md-12">
                             <label class="labels" for="email">Email</label>
-                            <input id="email" type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="enter your e-mail address" value="{{$user->email}}">
+                            <input id="email" type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="enter your e-mail address" value="{{$user->email}}" required>
                             @error('email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
