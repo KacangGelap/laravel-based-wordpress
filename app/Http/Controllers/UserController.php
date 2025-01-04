@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Hash;
+use Hash, Image, Auth;
 use App\Models\User;
-use Image;
 class UserController extends Controller
 {
     public function index(){
@@ -21,7 +20,7 @@ class UserController extends Controller
         $request->validate([
             'name'      =>  'required|string|max:25',
             'no_hp'     =>  'nullable|numeric|digits_between:11,13',
-            'username'  =>  'required|string|unique:users',
+            'username'  =>  'required|string|unique:users|max:30',
             'opd'       =>  'required|string|in:Diskominfo,
                             Korpri,Pkk,Setda,Setwan,Itda,DIsdikbud,Dinkes,Dpupr,
                             Dpkpp,Dpkp,Dspm,Dpmptsp,Disnaker,Dlh,Disdukcapil,
@@ -44,7 +43,7 @@ class UserController extends Controller
             $user->no_hp = $request->input('no_hp');
             $user->opd = $request->input('opd');
             $user->password = Hash::make($request->input('password'));
-            dd($user);
+            // dd($user);
             $user->save();
         } catch (\Throwable $th) {
             return redirect()->route('user.index')->with('gagal','data gagal ditambah');
@@ -52,35 +51,44 @@ class UserController extends Controller
         return redirect()->route('user.index')->with('sukses','data berhasil ditambah');
     }
 
-    public function edit(string $id){
-        $user = User::findOrFail($id);
-        return view('user.edit')->with('user', $user);
-    }
+    // public function edit(string $id){
+    //     $user = User::findOrFail($id);
+    //     return view('user.edit')->with('user', $user);
+    // }
 
     public function update(Request $request, string $id){
         $user = User::findOrFail($id);
-        $isEmailChanged = $user->email !== $request->input('email');
+        $isUsernameChanged = $user->username !== $request->input('username');
 
         $rules = [
-            'profile'  => 'nullable|image|mimes:jpg,png|max:2000',
-            'no_hp'    => 'nullable|numeric|digits_between:11,13',
-            'name'     => 'string|max:25',
-            'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.])[A-Za-z\d@$!%*?&_\-.]+$/',
+            'profile'   =>  'nullable|image|mimes:jpg,png|max:2000',
+            'no_hp'     =>  'nullable|numeric|digits_between:11,13',
+            'opd'       =>  'nullable|string|in:Diskominfo,
+                            Korpri,Pkk,Setda,Setwan,Itda,DIsdikbud,Dinkes,Dpupr,
+                            Dpkpp,Dpkp,Dspm,Dpmptsp,Disnaker,Dlh,Disdukcapil,
+                            Dishub,Disporapar,Dkukmp,Dpk,Dkppp,Dppkb,Satpol PP,
+                            Bkpsdm,Bapperinda,Bapenda,Bpkad,Bakesbangpol,Bpbd,
+                            Rsud,Ukpbj,Puskesmas Bontang Selatan 1,Puskesmas Bontang Selatan 2,
+                            Puskesmas Bontang Utara 1,Puskesmas Bontang Utara 2,Puskesmas Bontang Barat,
+                            Puskesmas Bontang Lestari,Laboratorium Kesehatan,Kec-Bontang Barat,Kec-Bontang Utara,
+                            Kec-Bontang Selatan,Kel-Kanaan,Kel-Belimbing,Kel-Gunung Telihan,Kel-Bontang Baru,
+                            Kel-Api-Api,Kel-Gunung Elai,Kel-Guntung,Kel-Loktuan,Kel-Tanjung Laut,Kel-Tanjung Laut Indah,Kel-Berbas Tengah,
+                            Kel-Berbas Pantai,Kel-Satimpo,Kel-Bontang Lestari',
+            'name'      =>  'string|max:25',
+            'password'  =>  'nullable|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.])[A-Za-z\d@$!%*?&_\-.]+$/',
         ];
 
         $messages = [
             'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (@, $, !, %, *, ?, &, _, -, .).',
         ];
 
-        if ($isEmailChanged) {
-            $rules['email'] = 'string|email|unique:users';
+        if ($isUsernameChanged) {
+            $rules['username'] = 'string|unique:users|max:30';
         } else {
-            $rules['email'] = 'string|email';
+            $rules['username'] = 'string|max:30';
         }
-
         // Validate the request
         $request->validate($rules, $messages);
-
         try {
             // Handle the profile image if it exists
             if ($request->hasFile('profile')) {
@@ -94,12 +102,12 @@ class UserController extends Controller
 
             // Update the user data
             $user->update([
-                'name'     => $request->input('name', $user->name),
-                'no_hp'    => $request->input('no_hp', $user->no_hp),
-                'email'    => $isEmailChanged ? $request->input('email') : $user->email,
-                'password' => $request->has('password') ? Hash::make($request->input('password')) : $user->password,
+                'name'      => $request->input('name')?? $user->name,
+                'no_hp'     => $request->input('no_hp') ?? $user->no_hp,
+                'username'  => $isUsernameChanged ? $request->input('username') : $user->username,
+                'opd'       => $request->input('opd') ?? $user->opd,
+                'password'  => $request->has('password') ? Hash::make($request->input('password')) : $user->password,
             ]);
-
             return redirect()->route('user.show', $user->id)->with('sukses', 'Data berhasil diubah');
         } catch (\Throwable $th) {
             throw $th;
@@ -111,10 +119,10 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
             $user->delete();
+            return redirect()->route('user.index')->with('sukses','data berhasil dihapus');
         } catch (\Throwable $th) {
             return redirect()->route('user.index')->with('gagal','terjadi kesalahan');
         }
-        return redirect()->route('user.index')->with('sukses','data berhasil dihapus');
     }
 
     public function show(string $id){
@@ -128,7 +136,7 @@ class UserController extends Controller
 
     public function update_profile(Request $request, string $id){
         $user = User::findOrFail($id);
-        $isEmailChanged = $user->email !== $request->input('email');
+        $isUsernameChanged = $user->username !== $request->input('username');
         $rules = [
             'profile'  => 'nullable|image|mimes:jpg,png|max:2000',
             'no_hp'    => 'nullable|numeric|digits_between:11,13',
@@ -140,12 +148,24 @@ class UserController extends Controller
             'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (@, $, !, %, *, ?, &, _, -, .).',
         ];
 
-        if ($isEmailChanged) {
-            $rules['email'] = 'string|email|unique:users';
+        if ($isUsernameChanged) {
+            $rules['username'] = 'string|unique:users';
         } else {
-            $rules['email'] = 'string|email';
+            $rules['username'] = 'string';
         }
-
+        if(Auth::user()->role == 'admin'){
+            $rules['opd'] = 'nullable|string|in:Diskominfo,
+                            Korpri,Pkk,Setda,Setwan,Itda,DIsdikbud,Dinkes,Dpupr,
+                            Dpkpp,Dpkp,Dspm,Dpmptsp,Disnaker,Dlh,Disdukcapil,
+                            Dishub,Disporapar,Dkukmp,Dpk,Dkppp,Dppkb,Satpol PP,
+                            Bkpsdm,Bapperinda,Bapenda,Bpkad,Bakesbangpol,Bpbd,
+                            Rsud,Ukpbj,Puskesmas Bontang Selatan 1,Puskesmas Bontang Selatan 2,
+                            Puskesmas Bontang Utara 1,Puskesmas Bontang Utara 2,Puskesmas Bontang Barat,
+                            Puskesmas Bontang Lestari,Laboratorium Kesehatan,Kec-Bontang Barat,Kec-Bontang Utara,
+                            Kec-Bontang Selatan,Kel-Kanaan,Kel-Belimbing,Kel-Gunung Telihan,Kel-Bontang Baru,
+                            Kel-Api-Api,Kel-Gunung Elai,Kel-Guntung,Kel-Loktuan,Kel-Tanjung Laut,Kel-Tanjung Laut Indah,Kel-Berbas Tengah,
+                            Kel-Berbas Pantai,Kel-Satimpo,Kel-Bontang Lestari';
+        }
         // Validate the request
         $request->validate($rules, $messages);
 
@@ -163,12 +183,16 @@ class UserController extends Controller
 
             // Update the user data
             $user->update([
-                'name'     => $request->input('name', $user->name),
-                'no_hp'    => $request->input('no_hp', $user->no_hp),
-                'email'    => $isEmailChanged ? $request->input('email') : $user->email,
+                'name'     => $request->input('name')?? $user->name,
+                'no_hp'    => $request->input('no_hp') ?? $user->no_hp,
+                'username'    => $isUsernameChanged ? $request->input('username') : $user->username,
                 'password' => $request->has('password') ? Hash::make($request->input('password')) : $user->password,
             ]);
-
+            // Checks whether admin or not to change the opd
+            if(Auth::user()->role == 'admin'){
+                $user->opd = $request->input('opd')?? $user->opd;
+            }
+            // dd($user);
             return redirect()->route('user.profile', $user->id)->with('sukses', 'Data berhasil diubah');
         } catch (\Throwable $th) {
             throw $th;

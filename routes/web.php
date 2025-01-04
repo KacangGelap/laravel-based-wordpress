@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
-
+Route::post('/login',[App\Http\Controllers\Auth\loginController::class, 'Authenticate'])->name('masuk');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group( function () {

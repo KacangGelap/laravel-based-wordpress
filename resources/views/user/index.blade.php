@@ -20,7 +20,7 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Nama Lengkap</th>
-                                        <th>E-Mail</th>
+                                        <th>Username</th>
                                         <th>No. HP / WA</th>
                                         <th>Perangkat Daerah</th>
                                         <th>Hak Akses</th>
@@ -32,7 +32,7 @@
                                         <tr>
                                             <td style="font-size: 12px">{{$loop->iteration}}</td>
                                             <td class="text-sm-start" style="font-size: 12px">{{ $item->name }}</td>
-                                            <td style="font-size: 12px">{{ $item->email }}</td>
+                                            <td style="font-size: 12px">{{ $item->username }}</td>
                                             <td style="font-size: 12px">{{ $item->no_hp }}</td>
                                             <td style="font-size: 12px">{{ $item->opd }}</td>
                                             <td style="font-size: 12px">{{ $item->role }}</td>
