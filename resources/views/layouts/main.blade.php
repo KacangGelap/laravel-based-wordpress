@@ -33,6 +33,7 @@
 <body>
     <div id="app">
         <main class="py-4 bg-dark min-vh-100" style="background-image: url(/img/background-app.jpeg); background-size:cover; background-attachment: fixed;">    
+            {{-- banner --}}
             <div class="container p-0">
                 <img src="https://lh3.googleusercontent.com/u/0/d/1RSLtvEv1UIqr10TJdJ4mQgIPBO7NqwQz=w2000-h338-iv2" class="w-100 mb-3">
             </div>
