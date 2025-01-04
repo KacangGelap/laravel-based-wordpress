@@ -43,9 +43,9 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <div class="row collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="row collapse navbar-collapse mx-auto" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
-                        <ul class="navbar-nav text-decoration-underline text-white justify-content-evenly">
+                        <ul class="navbar-nav text-decoration-underline text-white justify-content-evenly mb-3">
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="{{url('/')}}">
                                     {{__("BERANDA")}}
@@ -94,9 +94,16 @@
                                     {{__("UNDUH")}}
                                 </a>
                             </li>
+                            @auth
+                                <li class="nav-item">
+                                    <a href="{{route('home')}}" class="nav-link">
+                                        <i class="bi-speedometer2 text-white"></i>
+                                    </a>
+                                </li>
+                            @endauth
                         </ul>
-            
-                        <ul class="navbar-nav justify-content-end mt-2">
+                        <hr>
+                        <ul class="navbar-nav justify-content-end">
                             <form action="{{route('home')}}" method="post">
                                 @csrf
                                 <div class="input-group">

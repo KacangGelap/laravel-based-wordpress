@@ -18,12 +18,11 @@ class Menu extends Model
 
     public function subSubMenus()
     {
-        // Use the correct foreign keys and model names
         return $this->hasManyThrough(
-            Subsubmenu::class,  // Target model
-            Submenu::class,     // Intermediate model
-            'menu_id',          // Foreign key on Submenu
-            'sub_menu_id'       // Foreign key on Subsubmenu
+            Subsubmenu::class,  // Dengan target model ini
+            Submenu::class,     // Lewat model ini
+            'menu_id',          // dengan pencocokkan id model sekarang (menu) dengan model tunnel (submenu)
+            'sub_menu_id'       // dan dicocokkan lagi id model tunnel (submenu) dengan model target (subsubmenu)
         );
     }
 }

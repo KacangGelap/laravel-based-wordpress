@@ -40,16 +40,14 @@ Route::middleware(['auth'])->group( function () {
 
         //manajemen halaman
         Route::get('/halaman',[App\Http\Controllers\halamanController::class,'menu'])->name('menu.index');
-
-
-        //manajemen postingan
-        Route::get('/post', [App\Http\Controllers\beritaController::class, 'index'])->name('post.index');
-        Route::get('/post/create', [App\Http\Controllers\beritaController::class, 'create'])->name('post.create');
-        Route::get('/post/edit/{post}', [App\Http\Controllers\beritaController::class, 'edit'])->name('post.edit');
-        Route::put('/post/update/{post}', [App\Http\Controllers\beritaController::class, 'update'])->name('post.update');
-        Route::post('/post/store', [App\Http\Controllers\beritaController::class, 'store'])->name('post.store');
-        // Route::get('/post/view/{post}', [App\Http\Controllers\beritaController::class, 'show'])->name('post.view');
     });
+    //manajemen postingan
+    Route::get('/post', [App\Http\Controllers\beritaController::class, 'index'])->name('post.index');
+    Route::get('/post/create', [App\Http\Controllers\beritaController::class, 'create'])->name('post.create');
+    Route::post('/post/store', [App\Http\Controllers\beritaController::class, 'store'])->name('post.store');
+    Route::get('/post/edit/{post}', [App\Http\Controllers\beritaController::class, 'edit'])->name('post.edit');
+    Route::put('/post/update/{post}', [App\Http\Controllers\beritaController::class, 'update'])->name('post.update');
+    Route::delete('/post/delete/{post}', [App\Http\Controllers\beritaController::class, 'destroy'])->name('post.delete');
 });
 //FITUR TANPA AUTENTIKASI
 Route::get('/berita', [App\Http\Controllers\beritaController::class, 'show'])->name('post.view');

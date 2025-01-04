@@ -14,10 +14,10 @@ class beritaController extends Controller
         $apelPagi = post::where('kategori_id', 3)->count();
         $kerjaBakti = post::where('kategori_id', 4)->count();
         return view('post.index')->with('data', $data)
-        ->with('kegiatan', $kegiatan)
-        ->with('informasi', $informasi)
-        ->with('apelPagi', $apelPagi)
-        ->with('kerjaBakti', $kerjaBakti);
+                ->with('kegiatan', $kegiatan)
+                ->with('informasi', $informasi)
+                ->with('apelPagi', $apelPagi)
+                ->with('kerjaBakti', $kerjaBakti);
     }
     public function create(){
         $kategori = kategori::all();
@@ -25,38 +25,27 @@ class beritaController extends Controller
     }
     public function store(Request $request){
         $request->validate([
-            'judul' => 'required|string|min:5',
-            'media1'=> 'required|image|mimes:jpeg,png,jpg,bmp|max:2000',
-            'media2'=> 'nullable|image|mimes:jpeg,png,jpg,bmp|max:2000',
-            'media3'=> 'nullable|image|mimes:jpeg,png,jpg,bmp|max:2000',
-            'deskripsi1'=>'required|string|min:20|max:500',
-            'deskripsi2'=>'nullable|string|min:20|max:500',
-            'deskripsi3'=>'nullable|string|min:5|max:500',
+            'judul' => 'required|string|min:5|max:100',
+            'media1'=> 'required|image|mimes:jpeg,png,jpg|max:2000',
+            'media2'=> 'nullable|image|mimes:jpeg,png,jpg|max:2000',
+            'media3'=> 'nullable|image|mimes:jpeg,png,jpg|max:2000',
+            'media4'=> 'nullable|image|mimes:jpeg,png,jpg|max:2000',
+            'deskripsi'=>'required|string|min:20|max:500',
+            'contributor'=>'required|string|max:50',
             'kategori_id'=>'required|numeric'
         ]);
         try {
             $data = new post();
             // data yang wajib diisi
-            $data->judul = $request->input('judul');
-            $data->media1 = 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('media1')));
-            $data->deskripsi1 = $request->input('deskripsi1');
-            $data->kategori_id = $request->input('kategori_id');
-            //data yang opsional diisi
-            if($request->file('media2') != NULL){
-                $data->media2 = 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('media2')));
-            }
-            if($request->input('deskripsi2') != NULL){
-                $data->deskripsi2 = $request->input('deskripsi2');
-            }
-            if($request->file('media3') != NULL){
-                $data->media3 = 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('media3')));
-            }
-            if($request->input('deskripsi3') != NULL){
-                $data->deskripsi3 = $request->input('deskripsi3');
-            }
-
-            // dd($data);
-            $data->user_id = Auth::Id();
+            $data->judul        = $request->input('judul');
+            $data->user_id      = Auth::Id();
+            $data->contributor  = $request->input('contributor');
+            $data->deskripsi    = $request->input('deskripsi');
+            $data->media1       = 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('media1')));
+            $data->media2       = $request->has('media2') ? 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('media2'))) : NULL;
+            $data->media3       = $request->has('media3') ? 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('media3'))) : NULL;
+            $data->media4       = $request->has('media4') ? 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('media4'))) : NULL;
+            $data->kategori_id  = $request->input('kategori_id');
             $data->save();
         } catch (\Throwable $th) {
             throw $th;
@@ -72,12 +61,12 @@ class beritaController extends Controller
     public function update(Request $request, string $post){        
         $request->validate([
             'judul' => 'required|string|min:5|max:100',
-            'media1'=> 'nullable|image|mimes:jpeg,png,jpg,bmp|max:3000',
-            'media2'=> 'nullable|image|mimes:jpeg,png,jpg,bmp|max:3000',
-            'media3'=> 'nullable|image|mimes:jpeg,png,jpg,bmp|max:3000',
-            'deskripsi1'=>'nullable|string|min:20',
-            'deskripsi2'=>'nullable|string|min:20',
-            'deskripsi3'=>'nullable|string',
+            'media1'=> 'nullable|image|mimes:jpeg,png,jpg|max:2000',
+            'media2'=> 'nullable|image|mimes:jpeg,png,jpg|max:2000',
+            'media3'=> 'nullable|image|mimes:jpeg,png,jpg|max:2000',
+            'media4'=> 'nullable|image|mimes:jpeg,png,jpg|max:2000',
+            'deskripsi'=>'nullable|string|min:20|max:500',
+            'contributor'=>'nullable|string|max:50',
             'kategori_id'=>'nullable|numeric'
         ]);
         try {
@@ -87,13 +76,13 @@ class beritaController extends Controller
                 'media1'=> $request->has('media1') ? 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('media1'))) : $post->media1,
                 'media2'=> $request->has('media2') ? 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('media2'))) : $post->media2,
                 'media3'=> $request->has('media3') ? 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('media3'))) : $post->media3,
-                'deskripsi1'=> $request->has('deskripsi1') ? $request->input('deskripsi1') : $post->deskripsi1,
-                'deskripsi2'=> $request->has('deskripsi2') ? $request->input('deskripsi2') : $post->deskripsi2,
-                'deskripsi3'=> $request->has('deskripsi3') ? $request->input('deskripsi3') : $post->deskripsi3,
+                'media4'=> $request->has('media4') ? 'data:image/jpg;charset:utf8;base64,'.base64_encode(file_get_contents($request->file('media4'))) : $post->media4,
+                'deskripsi'=> $request->has('deskripsi') ? $request->input('deskripsi') : $post->deskripsi,
+                'contributor'=> $request->has('contributor') ? $request->input('contributor') : $post->contributor,
                 'kategori_id'=> $request->has('kategori_id') ? $request->input('kategori_id') : $post->kategori_id,
             ]);
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return redirect()->back()->with('gagal','Terjadi Kesalahan');
         }
         return redirect()->route('post.view',['post'=>$post->id])->with('sukses','data berhasil diubah');
@@ -106,17 +95,18 @@ class beritaController extends Controller
     
             $post = $validated['post'];
             $item = post::findOrFail($post);
-            $latest = post::orderBy('created_at','desc')->get();
-            return view('post.show')->with('post', $item)->with('latest', $latest);
+            return view('post.show')->with('post', $item);
         } catch (\Throwable $th) {
+            // throw $th;
             return back()->with('gagal','terjadi kesalahan');
         }
         
     }
     public function destroy(string $post){
         try {
-            $post = post:: findOrFail($post);
+            $post = post::findOrFail($post);
             $post->delete();
+            return redirect()->route('post.index')->with('sukses','Berita berhasil dihapus');
         } catch (\Throwable $th) {
             return redirect()->route('post.index')->with('gagal','terjadi kesalahan');
         }

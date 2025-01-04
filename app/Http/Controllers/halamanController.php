@@ -94,5 +94,10 @@ class halamanController extends Controller
         $validate = $request->validate([
             'sub_menu' => 'required|numeric'
         ]);
+        try {
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 }

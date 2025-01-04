@@ -17,7 +17,7 @@ class post extends Model
         'media2',
         'media3',
         'media4',
-        'deskripsi1',
+        'deskripsi',
         'contributor',
         'kategori_id',
         'user_id',

@@ -62,9 +62,11 @@
                                 </span>
                             @enderror
                         </div>
+                        <h6 class="mt-4">Perbarui kata sandi</h6>
+                        <hr>                        
                         <div class="col-md-12">
                             <label class="labels" for="password">Kata Sandi</label>
-                            <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Keterangan : Hanya untuk mengganti password">
+                            <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Isi jika kata sandi ingin diganti">
                             @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -73,7 +75,7 @@
                         </div>
                         <div class="col-md-12">
                             <label class="labels" for="password-confirm">Ulangi Kata Sandi</label>
-                            <input id="password-confirm" type="password" name="password_confirmation" class="form-control" placeholder="Keterangan : Hanya untuk mengganti password">
+                            <input id="password-confirm" type="password" name="password_confirmation" class="form-control" placeholder="Isi jika kata sandi ingin diganti">
                         </div>
                         
                         <div class="my-4 offset-md-8">

@@ -10,7 +10,7 @@
                   Pilih Kategori Berita
                 </button> --}}
                 <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror">
-                    <option value="NULL">[Pilih Kategori Berita]</option>
+                    <option selected disabled>[Pilih Kategori Berita]</option>
                     <div class="dropdown">
                         <div class="dropdown-menu">
                             @foreach ($kategori as $item)
@@ -40,8 +40,8 @@
             @enderror
         </div>
         <div class="mb-3">
-            <input class="form-control @error('deskripsi3') is-invalid @enderror" type="text" name="deskripsi3" id="deskripsi3" placeholder="Isikan nama kontributor berita (wajib [contoh : Devan Apriandi]), nama kontributor boleh sama dengan nama editor" value="{{old('deskripsi3')}}">
-            @error('deskripsi3')
+            <input class="form-control @error('contributor') is-invalid @enderror" type="text" name="contributor" id="contributor" placeholder="Isikan nama kontributor berita (wajib [contoh : Devan Apriandi]), nama kontributor boleh sama dengan nama editor" value="{{old('contributor')}}">
+            @error('contributor')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -49,8 +49,8 @@
         </div>
         {{-- deskripsi 1 --}}
         <div class="mb-3">
-            <textarea class="form-control border border-dark @error('deskripsi1') is-invalid @enderror" rows="4" placeholder="Isikan Berita Awal (Wajib)" name="deskripsi1" required>{{old('deskripsi1')}}</textarea>
-            @error('deskripsi1')
+            <textarea class="form-control border border-dark @error('deskripsi') is-invalid @enderror" rows="4" placeholder="Isikan Berita Awal (Wajib)" name="deskripsi" required>{{old('deskripsi')}}</textarea>
+            @error('deskripsi')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>

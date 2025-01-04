@@ -21,7 +21,18 @@ class UserController extends Controller
         $request->validate([
             'name'      =>  'required|string|max:25',
             'no_hp'     =>  'nullable|numeric|digits_between:11,13',
-            'email'     =>  'required|string|email|unique:users',
+            'username'  =>  'required|string|unique:users',
+            'opd'       =>  'required|string|in:Diskominfo,
+                            Korpri,Pkk,Setda,Setwan,Itda,DIsdikbud,Dinkes,Dpupr,
+                            Dpkpp,Dpkp,Dspm,Dpmptsp,Disnaker,Dlh,Disdukcapil,
+                            Dishub,Disporapar,Dkukmp,Dpk,Dkppp,Dppkb,Satpol PP,
+                            Bkpsdm,Bapperinda,Bapenda,Bpkad,Bakesbangpol,Bpbd,
+                            Rsud,Ukpbj,Puskesmas Bontang Selatan 1,Puskesmas Bontang Selatan 2,
+                            Puskesmas Bontang Utara 1,Puskesmas Bontang Utara 2,Puskesmas Bontang Barat,
+                            Puskesmas Bontang Lestari,Laboratorium Kesehatan,Kec-Bontang Barat,Kec-Bontang Utara,
+                            Kec-Bontang Selatan,Kel-Kanaan,Kel-Belimbing,Kel-Gunung Telihan,Kel-Bontang Baru,
+                            Kel-Api-Api,Kel-Gunung Elai,Kel-Guntung,Kel-Loktuan,Kel-Tanjung Laut,Kel-Tanjung Laut Indah,Kel-Berbas Tengah,
+                            Kel-Berbas Pantai,Kel-Satimpo,Kel-Bontang Lestari',
             'password'  =>  'required|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.])[A-Za-z\d@$!%*?&_\-.]+$/'
         ],[
             'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (@, $, !, %, *, ?, &, _, -, .).',
@@ -29,10 +40,11 @@ class UserController extends Controller
         try {
             $user = new User();
             $user->name = $request->input('name');
-            $user->email = $request->input('email');
+            $user->username = $request->input('username');
             $user->no_hp = $request->input('no_hp');
+            $user->opd = $request->input('opd');
             $user->password = Hash::make($request->input('password'));
-            // dd($user);
+            dd($user);
             $user->save();
         } catch (\Throwable $th) {
             return redirect()->route('user.index')->with('gagal','data gagal ditambah');

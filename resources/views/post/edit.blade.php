@@ -4,7 +4,7 @@
     <input type="hidden" name="_method" value="PUT">
     @csrf
     <div class="bg-secondary text-end p-3 d-flex justify-content-between">
-        <h4 class="text-white text-start">Ubah Postingan</h4>
+        <h4 class="text-white text-start">Edit Berita</h4>
         <div class="d-flex justify-content-end">
             <div class="col-auto mx-2">
             <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror">
@@ -23,9 +23,10 @@
         </div>
         
     </div>
-    {{-- judul --}}
     <div class="container mt-3">
-        <div class="mb-3">
+        {{-- judul --}}
+        <div class="input-group mb-3">
+            <span class="input-group-text">Judul Berita :</span>
             <input class="form-control @error('judul') is-invalid @enderror" type="text" name="judul" id="judul" placeholder="Masukkan Judul" value="{{old('judul') ?? $post->judul}}">
             @error('judul')
                 <span class="invalid-feedback" role="alert">
@@ -33,18 +34,20 @@
                 </span>
             @enderror
         </div>
-        <div class="mb-3">
-            <input class="form-control @error('deskripsi3') is-invalid @enderror" type="text" name="deskripsi3" id="deskripsi3" placeholder="Isikan nama kontributor berita (wajib [contoh : Devan Apriandi]), nama kontributor boleh sama dengan nama editor" value="{{old('deskripsi3')}}">
-            @error('deskripsi3')
+        {{-- contributor --}}
+        <div class="input-group mb-3">
+            <span class="input-group-text">Kontributor :</span>
+            <input class="form-control @error('contributor') is-invalid @enderror" type="text" name="contributor" id="contributor" placeholder="Isikan nama kontributor berita (wajib [contoh : Devan Apriandi]), nama kontributor boleh sama dengan nama editor" value="{{$post->contributor}}">
+            @error('contributor')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
         </div>
-        {{-- deskripsi 1 --}}
+        {{-- deskripsi --}}
         <div class="mb-3">
-            <textarea class="form-control border border-dark @error('deskripsi1') is-invalid @enderror" rows="4" placeholder="Deskripsi 2" name="deskripsi1">{{old('deskripsi1') ?? $post->deskripsi1}}</textarea>
-            @error('deskripsi1')
+            <textarea class="form-control border border-dark @error('deskripsi') is-invalid @enderror" rows="4" placeholder="Deskripsi 2" name="deskripsi">{{old('deskripsi') ?? $post->deskripsi}}</textarea>
+            @error('deskripsi')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -95,7 +98,7 @@
                 <label for="media4" id="label-media4" class="d-flex flex-column justify-content-center align-items-center border border-dark rounded mb-3" style="height: 200px; cursor: pointer; background-image:url({{$post->media4}}); background-size:cover; background-position:0% 50%">
                     <input type="file" id="media4" name="media4" class="d-none @error('media4') is-invalid @enderror">
                     
-                    <p class="text-center mt-2 btn btn-primary" id="text-media4">Upload gambar 3</p>
+                    <p class="text-center mt-2 btn btn-primary" id="text-media4">Upload gambar 4</p>
                     @error('media4')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
