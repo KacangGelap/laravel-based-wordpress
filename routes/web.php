@@ -12,12 +12,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Auth::routes(['register' => false]);
+Auth::routes(['register' => false, 'password.request'=> false]);
 Route::post('/login',[App\Http\Controllers\Auth\loginController::class, 'Authenticate'])->name('masuk');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -50,5 +45,10 @@ Route::middleware(['auth'])->group( function () {
     Route::delete('/post/delete/{post}', [App\Http\Controllers\beritaController::class, 'destroy'])->name('post.delete');
 });
 //FITUR TANPA AUTENTIKASI
-Route::get('/berita', [App\Http\Controllers\beritaController::class, 'show'])->name('post.view');
-Route::get('/page', [App\Http\Controllers\halamanController::class,'showpage'])->name('page.show');
+Route::middleware(['pengunjung'])->group( function (){
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/berita', [App\Http\Controllers\beritaController::class, 'show'])->name('post.view');
+    Route::get('/page', [App\Http\Controllers\halamanController::class,'showpage'])->name('page.show');    
+});

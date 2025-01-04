@@ -208,9 +208,8 @@
                 });
             });
         });
-
-
         </script>
+        @include('layouts.footer')
     </div>
 </body>
 </html>

@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('file_storage', function (Blueprint $table) {
-        //     $table->id();
-        //     $talbe->longtext('');
-        //     $table->timestamps();
-        // });
+        Schema::create('layout', function (Blueprint $table) {
+            $table->id();
+            $table->longtext('media')->charset('binary');
+            $table->enum('type',['banner','carousel-1','carousel-2','carousel-3'])->unique();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('file_storage');
+        Schema::dropIfExists('layout');
     }
 };

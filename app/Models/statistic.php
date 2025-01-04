@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class logs extends Model
+class statistic extends Model
 {
     use HasFactory;
-
-    protected $table = 'logs';
+    protected $table = 'statistics';
 
     protected $fillable = [
-        'user_id',
-        'action'
+        'date',
+        'visitor',
+        'page_views'
     ];
-
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
+    
 }
