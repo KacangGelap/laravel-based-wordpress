@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<footer class="py-3 text-bg-dark shadow-lg" style="position:absolute;width:100%;">
+<footer class="container-fluid py-3 text-bg-dark shadow-lg" style="position:absolute;width:100%;">
     <div class="row justify-content-evenly">
         <div class="col-md-3 mb-3">
             <div class="row">
@@ -7,10 +7,11 @@
             </div>
             
             <br>
+            {{-- detail(alamat, email, hp/wa, sosmed) --}}
             <div>
                 <h6 class="border-bottom">Hubungi Kami</h6>
                 <h6>{{config('app.name', 'Nama Website')}}</h6>
-                <p>Alamat nya</p>
+                <p>Jl. Damai No.41, Kanaan, Kec. Bontang Bar., Kota Bontang, Kalimantan Timur 75321</p>
                 <i class="bi bi-telephone me-2"></i><span>+62 ...</span><br>
                 <a class="text-white" href="mailto:"><i class="bi bi-envelope me-2"></i>E-mail website</a><br>
                 <a class="text-white" href="#"><i class="bi bi-facebook me-2"></i>Facebook</a><br>

@@ -46,7 +46,7 @@
 
                     <div class="row collapse navbar-collapse mx-auto" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
-                        <ul class="navbar-nav text-decoration-underline text-white justify-content-evenly mb-3">
+                        <ul class="navbar-nav text-white justify-content-evenly mb-3">
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="{{url('/')}}">
                                     {{__("BERANDA")}}
@@ -118,6 +118,9 @@
             </nav>
             @yield('content')
         </main>
+
+        @include('layouts.footer')
+
         <button id="scrollTopBtn" class="btn-lg btn btn-primary position-fixed bottom-0 end-0 m-3 me-5 d-none rounded-circle" onclick="scrollToTop()" title="Go to top">
             <i class="bi-arrow-up"></i>
         </button>          
@@ -210,7 +213,7 @@
             });
         });
         </script>
-        @include('layouts.footer')
+       
     </div>
 </body>
 </html>

@@ -34,7 +34,7 @@
                             </li>
                             <li class="nav-item">
                                 <a href=" {{ route('home') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Dashboard</span>
+                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Informasi Website</span>
                                 </a>
                             </li>
                             <li class="nav-item">

@@ -8,7 +8,7 @@ class halamanController extends Controller
 {
     //index untuk menu, sub-menu, dan sub-sub-menu
     public function menu(){
-        $menu = menu::all();
+        $menu = menu::with('subMenus')->get();
         return view('halaman.menu')->with('menu', $menu);
     }
     public function submenu(Request $request){
