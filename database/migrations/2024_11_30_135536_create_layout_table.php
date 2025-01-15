@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('layout', function (Blueprint $table) {
             $table->id();
-            $table->longtext('media')->charset('binary');
-            $table->enum('type',['banner','carousel-1','carousel-2','carousel-3'])->unique();
+            $table->longtext('media')->charset('binary')->nullable();
+            $table->string('text')->nullable();
+            $table->enum('type',['logo-pemkot','logo','banner','carousel-1','carousel-2','carousel-3','carousel-4','carousel-5','maps','alamat','facebook','instagram','youtube','email','telp'])->unique();
             $table->timestamps();
         });
     }

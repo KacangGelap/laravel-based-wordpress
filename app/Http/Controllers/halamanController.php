@@ -39,8 +39,19 @@ class halamanController extends Controller
         }
     }
 
-    //tambah sub-menu dan sub-sub-menu
-
+    //tambah menu, sub-menu dan sub-sub-menu
+    public function store_menu(Request $request){
+        $validate = $request->validate([
+            'menu' => 'required|string|max:15'
+        ]);
+        try {
+            $menu = new menu();
+            $menu->menu = $validate['menu'];
+            $menu->save();  
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
     public function create_submenu(Request $request){
         try {
             $validate = $request->validate([

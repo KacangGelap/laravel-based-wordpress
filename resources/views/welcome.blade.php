@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-<div class="container bg-light shadow-sm min-vh-100">
+<div class="container-fluid bg-light shadow-sm min-vh-100">
     <div class="row py-4">
         <div class="col-lg-8">
             <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
@@ -33,8 +33,17 @@
                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Next</span>
                 </button>
-            </div>   
+            </div> 
+            
+            <h5 class="fw-bold mt-4">Government Public Relation</h5>
+            <hr class="mb-2">
+            {{-- GPR --}}
+            <script type="text/javascript" src="https://widget.kominfo.go.id/gpr-widget-kominfo.min.js" async></script>
+            <div class="rounded py-5" style="background-color:#23277B;border: 6px solid #23277B!important">
+                <div id="gpr-kominfo-widget-body"></div>
+            </div>  
         </div>
+
         @include('layouts.sidebar')
     </div>
      

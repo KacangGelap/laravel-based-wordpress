@@ -43,11 +43,16 @@
                                 </a>
                             </li>
                             @if(Auth::user()->role == 'admin')
-                            <li>
-                                <a href=" {{ route('menu.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-file-earmark-code"></i> <span class="ms-1 d-none d-sm-inline">Halaman</span>
-                                </a>
-                            </li>
+                                <li>
+                                    <a href=" {{ route('menu.index') }} " class="nav-link align-middle px-0 text-white">
+                                        <i class="fs-4 bi-file-earmark-code"></i> <span class="ms-1 d-none d-sm-inline">Halaman</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href=" {{ route('template.index') }} " class="nav-link align-middle px-0 text-white">
+                                        <i class="fs-4 bi-pencil-square"></i> <span class="ms-1 d-none d-sm-inline">Template Website</span>
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="{{route('user.index')}}" class="nav-link px-0 align-middle text-white">
                                         <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Pengguna</span> </a>

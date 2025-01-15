@@ -13,6 +13,7 @@ class layout extends Model
 
     protected $fillable = [
         'media',
+        'text',
         'type'
     ];
 }

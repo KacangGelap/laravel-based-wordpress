@@ -35,6 +35,9 @@ Route::middleware(['auth'])->group( function () {
 
         //manajemen halaman
         Route::get('/halaman',[App\Http\Controllers\halamanController::class,'menu'])->name('menu.index');
+
+        //manajemen template website
+        Route::get('/template',[App\Http\Controllers\layoutController::class,'index'])->name('template.index');
     });
     //manajemen postingan
     Route::get('/post', [App\Http\Controllers\beritaController::class, 'index'])->name('post.index');

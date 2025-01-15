@@ -32,21 +32,21 @@
 </head>
 <body>
     <div id="app">
-        <main class="py-4 bg-dark min-vh-100" style="background-image: url(/img/background-app.jpeg); background-size:cover; background-attachment: fixed;">    
+        <main class="bg-light min-vh-100" style="background-image: url(); background-size:cover; background-attachment: fixed;">    
             {{-- banner --}}
-            <div class="container p-0">
-                <img src="https://lh3.googleusercontent.com/u/0/d/1RSLtvEv1UIqr10TJdJ4mQgIPBO7NqwQz=w2000-h338-iv2" class="w-100 mb-3">
+            <div class="container-fluid p-0">
+                <img src="https://lh3.googleusercontent.com/u/0/d/1RSLtvEv1UIqr10TJdJ4mQgIPBO7NqwQz=w2000-h338-iv2" class="w-100">
             </div>
             
-            <nav class="container navbar navbar-expand-md bg-success shadow-sm">
-                <div class="container">
+            <nav class="container-fluid navbar navbar-expand-md bg-success shadow-sm">
+                <div class="container-fluid">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
                     <div class="row collapse navbar-collapse mx-auto" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
-                        <ul class="navbar-nav text-white justify-content-evenly mb-3">
+                        <ul class="navbar-nav text-white justify-content-evenly">
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="{{url('/')}}">
                                     {{__("BERANDA")}}
@@ -95,23 +95,15 @@
                                     {{__("UNDUH")}}
                                 </a>
                             </li>
-                            @auth
-                                <li class="nav-item">
-                                    <a href="{{route('home')}}" class="nav-link">
-                                        <i class="bi-speedometer2 text-white"></i>
-                                    </a>
-                                </li>
-                            @endauth
-                        </ul>
-                        <hr>
-                        <ul class="navbar-nav justify-content-end">
-                            <form action="{{route('home')}}" method="post">
-                                @csrf
-                                <div class="input-group">
-                                    <input class="form-control" type="text" name="search" placeholder="Cari Berita...">
-                                    <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>
-                                </div>
-                            </form>
+                            <li class="nav-item">
+                                <form action="{{route('home')}}" method="post">
+                                    @csrf
+                                    <div class="input-group">
+                                        <input class="form-control" type="text" name="search" placeholder="Cari Berita...">
+                                        <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>
+                                    </div>
+                                </form>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -120,10 +112,57 @@
         </main>
 
         @include('layouts.footer')
-
-        <button id="scrollTopBtn" class="btn-lg btn btn-primary position-fixed bottom-0 end-0 m-3 me-5 d-none rounded-circle" onclick="scrollToTop()" title="Go to top">
-            <i class="bi-arrow-up"></i>
-        </button>          
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+            <!-- Chat Window -->
+            <div id="chatWindow" class="card shadow-lg border-0 d-none mb-5 rounded" style="width: 300px;position: absolute; bottom: 90px; right: 16px;">
+                <div class="card-header d-flex align-items-center bg-success text-white">
+                    <div class="me-3">
+                        <img src="/img/user.png" 
+                             alt="John Doe" 
+                             class="rounded-circle" 
+                             width="50" 
+                             height="50">
+                    </div>
+                    <div>
+                        <h5 class="mb-0">Admin Website</h5>
+                        <small>Online</small>
+                    </div>
+                    <button id="closeChatBtn" type="button" class="btn-close btn-close-white ms-auto" aria-label="Close"></button>
+                </div>
+                <div class="card-body" style="background-image: url(/img/wa-bg.jpg);background-size:cover">
+                    <div class="mb-3 text-muted small text-center">
+                        <span class="bg-light rounded px-2">{{Carbon\Carbon::now()->translatedFormat('H:i T')}}</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex align-items-start">
+                            <div class="bg-light rounded p-2">
+                                <p class="mb-0">Halo 👋</p>
+                                <p class="mb-0">Apakah ada yang bisa dibantu?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a href="https://wa.me/85812345678" class="btn btn-success d-inline-flex align-items-center gap-2 mb-3" >
+                            <i class="bi bi-whatsapp fs-4"></i>
+                            Chat on WhatsApp
+                            </a>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Scroll to Top Button -->
+            <button id="scrollTopBtn" class="btn-lg btn btn-primary d-none rounded-circle" 
+                    onclick="scrollToTop()" title="Go to top">
+                <i class="bi bi-arrow-up fs-4 text-white"></i>
+            </button>
+            
+            <!-- Toggle Chat Button -->
+            <button id="toggleChatBtn" class="btn-lg btn btn-success rounded-circle shadow-lg" style="position: absolute; bottom: 75px; right: 16px;">
+                <i class="bi bi-whatsapp fs-4 text-white"></i>
+            </button>
+        
+        </div>        
+          
         @if (session('sukses'))
         <div class="toast-container position-fixed bottom-0 p-3" >
             <div id="liveToast" class="toast show align-items-center bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -212,6 +251,21 @@
                 });
             });
         });
+        // Get elements
+        const toggleChatBtn = document.getElementById('toggleChatBtn');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+
+        // Toggle chat window visibility
+        toggleChatBtn.addEventListener('click', () => {
+            chatWindow.classList.toggle('d-none');
+        });
+
+        // Close chat window
+        closeChatBtn.addEventListener('click', () => {
+            chatWindow.classList.add('d-none');
+        });
+
         </script>
        
     </div>
