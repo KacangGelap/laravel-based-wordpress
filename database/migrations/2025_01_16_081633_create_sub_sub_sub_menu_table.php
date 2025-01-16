@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // // Create the sub_sub_sub_menus table
-        // Schema::create('sub_sub_sub_menus', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->foreignId('sub_sub_menu_id')->constrained('sub_sub_menus')->onDelete('cascade');
-        //     $table->string('sub_sub_sub_menu');
-        //     $table->enum('filetype', ['foto', 'video', 'pdf'])->nullable();
-        //     $table->longText('media')->charset('binary')->nullable();
-        //     $table->timestamps();
-        // });
+        // Create the sub_sub_sub_menus table
+        Schema::create('sub_sub_sub_menus', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('sub_sub_menu_id')->constrained('sub_sub_menus')->onDelete('cascade');
+            $table->string('sub_sub_sub_menu');
+            $table->enum('type', ['page','link']);
+            $table->enum('filetype', ['foto', 'video', 'pdf'])->nullable();
+            $table->longText('media')->charset('binary')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

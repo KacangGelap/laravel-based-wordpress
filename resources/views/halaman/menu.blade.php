@@ -36,7 +36,7 @@
                                     <td class="text-sm-start" style="font-size: 12px">{{ $item->menu }}</td>
                                     <td style="font-size: 12px">Jumlah Sub-Menu : {{ $item->subMenus->count() }}</td>
                                     <td class="" style="font-size: 12px">
-                                        <a href="{{ route('user.show', $item->id) }}" class="btn btn-secondary mx-2">
+                                        <a href="{{ route('submenu.index', ['menu' => $item->id]) }}" class="btn btn-secondary mx-2">
                                             <i class="bi-eye"></i> Lihat List Sub-Menu
                                         </a>
                                     </td>

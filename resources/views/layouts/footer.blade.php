@@ -53,7 +53,7 @@
             function updateTime() {
                 var now = new Date();
                 var formattedTime = now.toLocaleTimeString('en-US', { hour12: false });
-                currentTimeElement.textContent = "Sekarang Jam : " + formattedTime + " Wita";
+                currentTimeElement.textContent = "Sekarang Jam : " + formattedTime + " WITA";
             }
 
             // Update the time immediately

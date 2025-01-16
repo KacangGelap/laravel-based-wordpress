@@ -14,7 +14,7 @@ class halamanController extends Controller
     public function submenu($menu){
         try {
             $submenu = submenu::where('menu_id', $menu)->get();
-            return view('halaman.submenu')->with('submenu',$submenu);
+            return view('halaman.submenu')->with('submenu',$submenu)->with('menu', menu::findOrFail($menu));
         } catch (\Throwable $th) {
             //throw $th;
             return back()->with('gagal','halaman yang dicari tidak ditemukan.');
@@ -23,7 +23,7 @@ class halamanController extends Controller
     public function subsubmenu($submenu){
         try {        
             $subsubmenu = subsubmenu::where('sub_menu_id', $submenu)->get();
-            return view('halaman.subsubmenu')->with('subsubmenu', $subsubmenu);
+            return view('halaman.subsubmenu')->with('subsubmenu', $subsubmenu)->with('submenu', submenu::findOrFail($submenu));
         } catch (\Throwable $th) {
             // throw $th;
             return back()->with('gagal','halaman yang dicari tidak ditemukan');
@@ -32,7 +32,7 @@ class halamanController extends Controller
     public function subsubsubmenu($subsubmenu){
         try {
             $subsubsubmenu = subsubsubmenu::where('sub_sub_menu_id', $subsubmenu)->get();
-            return view('halaman.subsubsubmenu')->with('subsubsubmenu', $subsubsubmenu);
+            return view('halaman.subsubsubmenu')->with('subsubsubmenu', $subsubsubmenu)->with('subsubmenu', subsubmenu::findOrFail($subsubmenu));
         } catch (\Throwable $th) {
             // throw $th;
             return back()->with('gagal','halaman yang dicari tidak ditemukan');
@@ -79,10 +79,11 @@ class halamanController extends Controller
 
         $validate = $request->validate([
             'judul' => 'required|string|max:50',
-            'type' =>  'required|string|in:page,dropdown',
+            'type' =>  'required|string|in:page,dropdown,link',
             'filetype' =>  'required_if:type,page|string|in:foto,video,pdf',
             'media' =>  'required_if:type,page|mimes:pdf,png,jpeg,jpg|max:10000',
             'youtube' => ['required_if:type,page','string','max:50', new YoutubeUrl], //sanitasi
+            'link'  => 'required_if:type,link|string'
         ]);
         try {
             $submenu = new submenu();
@@ -97,6 +98,11 @@ class halamanController extends Controller
                 $submenu->filetype  = $validate['filetype'] ?? NULL;
                 $submenu->media     = $validate['media'] ?? NULL;
                 $submenu->youtube   = $videoId ?? NULL; 
+            } elseif ($validate['type'] == 'link') {
+                $submenu->menu_id = $menu_id;
+                $submenu->sub_menu = $validate['judul'];
+                $submenu->type = $validate['type'];
+                $submenu->link = $validate['link'];
             } else {
                 $submenu->menu_id   = $menu_id;
                 $submenu->sub_menu  = $validate['judul'];
@@ -129,10 +135,11 @@ class halamanController extends Controller
 
         $validate = $request->validate([
             'judul' => 'required|string|max:50',
-            'type' =>  'required|string|in:page,dropdown',
+            'type' =>  'required|string|in:page,dropdown,link',
             'filetype' =>  'required_if:type,page|string|in:foto,video,pdf',
             'media' =>  'required_if:type,page|mimes:pdf,png,jpeg,jpg|max:10000',
             'youtube' => ['required_if:type,page','string','max:50', new YoutubeUrl], //sanitasi
+            'link' => 'required_if:type,link|string'
         ]);
         try {
             $subsubmenu = new subsubmenu();
@@ -141,13 +148,18 @@ class halamanController extends Controller
                 if ($youtubeRule->passes('youtube', $request->youtube)) {
                     $videoId = $youtubeRule->videoId; // Extracted YouTube video ID
                 }
-                $subsubmenu->menu_id   = $sub_menu_id;
-                $subsubmenu->sub_menu  = $validate['judul'];
-                $subsubmenu->type      = $validate['type'];
-                $subsubmenu->filetype  = $validate['filetype'] ?? NULL;
-                $subsubmenu->media     = $validate['media'] ?? NULL;
-                $subsubmenu->youtube   = $videoId ?? NULL; 
-            } else {
+                $subsubmenu->sub_menu_id    = $sub_menu_id;
+                $subsubmenu->sub__sub_menu  = $validate['judul'];
+                $subsubmenu->type           = $validate['type'];
+                $subsubmenu->filetype       = $validate['filetype'] ?? NULL;
+                $subsubmenu->media          = $validate['media'] ?? NULL;
+                $subsubmenu->youtube        = $videoId ?? NULL; 
+            } elseif ($validate['type'] === 'link') {
+                $subsubmenu->sub_menu_id    = $sub_menu_id;
+                $subsubmenu->sub_sub_menu   = $validate['judul'];
+                //TODO
+            }
+            else {
                 $subsubmenu->menu_id   = $sub_menu_id;
                 $subsubmenu->sub_menu  = $validate['judul'];
                 $subsubmenu->type      = $validate['type'];
@@ -182,6 +194,7 @@ class halamanController extends Controller
             'filetype' =>  'required|string|in:foto,video,pdf',
             'media' =>  'required_unless:filetype,video|mimes:pdf,png,jpeg,jpg|max:10000',
             'youtube' => ['required_if:filetype,video','string','max:50', new YoutubeUrl], //sanitasi
+            'link' => 'required_if:type,link|string'
         ]);
         try {
             $subsubsubmenu = new subsubsubmenu();
@@ -203,4 +216,5 @@ class halamanController extends Controller
             return back()->with('gagal','gagal saat menambahkan data');
         }
     }
+
 }
