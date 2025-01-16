@@ -70,13 +70,30 @@
                                                     <a class="dropdown-item dropdown-toggle" href="#">
                                                         {{ $subMenu->sub_menu }}
                                                     </a>
-                                                    <ul class="dropdown-menu">
+                                                    <ul class="dropdown-menu" aria-labelledby="submenu{{ $menu->id }}">
                                                         @foreach ($subMenu->subSubMenus as $subSubMenu)
-                                                            <li>
-                                                                <a class="dropdown-item" href="{{ route('page.show', $subSubMenu->id) }}">
-                                                                    {{ $subSubMenu->sub_sub_menu }}
-                                                                </a>
-                                                            </li>
+                                                            @if ($subSubMenu->type === 'page')
+                                                                <li>
+                                                                    <a class="dropdown-item" href="{{ route('page.show', $subSubMenu->id) }}">
+                                                                        {{ $subSubMenu->sub_sub_menu }}
+                                                                    </a>
+                                                                </li>
+                                                            @elseif ($subSubMenu->type === 'dropdown')
+                                                                <li class="dropdown-submenu dropright">
+                                                                    <a class="dropdown-item dropdown-toggle" href="#">
+                                                                        {{ $subSubMenu->sub_sub_menu }}
+                                                                    </a>
+                                                                    <ul class="dropdown-menu">
+                                                                        @foreach ($subSubMenu->subSubSubMenus as $subSubSubMenu)
+                                                                            <li>
+                                                                                <a class="dropdown-item" href="{{ route('page.show', $subSubSubMenu->id) }}">
+                                                                                    {{ $subSubSubMenu->sub_sub_sub_menu }}
+                                                                                </a>
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </li>
+                                                            @endif
                                                         @endforeach
                                                     </ul>
                                                 </li>
@@ -192,80 +209,81 @@
         </div>
         @endif
         <script>
+            //livetoast
             const toastLiveExample = document.getElementById('liveToast');
             if (toastLiveExample) {
                 const toast = new bootstrap.Toast(toastLiveExample);
                 toast.show();
             }
+            //scrollontop
             window.onscroll = function () {
-            const scrollTopBtn = document.getElementById("scrollTopBtn");
-            if (document.documentElement.scrollTop > 100) {
-                scrollTopBtn.classList.remove("d-none");
-            } else {
-                scrollTopBtn.classList.add("d-none");
-            }
+                const scrollTopBtn = document.getElementById("scrollTopBtn");
+                if (document.documentElement.scrollTop > 100) {
+                    scrollTopBtn.classList.remove("d-none");
+                } else {
+                    scrollTopBtn.classList.add("d-none");
+                }
             };
-
             function scrollToTop() {
             window.scrollTo({
                 top: 0,
                 behavior: "smooth"
             });
             }
-
             //dropdowns
             document.addEventListener('DOMContentLoaded', function () {
-            let currentOpenSubmenu = null; // Variable to track the currently open submenu or subsubmenu
-            
-            // Handle submenu toggle logic
-            const subMenuItems = document.querySelectorAll('.dropdown-submenu .dropdown-toggle');
-            
-            subMenuItems.forEach(function (item) {
-                item.addEventListener('click', function (e) {
-                    e.preventDefault(); // Prevent default action
-                    
-                    const submenu = item.nextElementSibling; // Get the submenu
-                    const isCurrentlyOpen = submenu.classList.contains('show'); // Check if it's open
-                    
-                    // Close any currently open submenu or subsubmenu
-                    if (currentOpenSubmenu && currentOpenSubmenu !== submenu) {
-                        currentOpenSubmenu.classList.remove('show');
-                    }
-                    
-                    // Toggle the clicked submenu
-                    if (!isCurrentlyOpen) {
-                        submenu.classList.add('show'); // Open it
-                        currentOpenSubmenu = submenu; // Update the current open submenu
-                    } else {
-                        submenu.classList.remove('show'); // Close it
-                        currentOpenSubmenu = null; // Reset the open submenu
-                    }
+                let currentOpenSubmenu = null; // Variable to track the currently open submenu
+
+                // Handle submenu toggle logic
+                const subMenuItems = document.querySelectorAll('.dropdown-submenu .dropdown-toggle');
+
+                subMenuItems.forEach(function (item) {
+                    item.addEventListener('click', function (e) {
+                        e.preventDefault(); // Prevent default action
+
+                        const submenu = item.nextElementSibling; // Get the submenu
+                        const isCurrentlyOpen = submenu.classList.contains('show'); // Check if it's open
+
+                        // Close unrelated submenus
+                        document.querySelectorAll('.dropdown-menu.show').forEach(function (openMenu) {
+                            if (openMenu !== submenu && !openMenu.contains(item)) {
+                                openMenu.classList.remove('show');
+                            }
+                        });
+
+                        // Toggle the clicked submenu
+                        if (!isCurrentlyOpen) {
+                            submenu.classList.add('show'); // Open it
+                            currentOpenSubmenu = submenu; // Update the current open submenu
+                        } else {
+                            submenu.classList.remove('show'); // Close it
+                            currentOpenSubmenu = null; // Reset the open submenu
+                        }
+                    });
+                });
+
+                // Prevent clicking inside a submenu from closing the parent dropdown
+                const dropdownItems = document.querySelectorAll('.dropdown-menu');
+                dropdownItems.forEach(function (menu) {
+                    menu.addEventListener('click', function (e) {
+                        e.stopPropagation(); // Prevent propagation to parent menus
+                    });
                 });
             });
-            
-            // Prevent clicking inside a submenu from closing the parent dropdown
-            const dropdownItems = document.querySelectorAll('.dropdown-menu');
-            dropdownItems.forEach(function (menu) {
-                menu.addEventListener('click', function (e) {
-                    e.stopPropagation(); // Prevent propagation to parent menus
-                });
+            // chat visibility
+            const toggleChatBtn = document.getElementById('toggleChatBtn');
+            const chatWindow = document.getElementById('chatWindow');
+            const closeChatBtn = document.getElementById('closeChatBtn');
+
+            // Toggle chat window visibility
+            toggleChatBtn.addEventListener('click', () => {
+                chatWindow.classList.toggle('d-none');
             });
-        });
-        // Get elements
-        const toggleChatBtn = document.getElementById('toggleChatBtn');
-        const chatWindow = document.getElementById('chatWindow');
-        const closeChatBtn = document.getElementById('closeChatBtn');
 
-        // Toggle chat window visibility
-        toggleChatBtn.addEventListener('click', () => {
-            chatWindow.classList.toggle('d-none');
-        });
-
-        // Close chat window
-        closeChatBtn.addEventListener('click', () => {
-            chatWindow.classList.add('d-none');
-        });
-
+            // Close chat window
+            closeChatBtn.addEventListener('click', () => {
+                chatWindow.classList.add('d-none');
+            });
         </script>
        
     </div>

@@ -7,6 +7,18 @@
                 <h3>Halaman</h3>
             </div>
             <div class="card-body">
+                <form action="{{route('menu.store')}}" method="post">
+                    @csrf
+                    <div class="row justify-content-end">
+                        <div class="col-md-4">
+                            <input class="form-control" type="text" name="menu" required placeholder="Tambah Menu">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary">Tambah</button>
+                        </div>
+                    </div>
+                </form>
+                <hr class="mb-2">
                 <div class="table-responsive text-center">
                     <table class="table table-striped table-hover">
                         <thead>

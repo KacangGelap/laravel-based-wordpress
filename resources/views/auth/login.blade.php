@@ -15,7 +15,7 @@
                     <div class="d-flex py-4 justify-content-center">
                         <img src="/img/bontang.png" height="100px" class="">
                     </div>
-                    <h6 class="fw-bold text-center">Selamat Datang di Website {{config('app.name', 'Undefined')}}</h6>
+                    <h6 class="fw-bold text-center">Selamat Datang di Website<br>{{config('app.name', 'Undefined')}}</h6>
                     <hr class="mb-5">
                     <form method="POST" action="{{ route('masuk') }}">
                         @csrf

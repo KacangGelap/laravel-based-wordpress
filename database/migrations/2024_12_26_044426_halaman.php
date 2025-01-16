@@ -26,6 +26,7 @@ return new class extends Migration
         //     $table->enum('type', ['page', 'dropdown']);
         //     $table->enum('filetype', ['foto', 'video', 'pdf'])->nullable();
         //     $table->longText('media')->charset('binary')->nullable();
+        //     $table->string('youtube');
         //     $table->timestamps();
         // });
 
@@ -34,8 +35,10 @@ return new class extends Migration
         //     $table->id();
         //     $table->foreignId('sub_menu_id')->constrained('sub_menus')->onDelete('cascade');
         //     $table->string('sub_sub_menu');
+        //     $table->enum('type', ['page', 'dropdown']);
         //     $table->enum('filetype', ['foto', 'video', 'pdf'])->nullable();
         //     $table->longText('media')->charset('binary')->nullable();
+        //     $table->string('youtube');
         //     $table->timestamps();
         // });
         // Schema::create('halaman',function (Blueprint $table) {
@@ -43,6 +46,7 @@ return new class extends Migration
         //     $table->foreignId('menu_id')->constrained('menus')->onDelete('cascade');
         //     $table->foreignId('sub_menu_id')->constrained('sub_menus')->onDelete('cascade');
         //     $table->foreignId('sub_sub_menu_id')->constrained('sub_sub_menus')->onDelete('cascade')->nullable();
+        //     $table->foreignId('sub_sub_sub_menu_id')->constrained('sub_sub_sub_menus')->onDelete('cascade')->nullable();
         //     $table->timestamps();
         // });
     }
