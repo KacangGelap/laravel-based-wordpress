@@ -3,9 +3,75 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\menu, App\Models\submenu, App\Models\subsubmenu, App\Models\subsubsubmenu;
+use App\Models\menu, App\Models\submenu, App\Models\subsubmenu, App\Models\subsubsubmenu, App\Models\halaman;
+use App\Rules\YoutubeUrl, App\Rules\GoogleMapsUrl, App\Rules\SafeUrl, App\Rules\SocialMediaUrl;
+use App\Helpers\SanitizeHelper;
 class halamanController extends Controller
 {
+    /**
+     *  CREATE PROVIDER
+     * NOTICE:
+     * 0 : FILE
+     * 1 : GAMBAR
+     * 2 : TEKS
+     * 3 : id.pdupt WEBSITE
+     * 4 : LINK REDIRECT KE SITUS LAIN
+     * 5 : DROPDOWN
+     * 6 : LINK YOUTUBE
+     */
+    public function create_provider(int $id){
+        switch ($id) {
+            case '0':
+                session([
+                    'type' => 'page',
+                    'filetype' => 'pdf'
+                ]);
+                return view('halaman.file');
+                break;
+            case '1':
+                session([
+                    'type' => 'page',
+                    'filetype' => 'foto'
+                ]);
+                return view('halaman.gambar');
+                break;
+            case '2':
+                session([
+                    'type' => 'page',
+                ]);
+                return view('halaman.teks');
+                break;
+            case '3':
+                session([
+                    'type' => 'id.pdupt',
+                ]);
+                return view('halaman.id.pdupt');
+                break;
+            case '4':
+                session([
+                    'type' => 'link',
+                ]);
+                return view('halaman.link');
+                break;
+            case '5':
+                session([
+                    'type' => 'dropdown',
+                ]);
+                return view('halaman.dropdown');
+                break;
+            case '6':
+                session([
+                    'type' => 'page',
+                    'filetype' => 'video'
+                ]);
+                return view('halaman.youtube');
+                break;
+            default:
+                return redirect('home')->with('gagal', 'terjadi kesalahan');
+                break;
+        }
+    }
+
     //index untuk menu, sub-menu, dan sub-sub-menu
     public function menu(){
         $menu = menu::with('subMenus')->get();
@@ -39,7 +105,7 @@ class halamanController extends Controller
         }
     }
 
-    //tambah menu, sub-menu dan sub-sub-menu
+    //tambah menu, sub-menu ,sub-sub-menu dan sub-sub-sub-menu
     public function store_menu(Request $request){
         $validate = $request->validate([
             'menu' => 'required|string|max:15'
@@ -47,7 +113,7 @@ class halamanController extends Controller
         try {
             if (menu::all()->count() <= 6) {
                 $menu = new menu();
-                $menu->menu = $validate['menu'];
+                $menu->menu = strtoupper($validate['menu']);
                 $menu->save();  
                 return redirect()->route('menu.index')->with('sukses', 'menu berhasil ditambah');
             } else {
@@ -58,163 +124,236 @@ class halamanController extends Controller
         }
         
     }
-    public function create_submenu($menu){
+    public function create_submenu(Request $request, $menu){
         try {
+            $validate = $request->validate([
+                'tambah' => 'required|numeric|min:0|max:6'
+            ]);
             session([
                 'menu_id' => $menu //buat dipanggil saat menambahkan menu (jadi gaperlu dibikin hidden input)
             ]);
-            return view('halaman.tambah_submenu');
+            return $this->create_provider($validate['tambah']);
         } catch (\Throwable $th) {
             //throw $th;
             return back()->with('gagal','gagal menambahkan sub-menu karena id menu tidak sesuai');
         }   
     }
-
-    public function store_submenu(Request $request){
-        $menu_id = session('menu_id');
-
-        if (!$menu_id) {
-            return redirect()->route('menu.index')->with('gagal', 'Menu ID tidak ditemukan, ulangi proses sebelumnya.');
-        }
-
-        $validate = $request->validate([
-            'judul' => 'required|string|max:50',
-            'type' =>  'required|string|in:page,dropdown,link',
-            'filetype' =>  'required_if:type,page|string|in:foto,video,pdf',
-            'media' =>  'required_if:type,page|mimes:pdf,png,jpeg,jpg|max:10000',
-            'youtube' => ['required_if:type,page','string','max:50', new YoutubeUrl], //sanitasi
-            'link'  => 'required_if:type,link|string'
-        ]);
+    public function create_subsubmenu(Request $request, $submenu){
         try {
-            $submenu = new submenu();
-            if ($validate['type'] === 'page') {
-                $youtubeRule = new YoutubeUrl();
-                if ($youtubeRule->passes('youtube', $request->youtube)) {
-                    $videoId = $youtubeRule->videoId; // Extracted YouTube video ID
-                }
-                $submenu->menu_id   = $menu_id;
-                $submenu->sub_menu  = $validate['judul'];
-                $submenu->type      = $validate['type'];
-                $submenu->filetype  = $validate['filetype'] ?? NULL;
-                $submenu->media     = $validate['media'] ?? NULL;
-                $submenu->youtube   = $videoId ?? NULL; 
-            } elseif ($validate['type'] == 'link') {
-                $submenu->menu_id = $menu_id;
-                $submenu->sub_menu = $validate['judul'];
-                $submenu->type = $validate['type'];
-                $submenu->link = $validate['link'];
-            } else {
-                $submenu->menu_id   = $menu_id;
-                $submenu->sub_menu  = $validate['judul'];
-                $submenu->type      = $validate['type'];
-            }
-            dd($submenu);
-            // $submenu->save();
-            return redirect()->route('submenu.index', $menu_id)->with('sukses','data berhasil ditambah');
-        } catch (\Throwable $th) {
-            return back()->with('gagal','gagal saat menambahkan data');
-        }
-    }
-    public function create_subsubmenu($menu, $submenu){
-        try {
+            $validate = $request->validate([
+                'tambah' => 'required|numeric|min:0|max:6'
+            ]);
             session([
                 'sub_menu_id' => $submenu
             ]);
-            return view('halaman.tambah_subsubmenu');  
+            return $this->create_provider($validate['tambah']);
         } catch (\Throwable $th) {
             //throw $th;
             return back()->with('gagal','gagal menambahkan sub-sub-menu karena id menu tidak sesuai');
         }   
     }
-    public function store_subsubmenu(Request $request, $menu, $submenu){
-        $sub_menu_id = session('sub_menu_id');
-
-        if (!$sub_menu_id) {
-            return redirect()->route('menu.index')->with('gagal', 'Sub-menu ID tidak ditemukan, ulangi proses sebelumnya.');
-        }
-
-        $validate = $request->validate([
-            'judul' => 'required|string|max:50',
-            'type' =>  'required|string|in:page,dropdown,link',
-            'filetype' =>  'required_if:type,page|string|in:foto,video,pdf',
-            'media' =>  'required_if:type,page|mimes:pdf,png,jpeg,jpg|max:10000',
-            'youtube' => ['required_if:type,page','string','max:50', new YoutubeUrl], //sanitasi
-            'link' => 'required_if:type,link|string'
-        ]);
+    public function create_subsubsubmenu(Request $request, $subsubmenu){
         try {
-            $subsubmenu = new subsubmenu();
-            if ($validate['type'] === 'page') {
-                $youtubeRule = new YoutubeUrl();
-                if ($youtubeRule->passes('youtube', $request->youtube)) {
-                    $videoId = $youtubeRule->videoId; // Extracted YouTube video ID
-                }
-                $subsubmenu->sub_menu_id    = $sub_menu_id;
-                $subsubmenu->sub__sub_menu  = $validate['judul'];
-                $subsubmenu->type           = $validate['type'];
-                $subsubmenu->filetype       = $validate['filetype'] ?? NULL;
-                $subsubmenu->media          = $validate['media'] ?? NULL;
-                $subsubmenu->youtube        = $videoId ?? NULL; 
-            } elseif ($validate['type'] === 'link') {
-                $subsubmenu->sub_menu_id    = $sub_menu_id;
-                $subsubmenu->sub_sub_menu   = $validate['judul'];
-                //TODO
-            }
-            else {
-                $subsubmenu->menu_id   = $sub_menu_id;
-                $subsubmenu->sub_menu  = $validate['judul'];
-                $subsubmenu->type      = $validate['type'];
-            }
-            dd($subsubmenu);
-            // $subsubmenu->save();
-            return redirect()->route('subsubmenu.index', $sub_menu_id)->with('sukses','data berhasil ditambah');
-        } catch (\Throwable $th) {
-            return back()->with('gagal','gagal saat menambahkan data');
-        }
-    }
-    public function create_subsubsubmenu($submenu, $subsubmenu){
-        try {
+            $validate = $request->validate([
+                'tambah' => 'required|numeric|min:0|max:6'
+            ]);
             session([
                 'sub_sub_menu_id' => $subsubmenu
             ]);
-            return view('halaman.tambah_subsubsubmenu');  
+            return $this->create_provider($validate['tambah']);
         } catch (\Throwable $th) {
             //throw $th;
             return back()->with('gagal','gagal menambahkan sub-sub-menu karena id menu tidak sesuai');
         }   
     }
-    public function store_subsubsubmenu(Request $request, $submenu, $subsubmenu){
-        $sub_sub_menu_id = session('sub_sub_menu_id');
+    public function store(Request $request){
+    // Prepare all attributes
+        //route-based store systems (submenu ... sub-n-menu)
+        //ambil id dan tentukan identifier
+        if(\Route::current()->getName() === 'submenu.store'){
+            $menu_id = session('menu_id');
+            if (!$menu_id) {
+                return redirect()->route('menu.index')->with('gagal', 'Menu ID tidak ditemukan, ulangi proses sebelumnya.');
+            }
+            $identifier = menu::find($menu_id)->menu;
+            if(session('type') == 'id.pdupt'){
+                $IdExists = submenu::where('menu_id', $menu_id)->where('type', 'id.pdupt')->exists();
+            }
+            
+        }
+        elseif(\Route::current()->getName() === 'subsubmenu.store'){
+            $sub_menu_id = session('sub_menu_id');
+            if (!$sub_menu_id) {
+                return redirect()->route('menu.index')->with('gagal', 'Sub-menu ID tidak ditemukan, ulangi proses sebelumnya.');
+            }
+            $identifier = submenu::find($sub_menu_id)->menu->menu;
+        }
+        elseif(\Route::current()->getName() === 'subsubsubmenu.store'){
+            $sub_sub_menu_id = session('sub_sub_menu_id');
+            if (!$sub_sub_menu_id) {
+                return redirect()->route('menu.index')->with('gagal', 'Sub-menu ID tidak ditemukan, ulangi proses sebelumnya.');
+            }
+            $identifier = subsubmenu::find($sub_sub_menu_id)->submenu->menu->menu;
+        }
+        //ambil atribut dari session sebelumnya
+        $request->merge([
+            'type' => session('type'),
+            'filetype' => session('filetype'),
+        ]);
 
-        if (!$sub_sub_menu_id) {
-            return redirect()->route('menu.index')->with('gagal', 'Sub-menu ID tidak ditemukan, ulangi proses sebelumnya.');
+        // Define base validation rules
+        if(\Route::current()->getName() === 'subsubsubmenu.store'){
+            $rules = [
+                'judul' => 'required|string|max:50',
+                'type' => 'required|string|in:page,link,id.pdupt',
+            ];
+    
+        }else{
+            $rules = [
+                'judul' => 'required|string|max:50',
+                'type' => 'required|string|in:page,dropdown,link,id.pdupt',
+            ];
+    
+        }
+    // Additional rules for 'page' type
+        if ($request->input('type') == 'page') {
+            if ($request->has('filetype')) {
+                $rules['filetype'] = 'required|string|in:foto,video,pdf';
+                $rules['image'] = 'required_if:filetype,foto|image|mimes:png,jpeg,jpg|max:3000';
+                $rules['pdf'] = 'required_if:filetype,pdf|mimes:pdf|max:10000';
+                $rules['yt_id'] = ['required_if:filetype,video', 'string', 'max:50', new YoutubeUrl]; // Sanitized YouTube ID
+            } else {
+                $rules['text'] = 'required_unless:filetype,null|string';
+            }
         }
 
-        $validate = $request->validate([
-            'judul' => 'required|string|max:50',
-            'filetype' =>  'required|string|in:foto,video,pdf',
-            'media' =>  'required_unless:filetype,video|mimes:pdf,png,jpeg,jpg|max:10000',
-            'youtube' => ['required_if:filetype,video','string','max:50', new YoutubeUrl], //sanitasi
-            'link' => 'required_if:type,link|string'
-        ]);
-        try {
-            $subsubsubmenu = new subsubsubmenu();
-            $youtubeRule = new YoutubeUrl();
-            if ($youtubeRule->passes('youtube', $request->youtube)) {
-                $videoId = $youtubeRule->videoId; // Extracted YouTube video ID
-            }
-            $subsubmenu->menu_id   = $sub_menu_id;
-            $subsubmenu->sub_menu  = $validate['judul'];
-            $subsubmenu->type      = $validate['type'];
-            $subsubmenu->filetype  = $validate['filetype'] ?? NULL;
-            $subsubmenu->media     = $validate['media'] ?? NULL;
-            $subsubmenu->youtube   = $videoId ?? NULL; 
+        // Additional rules for 'link' type
+        elseif ($request->input('type') == 'link') {
+            $rules['link'] = ['required_if:type,link', 'string', new SafeUrl]; // Sanitized URL
+        }
 
-            dd($subsubmenu);
-            // $subsubmenu->save();
-            return redirect()->route('subsubmenu.index', $sub_menu_id)->with('sukses','data berhasil ditambah');
+        // Additional rules for 'id.pdupt' type
+        elseif ($request->input('type') == 'id.pdupt') {
+            $rules['alamat'] = 'nullable|string|max:100';
+            $rules['telp'] = 'nullable|numeric|digits_between:11,13';
+            $rules['email'] = 'nullable|email';
+            $rules['website'] = ['nullable', 'string', new SafeUrl]; // Sanitized website URL
+            $rules['instagram'] = ['nullable', 'string', new SocialMediaUrl]; // Validate Instagram URL
+            $rules['facebook'] = ['nullable', 'string', new SocialMediaUrl]; // Validate Facebook URL
+            $rules['youtube'] = ['nullable', 'string', new SocialMediaUrl]; // Validate YouTube URL
+            $rules['tiktok'] = ['nullable', 'string', new SocialMediaUrl]; // Validate TikTok URL
+            $rules['x'] = ['nullable', 'string', new SocialMediaUrl]; // Validate X (Twitter) URL
+            $rules['maps']  = ['nullable', 'string', new GoogleMapsUrl]; // Validate GMaps URL
+        }
+        // Validate the request
+        $validatedData = $request->validate($rules);
+        // Additional processing if needed
+        if ($request->input('type') == 'id.pdupt') {
+           // Extract usernames after validation
+            $validatedData['instagram_username'] = (new SocialMediaUrl('instagram'))->extractUsername($validatedData['instagram'] ?? null);
+            $validatedData['facebook_username'] = (new SocialMediaUrl('facebook'))->extractUsername($validatedData['facebook'] ?? null);
+            $validatedData['tiktok_username'] = (new SocialMediaUrl('tiktok'))->extractUsername($validatedData['tiktok'] ?? null);
+            $validatedData['x_username'] = (new SocialMediaUrl('x'))->extractUsername($validatedData['x'] ?? null);
+            $validatedData['youtube_username'] = (new SocialMediaUrl('youtube'))->extractUsername($validatedData['youtube'] ?? null);
+            // For YouTube, handle video separately
+            $youtubeRule = new YoutubeUrl();
+            if ($youtubeRule->passes('yt_id', $validatedData['yt_id'] ?? null)) {
+                $validatedData['yt_id'] = $youtubeRule->videoId ?? null;
+            }
+            // Also For the maps
+            $sanitizedIframe = SanitizeHelper::sanitizeIframe($validatedData['maps']);
+            // Check if the iframe is empty after sanitization
+            if (empty($sanitizedIframe)) {
+                return back()->withErrors('Invalid iframe content. Please provide a valid Google Maps embed iframe.');
+            }
+        }
+
+        // dd($identifier);
+        try {
+            //get the id based on routes
+            $data = \Route::current()->getName() === 'submenu.store' ? new submenu() : (\Route::current()->getName() === 'subsubmenu.store' ? new subsubmenu() : new subsubsubmenu());
+            \Route::current()->getName() === 'submenu.store' ? $data->menu_id = $menu_id : (\Route::current()->getName() === 'subsubmenu.store' ? $data->sub_menu_id = $sub_menu_id : $data->sub_sub_menu_id = $sub_sub_menu_id);
+            \Route::current()->getName() === 'submenu.store' ? $data->sub_menu = $validatedData['judul'] : (\Route::current()->getName() === 'subsubmenu.store' ? $data->sub_sub_menu = $validatedData['judul'] : $data->sub_sub_sub_menu = $validatedData['judul']);
+            $data->type = $validatedData['type'];
+            if($validatedData['type'] == 'page'){
+                if ($request->has('filetype')) {
+                    $data->filetype = $validatedData['filetype'];
+                    if($validatedData['filetype'] == 'pdf'){
+                        $data->media = file_get_contents($validatedData['pdf']->getRealPath());
+                    }elseif ($validatedData['filetype'] == 'foto') {
+                        $data->media = file_get_contents($validatedData['image']->getRealPath());
+                    }elseif($validatedData['filetype'] == 'video'){
+                        $data->yt_id = $validatedData['yt_id'];
+                    }
+                } else {
+                    $data->text = $validatedData['text'];
+                }
+            }
+            // Additional rules for 'link' type
+            elseif ($validatedData['type'] == 'link') {
+                //cek apakah url adalah video youtube
+                $isYt = new YoutubeUrl();
+                if($isYt->passes('link', $validatedData['link'] ?? null)){
+                    $data->filetype = 'video';
+                    $data->link = $isYt->videoId ?? null; 
+                }else{
+                    $data->link = $validatedData['link'];
+                }
+                
+            }
+
+            // Additional rules for 'id.pdupt' type
+            // Also check if the current menu is actually have value 'tentang'
+            elseif ($validatedData['type'] == 'id.pdupt' && strcasecmp($identifier, "tentang") == 0) {
+                $isExists = submenu::where('type', 'id.pdupt')
+                                ->whereHas('menu', function($query) use ($identifier) {
+                                    $query->where('menu', $identifier);
+                                })->count()
+                            + subsubmenu::where('type', 'id.pdupt')
+                                ->whereHas('submenu.menu', function($query) use ($identifier) {
+                                    $query->where('menu', $identifier); 
+                                })->count()
+                            + subsubsubmenu::where('type', 'id.pdupt')
+                                ->whereHas('subsubmenu.submenu.menu', function($query) use ($identifier) {
+                                    $query->where('menu', $identifier);
+                                })->count();
+                if($isExists === 0){
+                    $data['alamat'] = $validatedData['alamat'];
+                    $data['telp'] = $validatedData['telp'];
+                    $data['email'] = $validatedData['email'];
+                    $data['website'] = $validatedData['website'];
+                    $data['instagram'] = $validatedData['instagram_username'];
+                    $data['facebook'] = $validatedData['facebook_username'];
+                    $data['youtube'] = $validatedData['youtube_channel'];
+                    $data['tiktok'] = $validatedData['tiktok_username'];
+                    $data['x'] = $validatedData['x_username'];
+                    $data['maps']  = $sanitizedIframe;
+                }
+            }
+            // dd($data); 
+            $data->save();
+            
+            //buat id halamannya agar bisa dipanggil
+            if($validatedData['type'] !== 'dropdown' ||$validatedData['type'] !== 'link'){
+                $halaman = new halaman();
+                $halaman->menu_id = \Route::current()->getName() == 'submenu.store' ? $menu_id : (\Route::current()->getName() === 'subsubmenu.store' ? $data->submenu->menu->id : $data->subsubmenu->submenu->menu->id);
+                $halaman->sub_menu_id = \Route::current()->getName() == 'submenu.store' ? $data->id  : (\Route::current()->getName() === 'subsubmenu.store' ? $data->submenu->id : $data->subsubmenu->submenu->menu->id);
+                $halaman->sub_sub_menu_id = \Route::current()->getName() == 'subsubmenu.store' ? $data->id : (\Route::current()->getName() === 'subsubsubmenu.store' ? $data->subsubmenu->id : null);
+                $halaman->sub_sub_sub_menu_id = \Route::current()->getName() == 'subsubsubmenu.store' ? $data->id : null;
+                $halaman->save();
+            }
+            if(\Route::current()->getName() === 'submenu.store'){
+                return redirect()->route('submenu.index', $menu_id)->with('sukses', 'submenu berhasil dibuat');
+            }
+            elseif(\Route::current()->getName() === 'subsubmenu.store'){
+                return redirect()->route('subsubmenu.index', $sub_menu_id)->with('sukses', 'subsubmenu berhasil dibuat');
+            }
+            elseif(\Route::current()->getName() === 'subsubsubmenu.store'){
+                return redirect()->route('subsubsubmenu.index', $sub_sub_menu_id)->with('sukses', 'subsubsubmenu berhasil dibuat');
+            }
         } catch (\Throwable $th) {
+            throw $th;
             return back()->with('gagal','gagal saat menambahkan data');
         }
     }
-
 }

@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Helpers;
+
+use HTMLPurifier;
+use HTMLPurifier_Config;
+
+class SanitizeHelper
+{
+    public static function sanitizeIframe(string $iframe): string
+    {
+        $config = HTMLPurifier_Config::createDefault();
+
+        // Allowed HTML elements and attributes
+        $config->set('HTML.Allowed', 'iframe[src|width|height|style|allowfullscreen|loading|referrerpolicy]');
+        $config->set('URI.SafeIframeRegexp', '%^https://www\.google\.com/maps/embed\?pb=%'); // Allow only Google Maps embed URLs
+
+        // Instantiate HTMLPurifier with the configuration
+        $purifier = new HTMLPurifier($config);
+
+        return $purifier->purify($iframe);
+    }
+}

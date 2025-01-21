@@ -21,18 +21,8 @@ class UserController extends Controller
             'name'      =>  'required|string|max:25',
             'no_hp'     =>  'nullable|numeric|digits_between:11,13',
             'username'  =>  'required|string|unique:users|max:30',
-            'opd'       =>  'required|string|in:Diskominfo,
-                            Korpri,Pkk,Setda,Setwan,Itda,DIsdikbud,Dinkes,Dpupr,
-                            Dpkpp,Dpkp,Dspm,Dpmptsp,Disnaker,Dlh,Disdukcapil,
-                            Dishub,Disporapar,Dkukmp,Dpk,Dkppp,Dppkb,Satpol PP,
-                            Bkpsdm,Bapperinda,Bapenda,Bpkad,Bakesbangpol,Bpbd,
-                            Rsud,Ukpbj,Puskesmas Bontang Selatan 1,Puskesmas Bontang Selatan 2,
-                            Puskesmas Bontang Utara 1,Puskesmas Bontang Utara 2,Puskesmas Bontang Barat,
-                            Puskesmas Bontang Lestari,Laboratorium Kesehatan,Kec-Bontang Barat,Kec-Bontang Utara,
-                            Kec-Bontang Selatan,Kel-Kanaan,Kel-Belimbing,Kel-Gunung Telihan,Kel-Bontang Baru,
-                            Kel-Api-Api,Kel-Gunung Elai,Kel-Guntung,Kel-Loktuan,Kel-Tanjung Laut,Kel-Tanjung Laut Indah,Kel-Berbas Tengah,
-                            Kel-Berbas Pantai,Kel-Satimpo,Kel-Bontang Lestari',
-            'password'  =>  'required|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.])[A-Za-z\d@$!%*?&_\-.]+$/'
+            'opd'       =>  'required|string|in:Diskominfo,Korpri,Pkk,Setda,Setwan,Itda,DIsdikbud,Dinkes,Dpupr,Dpkpp,Dpkp,Dspm,Dpmptsp,Disnaker,Dlh,Disdukcapil,Dishub,Disporapar,Dkukmp,Dpk,Dkppp,Dppkb,Satpol PP,Bkpsdm,Bapperinda,Bapenda,Bpkad,Bakesbangpol,Bpbd,Rsud,Ukpbj,Puskesmas Bontang Selatan 1,Puskesmas Bontang Selatan 2,Puskesmas Bontang Utara 1,Puskesmas Bontang Utara 2,Puskesmas Bontang Barat,Puskesmas Bontang Lestari,Laboratorium Kesehatan,Kec-Bontang Barat,Kec-Bontang Utara,Kec-Bontang Selatan,Kel-Kanaan,Kel-Belimbing,Kel-Gunung Telihan,Kel-Bontang Baru,Kel-Api-Api,Kel-Gunung Elai,Kel-Guntung,Kel-Loktuan,Kel-Tanjung Laut,Kel-Tanjung Laut Indah,Kel-Berbas Tengah,Kel-Berbas Pantai,Kel-Satimpo,Kel-Bontang Lestari',
+            'password' => 'required|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-+.])[A-Za-z\d@$!%*?&_\-+.]+$/'
         ],[
             'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (@, $, !, %, *, ?, &, _, -, .).',
         ]);
@@ -63,19 +53,9 @@ class UserController extends Controller
         $rules = [
             'profile'   =>  'nullable|image|mimes:jpg,png|max:2000',
             'no_hp'     =>  'nullable|numeric|digits_between:11,13',
-            'opd'       =>  'nullable|string|in:Diskominfo,
-                            Korpri,Pkk,Setda,Setwan,Itda,DIsdikbud,Dinkes,Dpupr,
-                            Dpkpp,Dpkp,Dspm,Dpmptsp,Disnaker,Dlh,Disdukcapil,
-                            Dishub,Disporapar,Dkukmp,Dpk,Dkppp,Dppkb,Satpol PP,
-                            Bkpsdm,Bapperinda,Bapenda,Bpkad,Bakesbangpol,Bpbd,
-                            Rsud,Ukpbj,Puskesmas Bontang Selatan 1,Puskesmas Bontang Selatan 2,
-                            Puskesmas Bontang Utara 1,Puskesmas Bontang Utara 2,Puskesmas Bontang Barat,
-                            Puskesmas Bontang Lestari,Laboratorium Kesehatan,Kec-Bontang Barat,Kec-Bontang Utara,
-                            Kec-Bontang Selatan,Kel-Kanaan,Kel-Belimbing,Kel-Gunung Telihan,Kel-Bontang Baru,
-                            Kel-Api-Api,Kel-Gunung Elai,Kel-Guntung,Kel-Loktuan,Kel-Tanjung Laut,Kel-Tanjung Laut Indah,Kel-Berbas Tengah,
-                            Kel-Berbas Pantai,Kel-Satimpo,Kel-Bontang Lestari',
+            'opd'       =>  'nullable|string|in:Diskominfo,Korpri,Pkk,Setda,Setwan,Itda,DIsdikbud,Dinkes,Dpupr,Dpkpp,Dpkp,Dspm,Dpmptsp,Disnaker,Dlh,Disdukcapil,Dishub,Disporapar,Dkukmp,Dpk,Dkppp,Dppkb,Satpol PP,Bkpsdm,Bapperinda,Bapenda,Bpkad,Bakesbangpol,Bpbd,Rsud,Ukpbj,Puskesmas Bontang Selatan 1,Puskesmas Bontang Selatan 2,Puskesmas Bontang Utara 1,Puskesmas Bontang Utara 2,Puskesmas Bontang Barat,Puskesmas Bontang Lestari,Laboratorium Kesehatan,Kec-Bontang Barat,Kec-Bontang Utara,Kec-Bontang Selatan,Kel-Kanaan,Kel-Belimbing,Kel-Gunung Telihan,Kel-Bontang Baru,Kel-Api-Api,Kel-Gunung Elai,Kel-Guntung,Kel-Loktuan,Kel-Tanjung Laut,Kel-Tanjung Laut Indah,Kel-Berbas Tengah,Kel-Berbas Pantai,Kel-Satimpo,Kel-Bontang Lestari',
             'name'      =>  'string|max:25',
-            'password'  =>  'nullable|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.])[A-Za-z\d@$!%*?&_\-.]+$/',
+            'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-+.])[A-Za-z\d@$!%*?&_\-+.]+$/'
         ];
 
         $messages = [
@@ -136,12 +116,13 @@ class UserController extends Controller
 
     public function update_profile(Request $request, string $id){
         $user = User::findOrFail($id);
+        // dd($request);
         $isUsernameChanged = $user->username !== $request->input('username');
         $rules = [
             'profile'  => 'nullable|image|mimes:jpg,png|max:2000',
             'no_hp'    => 'nullable|numeric|digits_between:11,13',
             'name'     => 'string|max:25',
-            'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-.])[A-Za-z\d@$!%*?&_\-.]+$/',
+            'password' => 'required|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-+.])[A-Za-z\d@$!%*?&_\-+.]+$/'
         ];
 
         $messages = [
@@ -154,17 +135,7 @@ class UserController extends Controller
             $rules['username'] = 'string';
         }
         if(Auth::user()->role == 'admin'){
-            $rules['opd'] = 'nullable|string|in:Diskominfo,
-                            Korpri,Pkk,Setda,Setwan,Itda,DIsdikbud,Dinkes,Dpupr,
-                            Dpkpp,Dpkp,Dspm,Dpmptsp,Disnaker,Dlh,Disdukcapil,
-                            Dishub,Disporapar,Dkukmp,Dpk,Dkppp,Dppkb,Satpol PP,
-                            Bkpsdm,Bapperinda,Bapenda,Bpkad,Bakesbangpol,Bpbd,
-                            Rsud,Ukpbj,Puskesmas Bontang Selatan 1,Puskesmas Bontang Selatan 2,
-                            Puskesmas Bontang Utara 1,Puskesmas Bontang Utara 2,Puskesmas Bontang Barat,
-                            Puskesmas Bontang Lestari,Laboratorium Kesehatan,Kec-Bontang Barat,Kec-Bontang Utara,
-                            Kec-Bontang Selatan,Kel-Kanaan,Kel-Belimbing,Kel-Gunung Telihan,Kel-Bontang Baru,
-                            Kel-Api-Api,Kel-Gunung Elai,Kel-Guntung,Kel-Loktuan,Kel-Tanjung Laut,Kel-Tanjung Laut Indah,Kel-Berbas Tengah,
-                            Kel-Berbas Pantai,Kel-Satimpo,Kel-Bontang Lestari';
+            $rules['opd'] = 'nullable|string|in:Diskominfo,Korpri,Pkk,Setda,Setwan,Itda,DIsdikbud,Dinkes,Dpupr,Dpkpp,Dpkp,Dspm,Dpmptsp,Disnaker,Dlh,Disdukcapil,Dishub,Disporapar,Dkukmp,Dpk,Dkppp,Dppkb,Satpol PP,Bkpsdm,Bapperinda,Bapenda,Bpkad,Bakesbangpol,Bpbd,Rsud,Ukpbj,Puskesmas Bontang Selatan 1,Puskesmas Bontang Selatan 2,Puskesmas Bontang Utara 1,Puskesmas Bontang Utara 2,Puskesmas Bontang Barat,Puskesmas Bontang Lestari,Laboratorium Kesehatan,Kec-Bontang Barat,Kec-Bontang Utara,Kec-Bontang Selatan,Kel-Kanaan,Kel-Belimbing,Kel-Gunung Telihan,Kel-Bontang Baru,Kel-Api-Api,Kel-Gunung Elai,Kel-Guntung,Kel-Loktuan,Kel-Tanjung Laut,Kel-Tanjung Laut Indah,Kel-Berbas Tengah,Kel-Berbas Pantai,Kel-Satimpo,Kel-Bontang Lestari';
         }
         // Validate the request
         $request->validate($rules, $messages);
@@ -190,7 +161,8 @@ class UserController extends Controller
             ]);
             // Checks whether admin or not to change the opd
             if(Auth::user()->role == 'admin'){
-                $user->opd = $request->input('opd')?? $user->opd;
+                $user->opd = $request->input('opd') ?? $user->opd;
+                $user->save();
             }
             // dd($user);
             return redirect()->route('user.profile', $user->id)->with('sukses', 'Data berhasil diubah');

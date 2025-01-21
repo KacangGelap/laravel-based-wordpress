@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="carousel-item rounded" data-bs-interval="5000">
-                        <img src="/img/background-app.jpeg" class="d-block w-100 rounded" alt="..." style="height: 350px; object-fit: cover;">
+                        <img src="/img/112.jpeg" class="d-block w-100 rounded" alt="..." style="height: 350px; object-fit: cover;">
                     </div>
                     <div class="carousel-item bg-dark rounded" data-bs-interval="5000">
                         <a href="{{ route('post.view', ['post' => $latest->first()->id]) }}">

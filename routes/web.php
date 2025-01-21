@@ -42,21 +42,21 @@ Route::middleware(['auth'])->group( function () {
         //manajemen halaman: submenu
         Route::get('/halaman/submenu/{menu}',[App\Http\Controllers\halamanController::class,'submenu'])->name('submenu.index');
         Route::get('/halaman/submenu/{menu}/create',[App\Http\Controllers\halamanController::class, 'create_submenu'])->name('submenu.create');
-        Route::post('/halaman/submenu/{menu}/create', [App\Http\Controllers\halamanController::class, 'store_submenu'])->name('submenu.store');
+        Route::post('/halaman/submenu/{menu}/create', [App\Http\Controllers\halamanController::class, 'store'])->name('submenu.store');
         Route::get('/halaman/submenu/{menu}/edit/{submenu}', [App\Http\Controllers\halamanController::class, 'edit_submenu'])->name('submenu.edit');
         Route::put('/halaman/submenu/{menu}/edit/{submenu}', [App\Http\Controllers\halamanController::class, 'update_submenu'])->name('submenu.update');
         Route::delete('/halaman/submenu/{menu}/delete/{submenu}', [App\Http\Controllers\halamanController::class, 'destroy_submenu'])->name('submenu.delete');
         //manajemen halaman: subsubmenu
         Route::get('/halaman/subsubmenu/{submenu}',[App\Http\Controllers\halamanController::class,'subsubmenu'])->name('subsubmenu.index');
         Route::get('/halaman/subsubmenu/{submenu}/create', [App\Http\Controllers\halamanController::class, 'create_subsubmenu'])->name('subsubmenu.create');
-        Route::post('/halaman/subsubmenu/{submenu}/create', [App\Http\Controllers\halamanController::class, 'store_subsubmenu'])->name('subsubmenu.store');
+        Route::post('/halaman/subsubmenu/{submenu}/create', [App\Http\Controllers\halamanController::class, 'store'])->name('subsubmenu.store');
         Route::get('/halaman/subsubmenu/{submenu}/edit/{subsubmenu}',[App\Http\Controllers\halamanController::class, 'edit_subsubmenu'])->name('subsubmenu.edit');
         Route::put('/halaman/subsubmenu/{submenu}/edit/{subsubmenu}',[App\Http\Controllers\halamanController::class, 'update_subsubmenu'])->name('subsubmenu.update');
         Route::delete('/halaman/subsubmenu/{submenu}/delete/{subsubmenu}', [App\Http\Controllers\halamanController::class, 'destroy_subsubmenu'])->name('subsubmenu.delete');
         //manajemen halaman: subsubsubmenu
         Route::get('/halaman/subsubsubmenu/{subsubmenu}',[App\Http\Controllers\halamanController::class,'subsubsubmenu'])->name('subsubsubmenu.index');
         Route::get('/halaman/subsubsubmenu/{subsubmenu}/create', [App\Http\Controllers\halamanController::class, 'create_subsubsubmenu'])->name('subsubsubmenu.create');
-        Route::post('/halaman/subsubsubmenu/{subsubmenu}/create', [App\Http\Controllers\halamanController::class, 'store_subsubsubmenu'])->name('subsubsubmenu.store');
+        Route::post('/halaman/subsubsubmenu/{subsubmenu}/create', [App\Http\Controllers\halamanController::class, 'store'])->name('subsubsubmenu.store');
         Route::get('/halaman/subsubsubmenu/{subsubmenu}/edit/{subsubsubmenu}', [App\Http\Controllers\halamanController::class, 'edit_subsubsubmenu'])->name('subsubsubmenu.edit');
         Route::put('/halaman/subsubsubmenu/{subsubmenu}/edit/{subsubsubmenu}', [App\Http\Controllers\halamanController::class, 'update_subsubsubmenu'])->name('subsubsubmenu.update');
         Route::delete('/halaman/subsubsubmenu/{subsubmenu}/edit/{subsubsubmenu}', [App\Http\Controllers\halamanController::class, 'destroy_subsubsubmenu'])->name('subsubsubmenu.delete');
@@ -77,6 +77,8 @@ Route::middleware(['pengunjung'])->group( function (){
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/berita', [App\Http\Controllers\beritaController::class, 'show'])->name('post.view');
+    Route::middleware(['trending'])->group( function (){
+        Route::get('/berita', [App\Http\Controllers\beritaController::class, 'show'])->name('post.view');    
+    });
     Route::get('/page', [App\Http\Controllers\halamanController::class,'showpage'])->name('page.show');    
 });

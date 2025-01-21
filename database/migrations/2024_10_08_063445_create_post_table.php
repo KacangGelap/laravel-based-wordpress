@@ -30,9 +30,8 @@ return new class extends Migration
         //     $table->foreignId('user_id')->constrained(
         //         table:'users', indexName:'author_id'
         //     )->nullable();
-        //     $table->foreignId('contributor_id')->constrained(
-        //         table:'users', indexName:'contributor_id'
-        //     )->nullable();
+        //     $table->string('contributor')->nullable();
+        //     $table->integer('pengunjung')->default(0);
         //     $table->timestamps();
         // });
     }

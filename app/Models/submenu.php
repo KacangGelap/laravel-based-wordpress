@@ -9,7 +9,27 @@ class submenu extends Model
 {
     use HasFactory;
     protected $table = 'sub_menus';
-    protected $fillable = ['menu_id', 'sub_menu', 'type', 'filetype', 'media'];
+    protected $fillable = [
+        'menu_id',
+        'sub_menu',
+        'type',
+        'filetype',
+        'media',
+        'yt_id',
+        'link',
+        'alamat',
+        'maps',
+        'telp',
+        'email',
+        'website',
+        'instagram',
+        'facebook',
+        'youtube',
+        'tiktok',
+        'x',
+        'maps',
+        'text'
+    ];
 
     public function subSubMenus()
     {

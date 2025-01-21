@@ -21,6 +21,7 @@ class post extends Model
         'contributor',
         'kategori_id',
         'user_id',
+        'pengunjung'
 
     ];
     public function user(){

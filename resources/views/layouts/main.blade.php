@@ -131,53 +131,47 @@
         @include('layouts.footer')
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
             <!-- Chat Window -->
-            <div id="chatWindow" class="card shadow-lg border-0 d-none mb-5 rounded" style="width: 300px;position: absolute; bottom: 90px; right: 16px;">
+            <div id="chatWindow" class="card shadow-lg border-0 d-none mb-5 rounded" style="width: 300px; position: absolute; bottom: 90px; right: 16px;">
                 <div class="card-header d-flex align-items-center bg-success text-white">
                     <div class="me-3">
-                        <img src="/img/user.png" 
-                             alt="John Doe" 
-                             class="rounded-circle" 
-                             width="50" 
-                             height="50">
+                        <img src="/img/user.png" alt="Admin" class="rounded-circle" width="50" height="50">
                     </div>
                     <div>
                         <h5 class="mb-0">Admin Website</h5>
-                        <small>Online</small>
+                        <small id="statusText">Online</small>
                     </div>
                     <button id="closeChatBtn" type="button" class="btn-close btn-close-white ms-auto" aria-label="Close"></button>
                 </div>
-                <div class="card-body" style="background-image: url(/img/wa-bg.jpg);background-size:cover">
+                <div class="card-body" style="background-image: url(/img/wa-bg.jpg); background-size: cover;">
                     <div class="mb-3 text-muted small text-center">
-                        <span class="bg-light rounded px-2">{{Carbon\Carbon::now()->translatedFormat('H:i T')}}</span>
+                        <span class="bg-light rounded px-2">{{ Carbon\Carbon::now()->translatedFormat('H:i T') }}</span>
                     </div>
                     <div class="mb-3">
-                        <div class="d-flex align-items-start">
-                            <div class="bg-light rounded p-2">
-                                <p class="mb-0">Halo 👋</p>
-                                <p class="mb-0">Apakah ada yang bisa dibantu?</p>
-                            </div>
-                        </div>
+                        <div id="chatMessages" class="d-flex flex-column gap-2"></div>
                     </div>
                     <div class="text-center">
-                        <a href="https://wa.me/85812345678" class="btn btn-success d-inline-flex align-items-center gap-2 mb-3" >
+                        <a href="https://wa.me/85812345678" class="btn btn-success d-inline-flex align-items-center gap-2 mb-3">
                             <i class="bi bi-whatsapp fs-4"></i>
                             Chat on WhatsApp
-                            </a>
+                        </a>
                     </div>
                 </div>
             </div>
-        
+
+            <!-- Toggle Chat Button -->
+            <button id="toggleChatBtn" class="btn btn-success rounded-circle shadow-lg" style="position: absolute; bottom: 75px; right: 16px;">
+                <span class="position-absolute top-75 start-100 translate-middle p-2 bg-danger border border-light rounded-circle" id="chatBadge">
+                    <span class="visually-hidden">New alerts</span>
+                </span>
+                <i class="bi bi-whatsapp fs-4 text-white"></i>
+            </button>
+
+
             <!-- Scroll to Top Button -->
-            <button id="scrollTopBtn" class="btn-lg btn btn-primary d-none rounded-circle" 
+            <button id="scrollTopBtn" class="btn btn-primary d-none rounded-circle" 
                     onclick="scrollToTop()" title="Go to top">
                 <i class="bi bi-arrow-up fs-4 text-white"></i>
             </button>
-            
-            <!-- Toggle Chat Button -->
-            <button id="toggleChatBtn" class="btn-lg btn btn-success rounded-circle shadow-lg" style="position: absolute; bottom: 75px; right: 16px;">
-                <i class="bi bi-whatsapp fs-4 text-white"></i>
-            </button>
-        
         </div>        
           
         @if (session('sukses'))
@@ -270,20 +264,64 @@
                     });
                 });
             });
-            // chat visibility
+            // Elemen-elemen DOM Uuntuk Floating Chat
             const toggleChatBtn = document.getElementById('toggleChatBtn');
             const chatWindow = document.getElementById('chatWindow');
             const closeChatBtn = document.getElementById('closeChatBtn');
+            const chatBadge = document.getElementById('chatBadge');
+            const chatMessages = document.getElementById('chatMessages');
+            const typingIndicator = document.getElementById('typingIndicator');
+            const statusText = document.getElementById('statusText');
+
+            // Pesan yang akan ditampilkan
+            const messages = [
+                'Halo 👋',
+                'Apakah ada yang bisa dibantu?'
+            ];
+
+            // Fungsi untuk menampilkan pesan dengan delay
+            function displayMessages() {
+                let index = 0;
+                statusText.textContent = 'Mengetik...';
+
+                const interval = setInterval(() => {
+                    if (index < messages.length) {
+                        const messageElement = document.createElement('div');
+                        messageElement.classList.add('bg-light', 'rounded', 'p-2');
+                        messageElement.setAttribute('data-chat', 'true');
+                        messageElement.innerHTML = `<p class="mb-0">${messages[index]}</p>`;
+                        chatMessages.appendChild(messageElement);
+                        index++;
+                    } else {
+                        statusText.textContent = 'Online';
+                        clearInterval(interval);
+                    }
+                }, 1000);
+            }
+
+            // Fungsi untuk menghapus semua pesan
+            function clearMessages() {
+                const chatElements = chatMessages.querySelectorAll('[data-chat="true"]');
+                chatElements.forEach(element => element.remove());
+            }
 
             // Toggle chat window visibility
             toggleChatBtn.addEventListener('click', () => {
-                chatWindow.classList.toggle('d-none');
+                const isHidden = chatWindow.classList.toggle('d-none');
+                if (!isHidden) {
+                    displayMessages();
+                }
+                chatBadge.classList.toggle('d-none', !isHidden);
+                clearMessages();
             });
 
             // Close chat window
             closeChatBtn.addEventListener('click', () => {
                 chatWindow.classList.add('d-none');
+                clearMessages();
             });
+
+
         </script>
        
     </div>

@@ -9,7 +9,26 @@ class subsubmenu extends Model
 {
     use HasFactory;
     protected $table = 'sub_sub_menus';
-    protected $fillable = ['sub_menu_id', 'sub_sub_menu', 'type', 'filetype', 'media','youtube'];
+    protected $fillable = [
+        'sub_menu_id',
+        'sub_sub_menu',
+        'type',
+        'filetype',
+        'media',
+        'yt_id',
+        'link',
+        'alamat',
+        'telp',
+        'email',
+        'website',
+        'instagram',
+        'facebook',
+        'youtube',
+        'tiktok',
+        'x',
+        'maps',
+        'text'
+    ];
 
     public function subSubSubMenus(){
         return $this->hasMany(subsubsubmenu::class, 'sub_sub_menu_id');

@@ -27,7 +27,7 @@
             </div>
         </div>  
         <div class="col-md-3 mb-3">
-            <iframe class="h-100" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.807954453327!2d117.45567087373068!3d0.13060639986811193!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x320a0dffab504e3b%3A0x752e6f4dda10df69!2sPuskesmas%20Bontang%20Barat!5e0!3m2!1sen!2sid!4v1735999984149!5m2!1sen!2sid" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe class="h-100" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.807954453327!2d117.45567087373068!3d0.13060639986810915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x320a0dffab504e3b%3A0x752e6f4dda10df69!2sPuskesmas%20Bontang%20Barat!5e0!3m2!1sen!2sid!4v1737456208710!5m2!1sen!2sid" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             
         </div>
         <div class="col-md-3 mb-3">

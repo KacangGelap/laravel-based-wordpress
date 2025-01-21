@@ -10,7 +10,7 @@
             </div>
             <div class="col-md-4 border-right">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                    <img class="rounded-circle my-5" @if($user->profile == null)width="150px"@endif src="{{$user->profile ?? 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg'}}">
+                    <img class="rounded-circle my-5" @if($user->profile == null) height="150px" @else style="object-fit:cover" @endif src="{{$user->profile ?? 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg'}}">
                     <input class="form-control @error('profile') is-invalid @enderror" type="file" name="profile">
                     @error('profile')
                         <span class="invalid-feedback" role="alert">

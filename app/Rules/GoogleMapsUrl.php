@@ -4,9 +4,9 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class YoutubeUrl implements Rule
+class GoogleMapsUrl implements Rule
 {
-    public $videoId;
+    public $locationId;
 
     /**
      * Determine if the validation rule passes.
@@ -17,10 +17,11 @@ class YoutubeUrl implements Rule
      */
     public function passes($attribute, $value)
     {
-        $regex = '/^(?:https?\:\/\/)?(?:www\.youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})$/';
+        // Regex to extract the location ID from the URL
+        $regex = '/^https?:\/\/maps\.app\.goo\.gl\/([A-Za-z0-9_-]+)$/';
 
         if (preg_match($regex, $value, $matches)) {
-            $this->videoId = $matches[1]; // Extract video ID
+            $this->locationId = $matches[1]; // Extracted location ID
             return true;
         }
 
@@ -34,6 +35,6 @@ class YoutubeUrl implements Rule
      */
     public function message()
     {
-        return 'This field must be a valid YouTube Video URL.';
+        return 'The :attribute must be a valid Google Maps URL.';
     }
 }
