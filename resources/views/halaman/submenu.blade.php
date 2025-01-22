@@ -67,7 +67,7 @@
                                                 <i class="bi-eye"></i> Sub-Menu Bertingkat
                                             </a>
                                             @elseif($item->type == 'page')
-                                            <a href="#" class="btn btn-secondary mx-2 col-md-6" style="font-size: 12px">
+                                            <a href="{{route('page.show',['id'=>$item->halaman->first()->id])}}" class="btn btn-secondary mx-2 col-md-6" style="font-size: 12px">
                                                 <i class="bi bi-eye"></i> Sub-Menu
                                             </a>
                                             @elseif($item->type == 'link')

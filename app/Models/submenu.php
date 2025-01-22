@@ -35,7 +35,10 @@ class submenu extends Model
     {
         return $this->hasMany(subsubmenu::class, 'sub_menu_id');
     }
-
+    public function halaman()
+    {
+        return $this->hasMany(halaman::class, 'sub_menu_id');
+    }
     public function menu()
     {
         return $this->belongsTo(menu::class, 'menu_id');

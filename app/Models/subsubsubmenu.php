@@ -29,12 +29,11 @@ class subsubsubmenu extends Model
         'maps',
         'text'
     ];
-
-    public function subSubSubMenus(){
-        return $this->hasMany(subsubsubmenu::class, 'sub_sub_menu_id');
+    public function halaman(){
+        return $this->hasMany(halaman::class, 'sub_sub_menu_id');
     }
-    public function subMenu()
+    public function subSubMenu()
     {
-        return $this->belongsTo(submenu::class, 'sub_menu_id');
+        return $this->belongsTo(subsubmenu::class, 'sub_sub_menu_id');
     }
 }

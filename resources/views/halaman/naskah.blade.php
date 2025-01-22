@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="d-md-flex card-header justify-content-between">
-                    <h4>{{ __('Tambah Url / Link') }}</h4>
+                    <h4>{{ __('Tambah Halaman') }}</h4>
                     <a href="{{Route::current()->getName() === 'submenu.create' ? route('submenu.index', session('menu_id')) : (Route::current()->getName() === 'subsubmenu.create' ? route('subsubmenu.index', session('sub_menu_id')) : route('subsubsubmenu.index', session('sub_sub_menu_id')))}}" class="btn btn-dark">Kembali</a>
                 </div>
 
@@ -27,12 +27,24 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="link" class="col-md-4 col-form-label text-md-end">Url yang mau ditambahkan</label>
+                            <label for="image" class="col-md-4 col-form-label text-md-end">Masukkan Gambar</label>
 
                             <div class="col-md-6">
-                                <input id="link" type="text" class="form-control @error('link') is-invalid @enderror" name="link" value="{{ old('link') }}" required autocomplete="link" autofocus placeholder="https://www.contohwebsite.go.id/halaman/">
+                                <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" required autocomplete="image" autofocus>
 
-                                @error('link')
+                                @error('image')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="text" class="col-md-4 col-form-label text-md-end">Masukkan Teks</label>
+
+                            <div class="col-md-6">
+                                <textarea class="form-control border border-dark @error('text') is-invalid @enderror" rows="4" name="text" required>{{old('text')}}</textarea>
+                                @error('text')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

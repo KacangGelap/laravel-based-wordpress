@@ -39,6 +39,6 @@ class SocialMediaUrl implements Rule
     public function extractUsername($value)
     {
         $this->passes(null, $value); // Reuse the validation logic
-        return $this->username;
+        return $this->identifier;
     }
 }

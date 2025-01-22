@@ -38,24 +38,28 @@ class halamanController extends Controller
             case '2':
                 session([
                     'type' => 'page',
+                    'filetype' => null
                 ]);
-                return view('halaman.teks');
+                return view('halaman.naskah');
                 break;
             case '3':
                 session([
                     'type' => 'id.pdupt',
+                    'filetype' => null
                 ]);
-                return view('halaman.id.pdupt');
+                return view('halaman.profile');
                 break;
             case '4':
                 session([
                     'type' => 'link',
+                    'filetype' => null
                 ]);
                 return view('halaman.link');
                 break;
             case '5':
                 session([
                     'type' => 'dropdown',
+                    'filetype' => null
                 ]);
                 return view('halaman.dropdown');
                 break;
@@ -80,9 +84,10 @@ class halamanController extends Controller
     public function submenu($menu){
         try {
             $submenu = submenu::where('menu_id', $menu)->get();
+            // dd(submenu::first()->halaman->first()->id);
             return view('halaman.submenu')->with('submenu',$submenu)->with('menu', menu::findOrFail($menu));
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
             return back()->with('gagal','halaman yang dicari tidak ditemukan.');
         }
     }
@@ -170,6 +175,8 @@ class halamanController extends Controller
     // Prepare all attributes
         //route-based store systems (submenu ... sub-n-menu)
         //ambil id dan tentukan identifier
+
+        
         if(\Route::current()->getName() === 'submenu.store'){
             $menu_id = session('menu_id');
             if (!$menu_id) {
@@ -196,11 +203,17 @@ class halamanController extends Controller
             $identifier = subsubmenu::find($sub_sub_menu_id)->submenu->menu->menu;
         }
         //ambil atribut dari session sebelumnya
-        $request->merge([
-            'type' => session('type'),
-            'filetype' => session('filetype'),
-        ]);
-
+        if(session('filetype') !== null){
+            $request->merge([
+                'type' => session('type'),
+                'filetype' => session('filetype'),
+            ]);
+        }
+        else{
+            $request->merge([
+                'type' => session('type'),
+            ]);
+        }
         // Define base validation rules
         if(\Route::current()->getName() === 'subsubsubmenu.store'){
             $rules = [
@@ -215,6 +228,7 @@ class halamanController extends Controller
             ];
     
         }
+        // dd($request->has('filetype'));
     // Additional rules for 'page' type
         if ($request->input('type') == 'page') {
             if ($request->has('filetype')) {
@@ -223,6 +237,7 @@ class halamanController extends Controller
                 $rules['pdf'] = 'required_if:filetype,pdf|mimes:pdf|max:10000';
                 $rules['yt_id'] = ['required_if:filetype,video', 'string', 'max:50', new YoutubeUrl]; // Sanitized YouTube ID
             } else {
+                $rules['image'] = 'required|image|mimes:png,jpeg,jpg|max:3000';
                 $rules['text'] = 'required_unless:filetype,null|string';
             }
         }
@@ -243,10 +258,16 @@ class halamanController extends Controller
             $rules['youtube'] = ['nullable', 'string', new SocialMediaUrl]; // Validate YouTube URL
             $rules['tiktok'] = ['nullable', 'string', new SocialMediaUrl]; // Validate TikTok URL
             $rules['x'] = ['nullable', 'string', new SocialMediaUrl]; // Validate X (Twitter) URL
-            $rules['maps']  = ['nullable', 'string', new GoogleMapsUrl]; // Validate GMaps URL
+            $rules['maps']  = ['nullable', 'string', function ($attribute, $value, $fail) {
+                // Only allow iframe tags with Google Maps embed URLs
+                if (!preg_match('/<iframe[^>]*src="https:\/\/www\.google\.com\/maps\/embed\?pb=[^"]*"[^>]*><\/iframe>/', $value)) {
+                    $fail('Only Google Maps iframe embed codes are allowed.');
+                }
+            },]; // Validate GMaps Embed Frame
         }
         // Validate the request
         $validatedData = $request->validate($rules);
+        
         // Additional processing if needed
         if ($request->input('type') == 'id.pdupt') {
            // Extract usernames after validation
@@ -254,21 +275,19 @@ class halamanController extends Controller
             $validatedData['facebook_username'] = (new SocialMediaUrl('facebook'))->extractUsername($validatedData['facebook'] ?? null);
             $validatedData['tiktok_username'] = (new SocialMediaUrl('tiktok'))->extractUsername($validatedData['tiktok'] ?? null);
             $validatedData['x_username'] = (new SocialMediaUrl('x'))->extractUsername($validatedData['x'] ?? null);
-            $validatedData['youtube_username'] = (new SocialMediaUrl('youtube'))->extractUsername($validatedData['youtube'] ?? null);
+            $validatedData['youtube_channel'] = (new SocialMediaUrl('youtube'))->extractUsername($validatedData['youtube'] ?? null);
             // For YouTube, handle video separately
             $youtubeRule = new YoutubeUrl();
             if ($youtubeRule->passes('yt_id', $validatedData['yt_id'] ?? null)) {
                 $validatedData['yt_id'] = $youtubeRule->videoId ?? null;
             }
-            // Also For the maps
-            $sanitizedIframe = SanitizeHelper::sanitizeIframe($validatedData['maps']);
-            // Check if the iframe is empty after sanitization
-            if (empty($sanitizedIframe)) {
-                return back()->withErrors('Invalid iframe content. Please provide a valid Google Maps embed iframe.');
+            
+            if($validatedData['maps'] !== null){
+                $embed_code = strip_tags($validatedData['maps'], '<iframe>');
             }
+            // dd($embed_code); 
         }
-
-        // dd($identifier);
+        
         try {
             //get the id based on routes
             $data = \Route::current()->getName() === 'submenu.store' ? new submenu() : (\Route::current()->getName() === 'subsubmenu.store' ? new subsubmenu() : new subsubsubmenu());
@@ -286,6 +305,7 @@ class halamanController extends Controller
                         $data->yt_id = $validatedData['yt_id'];
                     }
                 } else {
+                    $data->media = file_get_contents($validatedData['image']->getRealPath());
                     $data->text = $validatedData['text'];
                 }
             }
@@ -317,6 +337,7 @@ class halamanController extends Controller
                                 ->whereHas('subsubmenu.submenu.menu', function($query) use ($identifier) {
                                     $query->where('menu', $identifier);
                                 })->count();
+                // dd($isExists === 0);
                 if($isExists === 0){
                     $data['alamat'] = $validatedData['alamat'];
                     $data['telp'] = $validatedData['telp'];
@@ -327,14 +348,16 @@ class halamanController extends Controller
                     $data['youtube'] = $validatedData['youtube_channel'];
                     $data['tiktok'] = $validatedData['tiktok_username'];
                     $data['x'] = $validatedData['x_username'];
-                    $data['maps']  = $sanitizedIframe;
+                    $data['maps']  = $embed_code;
+                }else{
+                    return back()->with('gagal','data sudah ada, mohon hapus atau ubah data sebelumnya');
                 }
             }
             // dd($data); 
             $data->save();
             
             //buat id halamannya agar bisa dipanggil
-            if($validatedData['type'] !== 'dropdown' ||$validatedData['type'] !== 'link'){
+            if($validatedData['type'] !== 'dropdown' && $validatedData['type'] !== 'link'){
                 $halaman = new halaman();
                 $halaman->menu_id = \Route::current()->getName() == 'submenu.store' ? $menu_id : (\Route::current()->getName() === 'subsubmenu.store' ? $data->submenu->menu->id : $data->subsubmenu->submenu->menu->id);
                 $halaman->sub_menu_id = \Route::current()->getName() == 'submenu.store' ? $data->id  : (\Route::current()->getName() === 'subsubmenu.store' ? $data->submenu->id : $data->subsubmenu->submenu->menu->id);
@@ -354,6 +377,36 @@ class halamanController extends Controller
         } catch (\Throwable $th) {
             throw $th;
             return back()->with('gagal','gagal saat menambahkan data');
+        }
+    }
+    public function show(Request $request){
+        try {
+            $validate = $request->validate([
+                'id' => 'required|numeric|min:1'
+            ]);
+            $halaman = halaman::find($validate['id']);
+            //cek apakah itu page(id unik)
+            if(halaman::where('sub_menu_id',$halaman->sub_menu_id)->count() === 1) 
+            {
+                $currentpage = submenu::findOrFail($halaman->sub_menu_id);
+                session(['c' => 'submenu']);
+            }
+
+            elseif(halaman::where('sub_sub_menu_id',$halaman->sub_sub_menu_id)->count() === 1)
+            {
+                $currentpage = subsubmenu::findOrFail($halaman->sub_sub_menu_id);
+                session(['c' => 'subsubmenu']);
+            }
+
+            elseif (halaman::where('sub_sub_sub_menu_id',$halaman->sub_sub_sub_menu_id)->count() === 1) 
+            {
+                $currentpage = subsubsubmenu::findOrFail($halaman->sub_sub_sub_menu_id);
+                session(['c' => 'subsubsubmenu']);
+            }
+            return view('halaman.halaman')->with('halaman', $halaman)->with('page', $currentpage);
+        } catch (\Throwable $th) {
+            // throw $th;
+            return back()->with('gagal','terjadi kesalahan');
         }
     }
 }

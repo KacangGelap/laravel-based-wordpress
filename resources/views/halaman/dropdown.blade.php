@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="d-md-flex card-header justify-content-between">
                     <h4>{{ __('Tambah Dropdown') }}</h4>
-                    <a href="{{route('submenu.index', session('menu_id'))}}" class="btn btn-dark">Kembali</a>
+                    <a href="{{Route::current()->getName() === 'submenu.create' ? route('submenu.index', session('menu_id')) : (Route::current()->getName() === 'subsubmenu.create' ? route('subsubmenu.index', session('sub_menu_id')) : route('subsubsubmenu.index', session('sub_sub_menu_id')))}}" class="btn btn-dark">Kembali</a>
                 </div>
 
                 <div class="card-body">

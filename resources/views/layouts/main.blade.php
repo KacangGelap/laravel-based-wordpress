@@ -59,12 +59,19 @@
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="menu{{ $menu->id }}">
                                         @foreach ($menu->subMenus as $subMenu)
-                                            @if ($subMenu->type === 'page')
+                                            @if ($subMenu->type === 'page' || $subMenu->type === 'id.pdupt')
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ route('page.show', $subMenu->id) }}">
+                                                    <a class="dropdown-item" href="{{ route('page.show', ['id'=>$subMenu->halaman->first()->id]) }}">
                                                         {{ $subMenu->sub_menu }}
                                                     </a>
                                                 </li>
+                                            @elseif ($subMenu->type === 'link')
+                                            <li>
+                                                <a class="dropdown-item" href="{{$subMenu->link}}" target="_blank">
+                                                    {{ $subMenu->sub_menu }}
+                                                    <i class="bi-box-arrow-up-right"></i>
+                                                </a>
+                                            </li>
                                             @elseif ($subMenu->type === 'dropdown')
                                                 <li class="dropdown-submenu dropright">
                                                     <a class="dropdown-item dropdown-toggle" href="#">
@@ -72,9 +79,9 @@
                                                     </a>
                                                     <ul class="dropdown-menu" aria-labelledby="submenu{{ $menu->id }}">
                                                         @foreach ($subMenu->subSubMenus as $subSubMenu)
-                                                            @if ($subSubMenu->type === 'page')
+                                                            @if ($subSubMenu->type === 'page' || $subSubMenu->type === 'id.pdupt')
                                                                 <li>
-                                                                    <a class="dropdown-item" href="{{ route('page.show', $subSubMenu->id) }}">
+                                                                    <a class="dropdown-item" href="{{ route('page.show', ['id'=>$subSubMenu->halaman->first()->id]) }}">
                                                                         {{ $subSubMenu->sub_sub_menu }}
                                                                     </a>
                                                                 </li>
@@ -85,11 +92,13 @@
                                                                     </a>
                                                                     <ul class="dropdown-menu">
                                                                         @foreach ($subSubMenu->subSubSubMenus as $subSubSubMenu)
+                                                                            @if($subSubSubMenu->type === 'page' || $subSubSubMenu->type === 'id.pdupt')
                                                                             <li>
-                                                                                <a class="dropdown-item" href="{{ route('page.show', $subSubSubMenu->id) }}">
+                                                                                <a class="dropdown-item" href="{{ route('page.show', ['id'=>$subSubSubMenu->halaman->first()->id]) }}">
                                                                                     {{ $subSubSubMenu->sub_sub_sub_menu }}
                                                                                 </a>
                                                                             </li>
+                                                                            @endif
                                                                         @endforeach
                                                                     </ul>
                                                                 </li>

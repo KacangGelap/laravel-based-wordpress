@@ -80,5 +80,5 @@ Route::middleware(['pengunjung'])->group( function (){
     Route::middleware(['trending'])->group( function (){
         Route::get('/berita', [App\Http\Controllers\beritaController::class, 'show'])->name('post.view');    
     });
-    Route::get('/page', [App\Http\Controllers\halamanController::class,'showpage'])->name('page.show');    
+    Route::get('/page', [App\Http\Controllers\halamanController::class,'show'])->name('page.show');    
 });

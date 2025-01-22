@@ -14,7 +14,7 @@ class halaman extends Model
         'menu_id',
         'sub_menu_id',
         'sub_sub_menu_id',
-        'sub_sub_sub_menu_id'
+        'sub_sub_sub_menu_id',
     ];
     public function menu(){
         return $this->belongsTo(menu::class, 'menu_id');

@@ -63,7 +63,7 @@
                                             <i class="bi-eye"></i> Lihat List Sub-Sub-Sub-Menu
                                         </a>
                                         @elseif($item->type == 'page')
-                                        <a href="#" class="btn btn-secondary mx-2">
+                                        <a href="{{route('page.show',['id'=>$item->halaman->first()->id])}}" class="btn btn-secondary mx-2">
                                             <i class="bi bi-box-arrow-up-right"></i> Lihat Tampilan Sub-Sub-menu
                                         </a>
                                         @elseif($item->type == 'link')
