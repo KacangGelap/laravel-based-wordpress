@@ -8,23 +8,23 @@
                 <div>
                     <table class="w-100">
                         <tbody>
-                            <tr class="justify-content-between">
+                            <tr class="justify-content-between border-bottom">
                                 <td class="col-md-6"><b>{{__('Nama Website')}}<b></td>
                                 <td class="col-md-6 text-end">{{config( 'app.name', 'Website pemerintah kota Bontang')}}</td>
                             </tr>
-                            <tr class="justify-content-between">
+                            <tr class="justify-content-between border-bottom">
                                 <td class="col-md-6"><b>{{__('Alamat')}}<b></td>
                                 <td class="col-md-6 text-end">{{$page->alamat}}</td>
                             </tr>
-                            <tr class="justify-content-between">
+                            <tr class="justify-content-between border-bottom">
                                 <td class="col-md-6"><b>{{__('No. Telp')}}<b></td>
                                 <td class="col-md-6 text-end">{{$page->telp}}</td>
                             </tr>
-                            <tr class="justify-content-between">
+                            <tr class="justify-content-between border-bottom">
                                 <td class="col-md-6"><b>{{__('Alamat Surel')}}<b></td>
                                 <td class="col-md-6 text-end">{{$page->email}}</td>
                             </tr>
-                            <tr class="justify-content-between">
+                            <tr class="justify-content-between border-bottom">
                                 <td class="col-md-6"><b>{{__('Website Resmi')}}<b></td>
                                 <td class="col-md-6 text-end">{{$page->website}}</td>
                             </tr>
