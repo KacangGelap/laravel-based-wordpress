@@ -75,7 +75,22 @@ class halamanController extends Controller
                 break;
         }
     }
-
+    private function isIdentityExist(){
+        $identifier = 'tentang';
+        $isExists = submenu::where('type', 'id.pdupt')
+                                ->whereHas('menu', function($query) use ($identifier) {
+                                    $query->where('menu', $identifier);
+                                })->count()
+                            + subsubmenu::where('type', 'id.pdupt')
+                                ->whereHas('submenu.menu', function($query) use ($identifier) {
+                                    $query->where('menu', $identifier); 
+                                })->count()
+                            + subsubsubmenu::where('type', 'id.pdupt')
+                                ->whereHas('subsubmenu.submenu.menu', function($query) use ($identifier) {
+                                    $query->where('menu', $identifier);
+                                })->count();
+        return $isExists === 1;
+    }
     //index untuk menu, sub-menu, dan sub-sub-menu
     public function menu(){
         $menu = menu::with('subMenus')->get();
@@ -85,7 +100,7 @@ class halamanController extends Controller
         try {
             $submenu = submenu::where('menu_id', $menu)->get();
             // dd(submenu::first()->halaman->first()->id);
-            return view('halaman.submenu')->with('submenu',$submenu)->with('menu', menu::findOrFail($menu));
+            return view('halaman.submenu')->with('submenu',$submenu)->with('menu', menu::findOrFail($menu))->with('isExists', $this->isIdentityExist());
         } catch (\Throwable $th) {
             throw $th;
             return back()->with('gagal','halaman yang dicari tidak ditemukan.');
@@ -94,7 +109,7 @@ class halamanController extends Controller
     public function subsubmenu($submenu){
         try {        
             $subsubmenu = subsubmenu::where('sub_menu_id', $submenu)->get();
-            return view('halaman.subsubmenu')->with('subsubmenu', $subsubmenu)->with('submenu', submenu::findOrFail($submenu));
+            return view('halaman.subsubmenu')->with('subsubmenu', $subsubmenu)->with('submenu', submenu::findOrFail($submenu))->with('isExists', $this->isIdentityExist());
         } catch (\Throwable $th) {
             // throw $th;
             return back()->with('gagal','halaman yang dicari tidak ditemukan');
@@ -103,7 +118,7 @@ class halamanController extends Controller
     public function subsubsubmenu($subsubmenu){
         try {
             $subsubsubmenu = subsubsubmenu::where('sub_sub_menu_id', $subsubmenu)->get();
-            return view('halaman.subsubsubmenu')->with('subsubsubmenu', $subsubsubmenu)->with('subsubmenu', subsubmenu::findOrFail($subsubmenu));
+            return view('halaman.subsubsubmenu')->with('subsubsubmenu', $subsubsubmenu)->with('subsubmenu', subsubmenu::findOrFail($subsubmenu))->with('isExists', $this->isIdentityExist());
         } catch (\Throwable $th) {
             // throw $th;
             return back()->with('gagal','halaman yang dicari tidak ditemukan');

@@ -2,6 +2,7 @@
 @section('content')
     <div class="bg-light container pt-4">
         <h4>{{session('c') === 'submenu' ?$page->sub_menu : (session('c') === 'subsubmenu' ? $page->sub_sub_menu : $page->sub_sub_sub_menu) }}</h4>
+        <hr class="mb-4 col-lg-8">
         <div class="row">
             <div class="col-lg-8">
                 @if ($page->type === 'id.pdupt')
@@ -33,16 +34,26 @@
                 </div>
                 
                 <div class="d-flex">
+                    @if($page->youtube)
+                        <a class="text-dark h1 me-2" href="https://youtube.com/{{$page->youtube}}" target="_blank" rel="noopener noreferrer"><i class="bi-youtube"></i></a>
+                    @endif
                     @if($page->instagram)
                     <a class="text-dark h1 me-2" href="https://instagram.com/{{$page->instagram}}" target="_blank" rel="noopener noreferrer"><i class="bi-instagram"></i></a>
                     @endif
-                    @if($page->instagram)
+                    @if($page->facebook)
                         <a class="text-dark h1 me-2" href="https://facebook.com/{{$page->facebook}}" target="_blank" rel="noopener noreferrer"><i class="bi-facebook"></i></a>
+                    @endif
+                    @if($page->x)
+                        <a class="text-dark h1 me-2" href="https://x.com/{{$page->x}}" target="_blank" rel="noopener noreferrer"><i class="bi-twitter-x"></i></a>
+                    @endif
+                    @if($page->tiktok)
+                        <a class="text-dark h1 me-2" href="https://tiktok.com/{{$page->tiktok}}" target="_blank" rel="noopener noreferrer"><i class="bi-tiktok"></i></a>
                     @endif
                 </div>
                 
-                
-                {!! $page->maps !!}
+                <div class="d-flex align-items-stretch">
+                    {!! $page->maps !!}
+                </div>
                 @elseif($page->filetype === 'pdf')
                 <iframe src="data:application/pdf;base64,{{ base64_encode($page->media) }}" class="min-vh-100 w-100"></iframe>
                 @elseif ($page->filetype === 'foto')

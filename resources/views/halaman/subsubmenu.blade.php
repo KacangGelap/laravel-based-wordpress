@@ -28,7 +28,7 @@
                         <a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 0])}}" class="badge text-decoration-none text-bg-primary mx-1"><i class="bi-file-earmark me-1"></i>File</a>
                         <a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 1])}}" class="badge text-decoration-none text-bg-warning mx-1"><i class="bi-image me-1"></i>Gambar</a>
                         <a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 2])}}" class="badge text-decoration-none text-bg-secondary mx-1"><i class="bi-card-text me-1"></i>Halaman</a>
-                        <a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 3])}}" class="badge text-decoration-none text-bg-success mx-1"><i class="bi-diagram-3 me-1"></i>Identitas PD/UPT</a>
+                        @if($isExists === false)<a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 3])}}" class="badge text-decoration-none text-bg-success mx-1"><i class="bi-diagram-3 me-1"></i>Identitas PD/UPT</a>@endif
                         <a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 4])}}" class="badge text-decoration-none text-bg-info mx-1"><i class="bi-globe me-1"></i>Link Medsos</a>
                     </div>
                 </div>

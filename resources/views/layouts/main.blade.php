@@ -159,7 +159,7 @@
                         <div id="chatMessages" class="d-flex flex-column gap-2"></div>
                     </div>
                     <div class="text-center">
-                        <a href="https://wa.me/85812345678" class="btn btn-success d-inline-flex align-items-center gap-2 mb-3">
+                        <a href="https://wa.me/62{{intval($master->telp)}}" class="btn btn-success d-inline-flex align-items-center gap-2 mb-3">
                             <i class="bi bi-whatsapp fs-4"></i>
                             Chat on WhatsApp
                         </a>

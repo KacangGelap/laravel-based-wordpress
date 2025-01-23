@@ -11,12 +11,12 @@
             <div>
                 <h6 class="border-bottom">Hubungi Kami</h6>
                 <h6>{{config('app.name', 'Nama Website')}}</h6>
-                <p>Jl. Damai No.41, Kanaan, Kec. Bontang Bar., Kota Bontang, Kalimantan Timur 75321</p>
-                <i class="bi bi-telephone me-2"></i><span>+62 ...</span><br>
-                <a class="text-white" href="mailto:"><i class="bi bi-envelope me-2"></i>E-mail website</a><br>
-                <a class="text-white" href="#"><i class="bi bi-facebook me-2"></i>Facebook</a><br>
-                <a class="text-white" href="#"><i class="bi bi-instagram me-2"></i>Instagram</a><br>
-                <a class="text-white" href="#"><i class="bi bi-youtube me-2"></i>Youtube</a><br>
+                <p>{{$master->alamat ?? 'Alamat Website'}}</p>
+                <i class="bi bi-telephone me-2"></i><span>{{$master->telp ?? '+62 ...'}}</span><br>
+                <a class="text-white" href="mailto:{{$master->email}}"><i class="bi bi-envelope me-2"></i>{{$master->email ?? 'Email Address'}}</a><br>
+                <a class="text-white" href="https://facebook.com/{{$master->facebook}}"><i class="bi bi-facebook me-2"></i>{{ucfirst($master->facebook ?? 'Facebook')}}</a><br>
+                <a class="text-white" href="https://instagram.com/{{$master->instagram}}"><i class="bi bi-instagram me-2"></i>{{ucfirst($master->instagram ?? 'Instagram')}}</a><br>
+                <a class="text-white" href="https://youtube.com/{{$master->youtube}}"><i class="bi bi-youtube me-2"></i>{{ucfirst($master->youtube ?? 'Youtube')}}</a><br>
             </div>
             <div class="mt-2">
                 <h6 class="border-bottom">Statistik Pengunjung Website</h6>
@@ -26,9 +26,8 @@
                 Total page views: {{ $total_page_views }} <br>
             </div>
         </div>  
-        <div class="col-md-3 mb-3">
-            <iframe class="h-100" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.807954453327!2d117.45567087373068!3d0.13060639986810915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x320a0dffab504e3b%3A0x752e6f4dda10df69!2sPuskesmas%20Bontang%20Barat!5e0!3m2!1sen!2sid!4v1737456208710!5m2!1sen!2sid" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            
+        <div class="col-md-3 mb-3 d-flex align-items-stretch">
+                {!! $master->maps !!}
         </div>
         <div class="col-md-3 mb-3">
             <img src="/img/112.jpeg" frameborder="0" class="w-100">
