@@ -12,20 +12,24 @@
         <!-- Trending Tab Content -->
         <div class="tab-pane fade" id="trending" role="tabpanel">
             {{-- Example trending content --}}
-            <div class="d-flex mb-3">
-                {{-- <img src="{{ $post->media1 }}" class="me-3 rounded" style="width: 70px; height: 70px;" alt="Trending Image">
-                <div>
-                    <a href="{{ route('post.view', $post->id) }}" class="fw-bold text-dark">{{ $post->judul }}</a>
-                    <p class="text-muted small mb-0">{{ \Carbon\Carbon::parse($post->created_at)->format('F d, Y') }}</p>
-                </div> --}}
-            </div>
+            @foreach ($trending as $item)
+            <a href="{{route('post.view', ['post' => $item->id])}}" target="_blank" rel="noopener noreferrer">
+                <div class="d-flex mb-3">
+                    <img src="{{ asset('storage/'.$item->media1) }}" class="me-3 rounded" style="width: 70px; height: 70px;" alt="Trending Image">
+                    <div>
+                        <a href="{{ route('post.view', ['post' => $item->id]) }}" class="fw-bold text-dark">{{ $item->judul }}</a>
+                        <p class="text-muted small mb-0">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</p>
+                    </div>
+                </div>
+            </a>
+            @endforeach
         </div>
         <!-- Latest Tab Content -->
         <div class="tab-pane fade show active" id="latest" role="tabpanel">
             @foreach ($latest as $item)
             <a href="{{route('post.view', ['post' => $item->id])}}" target="_blank" rel="noopener noreferrer">
                 <div class="d-flex mb-3">
-                    <img src="{{ $item->media1 }}" class="me-3 rounded" style="width: 70px; height: 70px;" alt="Latest Image">
+                    <img src="{{ asset('storage/'.$item->media1) }}" class="me-3 rounded" style="width: 70px; height: 70px;" alt="Latest Image">
                     <div>
                         <a href="{{ route('post.view', ['post' => $item->id]) }}" class="fw-bold text-dark">{{ $item->judul }}</a>
                         <p class="text-muted small mb-0">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</p>
@@ -40,19 +44,12 @@
     <div class="tab-content mt-3">
         <!-- Link Terkait Tab Content -->
         <div class="tab-pane fade show active" id="link" role="tabpanel">
-            {{-- Example trending content --}}
-            <div class="d-flex mb-3">
-                {{-- @foreach ($latest as $item)
-                <a href="{{route('post.view', ['post' => $item->id])}}" target="_blank" rel="noopener noreferrer">
-                    <div class="d-flex mb-3">
-                        <img src="{{ $item->media1 }}" class="me-3 rounded" style="width: 70px; height: 70px;" alt="Latest Image">
-                        <div>
-                            <a href="{{ route('post.view', ['post' => $item->id]) }}" class="fw-bold text-dark">{{ $item->judul }}</a>
-                            <p class="text-muted small mb-0">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</p>
-                        </div>
-                    </div>
-                </a>
-                @endforeach --}}
+            <div class="row mb-3">
+                @foreach ($link_terkait as $item)
+                    <a href="{{$item->url}}" target="_blank" rel="noopener noreferrer" class="col-6 text-decoration-none" style="background-image:url({{asset("storage/$item->media")}});background-size:cover; background-position:50% 50%;height:250px">
+                        &nbsp;
+                    </a>
+                @endforeach
             </div>
         </div>
     </div>

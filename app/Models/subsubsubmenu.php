@@ -15,10 +15,15 @@ class subsubsubmenu extends Model
         'type',
         'filetype',
         'media',
+        'tambahan1',
+        'tambahan2',
+        'tambahan3',
         'yt_id',
         'link',
         'alamat',
         'telp',
+        'wa',
+        'fax',
         'email',
         'website',
         'instagram',
@@ -30,7 +35,7 @@ class subsubsubmenu extends Model
         'text'
     ];
     public function halaman(){
-        return $this->hasMany(halaman::class, 'sub_sub_menu_id');
+        return $this->hasMany(halaman::class, 'sub_sub_sub_menu_id');
     }
     public function subSubMenu()
     {

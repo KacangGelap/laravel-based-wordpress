@@ -35,7 +35,9 @@
         <main class="bg-light min-vh-100" style="background-image: url(); background-size:cover; background-attachment: fixed;">    
             {{-- banner --}}
             <div class="container-fluid p-0">
-                <img src="https://lh3.googleusercontent.com/u/0/d/1RSLtvEv1UIqr10TJdJ4mQgIPBO7NqwQz=w2000-h338-iv2" class="w-100">
+                @if(isset($banner))
+                <img src="{{asset('storage/'.$banner->media)}}" class="w-100">
+                @endif
             </div>
             
             <nav class="container-fluid navbar navbar-expand-md bg-success shadow-sm">
@@ -48,13 +50,13 @@
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav text-white justify-content-evenly">
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="{{url('/')}}">
+                                <a class="nav-link text-white" href="{{url('/')}}" style="font-size: 12px">
                                     {{__("BERANDA")}}
                                 </a>
                             </li>
                             @foreach ($menus as $menu)
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#" id="menu{{ $menu->id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" id="menu{{ $menu->id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 12px">
                                         {{ $menu->menu }}
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="menu{{ $menu->id }}">
@@ -67,7 +69,7 @@
                                                 </li>
                                             @elseif ($subMenu->type === 'link')
                                             <li>
-                                                <a class="dropdown-item" href="{{$subMenu->link}}" target="_blank">
+                                                <a class="dropdown-item" href="{{$subMenu->filetype == 'video' ? 'https://youtu.be/'.$subMenu->link : $subMenu->link}}" target="_blank">
                                                     {{ $subMenu->sub_menu }}
                                                     <i class="bi-box-arrow-up-right"></i>
                                                 </a>
@@ -111,23 +113,34 @@
                                     </ul>
                                 </li>
                             @endforeach
+                            <li>
+                                <a class="nav-link text-white" href="{{route('kalender.show')}}" style="font-size: 12px">
+                                    {{__("AGENDA KEGIATAN")}}
+                                </a>
+                            </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="{{url('/')}}">
+                                <a class="nav-link text-white" href="{{route('post.list')}}" style="font-size: 12px">
                                     {{__("BERITA")}}
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="{{url('/')}}">
+                                <a class="nav-link text-white" href="{{route('galeri')}}" style="font-size: 12px">
+                                    {{__("GALERI")}}
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link text-white" href="{{route('unduh.show')}}" style="font-size: 12px">
                                     {{__("UNDUH")}}
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <form action="{{route('home')}}" method="post">
+                            @if($menu->count() == 7)<li class="nav-item col-md-1"> @elseif($menu->count() == 6) <li class="nav-item col-md-2"> @else <li class="nav-item"> @endif
+                                <form action="{{route('post.search')}}" method="post">
                                     @csrf
                                     <div class="input-group">
-                                        <input class="form-control" type="text" name="search" placeholder="Cari Berita...">
+                                        <input class="form-control @error('search') is-invalid @enderror" type="text" name="search" placeholder="Cari Berita...">
                                         <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>
                                     </div>
+                                    
                                 </form>
                             </li>
                         </ul>
@@ -159,7 +172,7 @@
                         <div id="chatMessages" class="d-flex flex-column gap-2"></div>
                     </div>
                     <div class="text-center">
-                        <a href="https://wa.me/62{{intval($master->telp)}}" class="btn btn-success d-inline-flex align-items-center gap-2 mb-3">
+                        <a href="@if(isset($master->wa)) https://wa.me/62{{intval($master->wa ?? '')}} @endif" class="btn btn-success d-inline-flex align-items-center gap-2 mb-3">
                             <i class="bi bi-whatsapp fs-4"></i>
                             Chat on WhatsApp
                         </a>
@@ -187,7 +200,7 @@
         <div class="toast-container position-fixed bottom-0 p-3" >
             <div id="liveToast" class="toast show align-items-center bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header">
-                        Success
+                        Sukses
                         <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
                     <div class="toast-body text-white text-bold">
@@ -201,7 +214,7 @@
         <div class="toast-container position-fixed bottom-0 end-0 p-3">
             <div id="liveToast" class="toast show align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header">
-                        Failed
+                        Gagal
                         <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
                     <div class="toast-body bg-danger text-white text-bold">
@@ -287,10 +300,9 @@
                 'Halo 👋',
                 'Apakah ada yang bisa dibantu?'
             ];
-
             // Fungsi untuk menampilkan pesan dengan delay
             function displayMessages() {
-                let index = 0;
+                let index = 1;
                 statusText.textContent = 'Mengetik...';
 
                 const interval = setInterval(() => {
@@ -298,23 +310,25 @@
                         const messageElement = document.createElement('div');
                         messageElement.classList.add('bg-light', 'rounded', 'p-2');
                         messageElement.setAttribute('data-chat', 'true');
-                        messageElement.innerHTML = `<p class="mb-0">${messages[index]}</p>`;
+                        messageElement.innerHTML = `<p class="mb-0">${messages[index-1]}</p>`;
                         chatMessages.appendChild(messageElement);
                         index++;
                     } else {
+                        const messageElement = document.createElement('div');
+                        messageElement.classList.add('bg-light', 'rounded', 'p-2');
+                        messageElement.setAttribute('data-chat', 'true');
+                        messageElement.innerHTML = `<p class="mb-0">${messages[index-1]}</p>`;
+                        chatMessages.appendChild(messageElement);
                         statusText.textContent = 'Online';
                         clearInterval(interval);
                     }
                 }, 1000);
             }
-
             // Fungsi untuk menghapus semua pesan
             function clearMessages() {
                 const chatElements = chatMessages.querySelectorAll('[data-chat="true"]');
                 chatElements.forEach(element => element.remove());
             }
-
-            // Toggle chat window visibility
             toggleChatBtn.addEventListener('click', () => {
                 const isHidden = chatWindow.classList.toggle('d-none');
                 if (!isHidden) {
@@ -323,8 +337,6 @@
                 chatBadge.classList.toggle('d-none', !isHidden);
                 clearMessages();
             });
-
-            // Close chat window
             closeChatBtn.addEventListener('click', () => {
                 chatWindow.classList.add('d-none');
                 clearMessages();

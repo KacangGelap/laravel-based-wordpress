@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Models\post;
+use Illuminate\Support\Facades\Schema;
 class beritaServiceProvider extends ServiceProvider
 {
     /**
@@ -19,7 +20,13 @@ class beritaServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $latest = post::orderBy('created_at','desc')->get();
-        view()->share('latest', $latest);
+       // Check if the posts table exists before querying
+        if (Schema::hasTable('post')) {
+            $latest = Post::orderBy('created_at', 'desc')->get();
+            view()->share('latest', $latest);
+
+            $trending = Post::orderBy('pengunjung', 'desc')->get();
+            view()->share('trending', $trending);
+        }
     }
 }

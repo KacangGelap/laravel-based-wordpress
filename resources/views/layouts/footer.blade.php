@@ -13,10 +13,10 @@
                 <h6>{{config('app.name', 'Nama Website')}}</h6>
                 <p>{{$master->alamat ?? 'Alamat Website'}}</p>
                 <i class="bi bi-telephone me-2"></i><span>{{$master->telp ?? '+62 ...'}}</span><br>
-                <a class="text-white" href="mailto:{{$master->email}}"><i class="bi bi-envelope me-2"></i>{{$master->email ?? 'Email Address'}}</a><br>
-                <a class="text-white" href="https://facebook.com/{{$master->facebook}}"><i class="bi bi-facebook me-2"></i>{{ucfirst($master->facebook ?? 'Facebook')}}</a><br>
-                <a class="text-white" href="https://instagram.com/{{$master->instagram}}"><i class="bi bi-instagram me-2"></i>{{ucfirst($master->instagram ?? 'Instagram')}}</a><br>
-                <a class="text-white" href="https://youtube.com/{{$master->youtube}}"><i class="bi bi-youtube me-2"></i>{{ucfirst($master->youtube ?? 'Youtube')}}</a><br>
+                <a class="text-white" href="mailto:{{$master->email ?? ''}}"><i class="bi bi-envelope me-2"></i>{{$master->email ?? 'Email Address'}}</a><br>
+                <a class="text-white" href="https://facebook.com/{{$master->facebook ?? ''}}"><i class="bi bi-facebook me-2"></i>{{ucfirst($master->facebook ?? 'Facebook')}}</a><br>
+                <a class="text-white" href="https://instagram.com/{{$master->instagram ?? ''}}"><i class="bi bi-instagram me-2"></i>{{ucfirst($master->instagram ?? 'Instagram')}}</a><br>
+                <a class="text-white" href="https://youtube.com/{{$master->youtube ?? ''}}"><i class="bi bi-youtube me-2"></i>{{ucfirst($master->youtube ?? 'Youtube')}}</a><br>
             </div>
             <div class="mt-2">
                 <h6 class="border-bottom">Statistik Pengunjung Website</h6>
@@ -27,7 +27,7 @@
             </div>
         </div>  
         <div class="col-md-3 mb-3 d-flex align-items-stretch">
-                {!! $master->maps !!}
+                {!! $master->maps ?? '<iframe> </iframe>'!!}
         </div>
         <div class="col-md-3 mb-3">
             <img src="/img/112.jpeg" frameborder="0" class="w-100">

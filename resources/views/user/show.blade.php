@@ -125,12 +125,15 @@
                         <hr>                        
                         <div class="col-md-12">
                             <label class="labels" for="password">Kata Sandi</label>
-                            <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Isi jika kata sandi ingin diganti">
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Isi jika kata sandi ingin diganti {{\Auth::user()->role === 'admin' ?'min. 8 ch' :''}}">
+                            {{-- <p class="text-danger mb-0">Password harus meliputi huruf besar, huruf kecil, angka serta simbol dengan minimal 8 karakter</p> --}}
+                            @if(Auth::user()->role === 'editor')
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            @endif
                         </div>
                         <div class="col-md-12">
                             <label class="labels" for="password-confirm">Ulangi Kata Sandi</label>

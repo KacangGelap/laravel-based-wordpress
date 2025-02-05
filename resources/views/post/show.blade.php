@@ -25,33 +25,30 @@
             </div>
             <!-- Post Content -->
             <div class="mb-4">
-                <img src="{{ $post->media1 }}" alt="Post Image" class="w-100 img-fluid rounded mb-3">
-                <p class="text-muted" style="font-size: 14px">{{ $post->deskripsi }}</p>
+                <img src="{{ asset('storage/' . $post->media1) }}" alt="Post Image" class="w-100 img-fluid rounded mb-3">
+                <p class="text-muted" style="font-size: 14px; text-align:justify;">{!!nl2br(e($post->deskripsi)) !!}</p>
                 @php
-                    // Count the number of non-null media items
                     $mediaCount = collect([$post->media2, $post->media3, $post->media4])->filter()->count();
-                    // Determine the column size based on the media count
-                    $colSize = $mediaCount > 0 ? 12 / $mediaCount : 12; // Divide 12 by the count or default to 12
+                    $colSize = $mediaCount > 0 ? 12 / $mediaCount : 12;
                 @endphp
 
                 <div class="row justify-content-evenly">
                     @if($post->media2)
                         <div class="col-md-{{ $colSize }}">
-                            <img src="{{ $post->media2 }}" alt="Additional Image" class="img-fluid rounded mb-3">
+                            <img src="{{ asset('storage/' . $post->media2) }}" alt="Additional Image" class="h-100 img-fluid rounded mb-3" style="object-fit: cover" data-bs-toggle="modal" data-bs-target="#mediaModal" data-bs-image="{{ asset('storage/' . $post->media2) }}">
                         </div>
                     @endif
                     @if($post->media3)
                         <div class="col-md-{{ $colSize }}">
-                            <img src="{{ $post->media3 }}" alt="Additional Image" class="img-fluid rounded mb-3">
+                            <img src="{{ asset('storage/' . $post->media3) }}" alt="Additional Image" class="h-100 img-fluid rounded mb-3" style="object-fit: cover" data-bs-toggle="modal" data-bs-target="#mediaModal" data-bs-image="{{ asset('storage/' . $post->media3) }}">
                         </div>
                     @endif
                     @if($post->media4)
                         <div class="col-md-{{ $colSize }}">
-                            <img src="{{ $post->media4 }}" alt="Additional Image" class="img-fluid rounded mb-3">
+                            <img src="{{ asset('storage/' . $post->media4) }}" alt="Additional Image" class="h-100 img-fluid rounded mb-3" style="object-fit: cover" data-bs-toggle="modal" data-bs-target="#mediaModal" data-bs-image="{{ asset('storage/' . $post->media4) }}">
                         </div>
                     @endif
                 </div>
-
             </div>
         </div>
 
@@ -59,4 +56,33 @@
         @include('layouts.sidebar')
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="mediaModal" aria-labelledby="mediaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mediaModalLabel">Image Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" class="w-100 img-fluid" alt="Media">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+         const modal = document.getElementById('mediaModal');
+         const modalImage = document.getElementById('modalImage');
+ 
+         modal.addEventListener('show.bs.modal', function (event) {
+             const button = event.relatedTarget; 
+             const imageUrl = button.getAttribute('data-bs-image');
+             modalImage.src = imageUrl; 
+         });
+     });
+ </script>
 @endsection
+
+

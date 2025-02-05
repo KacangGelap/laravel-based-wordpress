@@ -36,6 +36,7 @@ class UserController extends Controller
             // dd($user);
             $user->save();
         } catch (\Throwable $th) {
+            throw $th;
             return redirect()->route('user.index')->with('gagal','data gagal ditambah');
         }
         return redirect()->route('user.index')->with('sukses','data berhasil ditambah');

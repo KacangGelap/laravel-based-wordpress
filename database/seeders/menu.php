@@ -19,5 +19,17 @@ class Menu extends Seeder
             ['menu' => 'INFORMASI'],
             ['menu' => 'LAYANAN'],
         ]);
+        DB::table('kategori')->insert([
+            ['kategori' => 'Kegiatan'],
+            ['kategori' => 'Informasi'],
+            ['kategori' => 'Apel Pagi'],
+            ['kategori' => 'Kerja Bakti'],
+        ]);
+        DB::table('filecat')->insert([
+            ['cat' => 'Peraturan'],
+            ['cat' => 'SOP'],
+            ['cat' => 'Alur Pelayanan'],
+            ['cat' => 'Pamflet Edukasi'],
+        ]);
     }
 }

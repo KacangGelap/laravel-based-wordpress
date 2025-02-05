@@ -28,8 +28,8 @@
                         <a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 0])}}" class="badge text-decoration-none text-bg-primary mx-1"><i class="bi-file-earmark me-1"></i>File</a>
                         <a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 1])}}" class="badge text-decoration-none text-bg-warning mx-1"><i class="bi-image me-1"></i>Gambar</a>
                         <a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 2])}}" class="badge text-decoration-none text-bg-secondary mx-1"><i class="bi-card-text me-1"></i>Halaman</a>
-                        @if($isExists === false)<a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 3])}}" class="badge text-decoration-none text-bg-success mx-1"><i class="bi-diagram-3 me-1"></i>Identitas PD/UPT</a>@endif
-                        <a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 4])}}" class="badge text-decoration-none text-bg-info mx-1"><i class="bi-globe me-1"></i>Link Medsos</a>
+                        @if($isExists === false && strcasecmp($submenu->menu->menu, "tentang") == 0)<a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 3])}}" class="badge text-decoration-none text-bg-success mx-1"><i class="bi-diagram-3 me-1"></i>Identitas PD/UPT</a>@endif
+                        <a href="{{route('subsubmenu.create',['submenu' => $submenu->id, 'tambah' => 4])}}" class="badge text-decoration-none text-bg-info mx-1"><i class="bi-globe me-1"></i>Link Medsos / GForm</a>
                     </div>
                 </div>
                 
@@ -56,21 +56,68 @@
                                     <td style="font-size: 12px">{{$loop->iteration}}</td>
                                     <td class="text-sm-start" style="font-size: 12px">{{ $item->sub_sub_menu }}</td>
                                     <td style="font-size: 12px"> {{$item->type}}</td>
-                                    <td style="font-size: 12px"></td>
-                                    <td class="" style="font-size: 12px">
+                                    <td style="font-size: 12px">
                                         @if($item->type == 'dropdown')
-                                        <a href="{{ route('subsubsubmenu.index', ['subsubmenu' => $item->id]) }}" class="btn btn-secondary mx-2">
-                                            <i class="bi-eye"></i> Lihat List Sub-Sub-Sub-Menu
+                                            Jumlah Sub-Sub-Sub-Menu : {{$item->subSubSubMenus->count()}}
+                                        @elseif($item->type == 'page')
+                                            Halaman {{$item->filetype}}
+                                        @elseif($item->type == 'link')
+                                            @if($item->filetype == 'video')
+                                                {{__('Berisi Link YouTube')}}
+                                            @else
+                                                {{$item->link}}
+                                            @endif
+                                        @endif
+                                    </td>
+                                    <td class="d-md-flex" style="font-size: 12px">
+                                        @if($item->type == 'dropdown')
+                                        <a href="{{ route('subsubsubmenu.index', ['subsubmenu' => $item->id]) }}" class="btn btn-secondary mx-2 col" style="font-size: 12px">
+                                            <i class="bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu Bertingkat</span>
+                                        </a>
+                                        <a href="{{route('subsubmenu.edit', ['submenu' =>$item->submenu->id , 'subsubmenu'=>$item->id, 'edit' => 5])}}" class="btn btn-warning mx-2 col" style="font-size: 12px">
+                                            <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit-Sub-Sub-Menu</span>
                                         </a>
                                         @elseif($item->type == 'page')
-                                        <a href="{{route('page.show',['id'=>$item->halaman->first()->id])}}" class="btn btn-secondary mx-2">
-                                            <i class="bi bi-box-arrow-up-right"></i> Lihat Tampilan Sub-Sub-menu
+                                        <a href="{{route('page.show',['id'=>$item->halaman->first()->id])}}" class="btn btn-secondary mx-2 col" style="font-size: 12px">
+                                            <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu</span>
                                         </a>
-                                        @elseif($item->type == 'link')
-                                        <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mx-2">
-                                            <i class="bi bi-box-up-right"></i> Tujui Link
-                                        </a>
+                                        @if($item->filetype == 'pdf')
+                                            <a href="{{ route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu' => $item->id, 'edit'=>0]) }}" class="btn btn-warning mx-2 col" style="font-size: 12px">
+                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
+                                            </a>
+                                        @elseif($item->filetype == 'foto')
+                                            <a href="{{ route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu' => $item->id, 'edit'=>1]) }}" class="btn btn-warning mx-2 col" style="font-size: 12px">
+                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
+                                            </a>
+                                        @else
+                                            <a href="{{ route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu' => $item->id, 'edit'=>2]) }}" class="btn btn-warning mx-2 col" style="font-size: 12px">
+                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
+                                            </a>
                                         @endif
+                                        @elseif($item->type == 'id.pdupt')
+                                            <a href="{{route('page.show',['id'=>$item->halaman->first()->id])}}" class="btn btn-secondary mx-2 col" style="font-size: 12px">
+                                                <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu</span>
+                                            </a>
+                                            <a href="{{route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu'=>$item->id, 'edit'=>3])}}"class="btn btn-warning mx-2 col" style="font-size: 12px">
+                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
+                                            </a>
+                                        @elseif($item->type == 'link')
+                                            @if($item->filetype == 'video')
+                                            <a href="'https://youtu.be/{{$data->link}}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mx-2 col" style="font-size: 12px">
+                                                <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu</span>
+                                            </a>
+                                            @else
+                                            <a href="{{$data->link}}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mx-2 col" style="font-size: 12px">
+                                                <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu</span>
+                                            </a>
+                                            @endif
+                                            <a href="{{ route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu' => $item->id, 'edit'=>4]) }}" class="btn btn-warning mx-2 col" style="font-size: 12px">
+                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
+                                            </a>
+                                        @endif
+                                        <button class="btn btn-danger mx-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $item->id }}">
+                                            <i class="bi-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -80,4 +127,44 @@
             </div>
         </div>
     </div>
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Penghapusan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus data ini?                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @foreach ($subsubmenu as $item)
+        <form id="hapus-{{ $item->id }}" action="{{ route('subsubmenu.delete', ['submenu'=>$item->submenu->id, 'subsubmenu'=>$item->id]) }}" method="POST" class="d-none">
+            @csrf
+            <input type="hidden" name="_method" value="DELETE">
+        </form>
+    @endforeach
+    <script>
+
+        const deleteModal = document.getElementById('deleteModal');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        let Id = null;
+
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            Id = button.getAttribute('data-id');
+        });
+        confirmDeleteBtn.addEventListener('click', function () {
+            if (Id) {
+                document.getElementById('hapus-' + Id).submit();
+            }
+        });
+    </script>
 @endsection

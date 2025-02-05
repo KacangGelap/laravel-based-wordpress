@@ -12,12 +12,19 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div>
-                            <h5>Jumlah Kategori Berita :</h5>
-                            <p class="mb-1">Kegiatan = {{$kegiatan}}</p>
-                            <p class="mb-1">Informasi = {{$informasi}}</p>
-                            <p class="mb-1">Apel Pagi = {{$apelPagi}}</p>
-                            <p class="mb-1">Kerja Bakti = {{$kerjaBakti}}</p>
+                        <div class="container">
+                            <div class="d-md-flex justify-content-between">
+                                <h5>Jumlah Kategori Berita :</h5>
+                                @if(\Auth::user()->role === 'admin')
+                                <div class="">
+                                    <a href="{{route('post.category.create')}}" class="btn btn-primary"> Tambah Kategori Berita </a>
+                                </div>
+                                @endif
+                            </div>
+                            @foreach ($kategori as $item)
+                                <p class="mb-1">@if(\Auth::user()->role === 'admin')<a href="{{route('post.category.edit', $item->id)}}" class="btn btn-warning" style="font-size: 10px"><i class="bi-pencil"></i></a> <a class="btn btn-danger" onclick="event.preventDefault();document.getElementById('delete-category-{{$item->id}}').submit();" style="font-size: 10px"><i class="bi-trash"></i></a>@endif {{$item->kategori}} = {{$item->post->count()}}</p>    
+                                @if(\Auth::user()->role === 'admin')<form id="delete-category-{{$item->id}}" action="{{ route('post.category.delete', $item->id) }}" method="POST" class="d-none">@csrf @method('DELETE') </form>@endif
+                            @endforeach
                         </div>
                         <div class="table-responsive text-center">
                             <table class="table table-striped table-hover">

@@ -11,18 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('users', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->string('name');
-        //     $table->string('email')->unique();
-        //     $table->string('no_hp')->nullable();
-        //     $table->timestamp('email_verified_at')->nullable();
-        //     $table->enum('role',['admin','editor','contributor']);
-        //     $table->string('password');
-        //     $table->longText('profile')->charset('binary')->nullable();
-        //     $table->rememberToken();
-        //     $table->timestamps();
-        // });
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique()->nullable();
+            $table->string('username')->unique();
+            $table->string('no_hp')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->enum('role',['admin','editor','contributor'])->default('editor');
+            $table->enum('opd',['Diskominfo','Korpri','Pkk','Setda','Setwan','Itda','DIsdikbud','Dinkes','Dpupr','Dpkpp','Dpkp','Dspm','Dpmptsp','Disnaker','Dlh','Disdukcapil','Dishub','Disporapar','Dkukmp','Dpk','Dkppp','Dppkb','Satpol PP','Bkpsdm','Bapperinda','Bapenda','Bpkad','Bakesbangpol','Bpbd','Rsud','Ukpbj','Puskesmas Bontang Selatan 1','Puskesmas Bontang Selatan 2','Puskesmas Bontang Utara 1','Puskesmas Bontang Utara 2','Puskesmas Bontang Barat','Puskesmas Bontang Lestari','Laboratorium Kesehatan','Kec-Bontang Barat','Kec-Bontang Utara','Kec-Bontang Selatan','Kel-Kanaan','Kel-Belimbing','Kel-Gunung Telihan','Kel-Bontang Baru','Kel-Api-Api','Kel-Gunung Elai','Kel-Guntung','Kel-Loktuan','Kel-Tanjung Laut','Kel-Tanjung Laut Indah','Kel-Berbas Tengah','Kel-Berbas Pantai','Kel-Satimpo','Kel-Bontang Lestari']);
+            $table->string('password');
+            $table->longText('profile')->charset('binary')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
+        });
     }
 
     /**

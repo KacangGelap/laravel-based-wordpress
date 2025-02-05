@@ -23,7 +23,15 @@ class SocialMediaUrl implements Rule
             if (preg_match($pattern, $value, $matches)) {
                 $this->platform = $platform;
                 $this->isVideo = $platform === 'youtube' && (strpos($matches[3], 'watch?v=') !== false || strpos($matches[3], 'youtu.be/') !== false);
-                $this->identifier = $this->isVideo ? $matches[5] : ($matches[3] ?? $matches[4]);
+                 // Extract identifier correctly based on platform
+                if ($platform === 'x') {
+                    $this->identifier = $matches[4] ?? ''; // X's username is in matches[4]
+                } elseif ($platform === 'youtube') {
+                    $this->identifier = $this->isVideo ? ($matches[5] ?? '') : ($matches[3] ?? $matches[4] ?? '');
+                } else {
+                    $this->identifier = $matches[3] ?? ''; // Other platforms use matches[3]
+                }
+                // dd($this->identifier);
                 return true;
             }
         }

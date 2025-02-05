@@ -27,28 +27,47 @@
                             <span class="fs-5 d-none d-sm-inline">Dashboard</span>
                         </p>
                         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                            @if(\Auth::user()->role === 'admin')
                             <li>
                                 <a href="{{route('user.index')}}" class="nav-link px-0 align-middle text-white">
                                     <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Pengguna</span> </a>
                             </li>
+                            @endif
                             <li>
-                                <a href=" {{ route('template.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-pencil-square"></i> <span class="ms-1 d-none d-sm-inline">Banner</span>
+                                <a href=" {{ route('banner.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-image-fill"></i> <span class="ms-1 d-none d-sm-inline">Banner</span>
                                 </a>
                             </li>
+                            @if(\Auth::user()->role === 'admin')
                             <li>
                                 <a href=" {{ route('menu.index') }} " class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-file-earmark-code"></i> <span class="ms-1 d-none d-sm-inline">Navigasi</span>
                                 </a>
                             </li>
                             <li>
-                                <a href=" {{ route('template.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-pencil-square"></i> <span class="ms-1 d-none d-sm-inline">Galeri Geser</span>
+                                <a href=" {{ route('slider.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-images"></i> <span class="ms-1 d-none d-sm-inline">Galeri Geser</span>
                                 </a>
                             </li>
+                            @endif
                             <li class="nav-item">
                                 <a href=" {{ route('post.index') }} " class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-camera"></i> <span class="ms-1 d-none d-sm-inline">Berita</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href=" {{ route('kalender.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-calendar"></i> <span class="ms-1 d-none d-sm-inline">Agenda Kegiatan</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href=" {{ route('unduh.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-download"></i> <span class="ms-1 d-none d-sm-inline">File Unduhan</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href=" {{ route('link.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-link-45deg"></i> <span class="ms-1 d-none d-sm-inline">Link Terkait</span>
                                 </a>
                             </li>
                             <li class="nav-item">
