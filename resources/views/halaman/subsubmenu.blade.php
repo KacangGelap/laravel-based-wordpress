@@ -103,11 +103,11 @@
                                             </a>
                                         @elseif($item->type == 'link')
                                             @if($item->filetype == 'video')
-                                            <a href="'https://youtu.be/{{$data->link}}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mx-2 col" style="font-size: 12px">
+                                            <a href="'https://youtu.be/{{$item->link}}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mx-2 col" style="font-size: 12px">
                                                 <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu</span>
                                             </a>
                                             @else
-                                            <a href="{{$data->link}}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mx-2 col" style="font-size: 12px">
+                                            <a href="{{$item->link}}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mx-2 col" style="font-size: 12px">
                                                 <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu</span>
                                             </a>
                                             @endif

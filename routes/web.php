@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
+| Here is where you can register web routes for your Application. These
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
 */
 Auth::routes(['register' => false, 'password.request'=> false]);
-Route::post('/login',[App\Http\Controllers\Auth\loginController::class, 'Authenticate'])->name('masuk');
+Route::post('/login',[App\Http\Controllers\Auth\LoginController::class, 'Authenticate'])->name('masuk');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group( function () {
@@ -82,7 +82,7 @@ Route::middleware(['auth'])->group( function () {
     Route::put('/post/update/{post}', [App\Http\Controllers\beritaController::class, 'update'])->name('post.update');
     Route::delete('/post/delete/{post}', [App\Http\Controllers\beritaController::class, 'destroy'])->name('post.delete');
 
-    Route::get('/banner',[App\Http\Controllers\layoutController::class, 'index'])->name('banner.index');        
+    Route::get('/banner',[App\Http\Controllers\layoutController::class, 'index'])->name('banner.index');
     Route::get('/banner/create',[App\Http\Controllers\layoutController::class, 'create'])->name('banner.create');
     Route::post('/banner/create',[App\Http\Controllers\layoutController::class, 'store'])->name('banner.store');
     Route::get('/banner/edit/{banner}', [App\Http\Controllers\layoutController::class, 'edit'])->name('banner.edit');

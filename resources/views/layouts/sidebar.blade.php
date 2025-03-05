@@ -44,11 +44,14 @@
     <div class="tab-content mt-3">
         <!-- Link Terkait Tab Content -->
         <div class="tab-pane fade show active" id="link" role="tabpanel">
-            <div class="row mb-3">
+            <div class="row mb-3 align-items-center justify-content-center">
+		
                 @foreach ($link_terkait as $item)
-                    <a href="{{$item->url}}" target="_blank" rel="noopener noreferrer" class="col-6 text-decoration-none" style="background-image:url({{asset("storage/$item->media")}});background-size:cover; background-position:50% 50%;height:250px">
-                        &nbsp;
+		<div class="d-md-flex justify-content-center">
+                    <a href="{{$item->url}}" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                        <img src="{{ asset("storage/$item->media")}}" class="img-fluid" style="object-fit: cover;object-position:50% 50%">
                     </a>
+		</div>
                 @endforeach
             </div>
         </div>

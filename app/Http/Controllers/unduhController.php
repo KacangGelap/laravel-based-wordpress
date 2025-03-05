@@ -11,6 +11,14 @@ class unduhController extends Controller
     private function storeFile($file)
     {
         $filename = $file->getClientOriginalName();
+	if($file->getMimeType() === 'application/pdf'){
+	   $path = 'pdfs/'.$filename;
+	}else{
+	   $path = 'images/'.$filename;
+	}
+	if(Storage::disk('public')->exists($path)){
+	  Storage::disk('public')->delete($path);
+	}
         return $file->storeAs( $file->getMimeType() === 'application/pdf' ? 'pdfs' : 'images', $filename, 'public');
     }
     public function download($id){

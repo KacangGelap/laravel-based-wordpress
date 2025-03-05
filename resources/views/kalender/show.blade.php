@@ -21,7 +21,7 @@
                             @foreach ($data as $item)
                                 <tr style="font-size: 12px">
                                     <td>{{$loop->iteration}}</td>
-                                    <td>{{$item->nama_kegiatan}}</td>
+                                    <td style="text-align: justify;">{{$item->nama_kegiatan}}</td>
                                     <td>{{$item->penyelenggara}}</td>
                                     @php
                                         $tgl_mulai = Carbon\Carbon::parse($item->mulai)->translatedFormat('d M Y');
@@ -30,7 +30,7 @@
                                     <td>{{$tgl_mulai === $tgl_selesai ? $tgl_mulai : "$tgl_mulai - $tgl_selesai"}}</td>
                                     <td>{{Carbon\Carbon::parse($item->mulai)->translatedFormat('H:i T')}}</td>
                                     <td>{{Carbon\Carbon::parse($item->selesai)->translatedFormat('H:i T')}}</td>
-                                    <td>{{"$item->lokasi $item->alamat"}}</td>
+                                    <td style="text-align: justify;">{{"$item->lokasi, $item->alamat"}}</td>
                                     <td>{{$item->menghadiri}}</td>
                                 </tr>
                             @endforeach

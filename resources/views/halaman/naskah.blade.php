@@ -88,10 +88,10 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="media" class="col-md-4 col-form-label text-md-end">Masukkan Gambar / File Pdf<span class="text-danger">*</span></label>
+                            <label for="media" class="col-md-4 col-form-label text-md-end">Masukkan Gambar / File Pdf<span class="text-danger" required>*</span></label>
 
                             <div class="col-md-6">
-                                <input id="media" type="file" class="form-control @error('media') is-invalid @enderror" name="media" value="{{ old('media') }}" {{!isset($data) ? 'required' : ''}} autocomplete="media" autofocus>
+                                <input id="media" type="file" class="form-control @error('media') is-invalid @enderror" name="media" value="{{ old('media') }}" {{!isset($data) ? 'required': ''}} autocomplete="media" autofocus>
 
                                 @error('media')
                                     <span class="invalid-feedback" role="alert">
@@ -133,6 +133,19 @@
                                 <input id="tambahan3" type="file" class="form-control @error('tambahan3') is-invalid @enderror" name="tambahan3" value="{{ old('tambahan3') }}" autocomplete="tambahan3" autofocus>
 
                                 @error('tambahan3')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+			<div class="row mb-3">
+                            <label for="link" class="col-md-4 col-form-label text-md-end">Link Youtube</label>
+
+                            <div class="col-md-6">
+                                <input id="link" type="text" class="form-control @error('link') is-invalid @enderror" name="link" value="{{ $data->link ?? old('link') }}" autocomplete="link" autofocus>
+
+                                @error('link')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

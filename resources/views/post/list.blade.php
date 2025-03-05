@@ -9,7 +9,7 @@
                     @foreach ($berita as $item)
                         <a href="{{route('post.view',['post'=> $item->id])}}" class="text-decoration-none text-dark">
                             <div class="d-md-flex justify-content-between">
-                                <span class="w-100 rounded mx-4" style="background-image: url({{asset('storage/'.$item->media1)}}); background-size:cover; background-position:50% 50%;height:300px">&nbsp;</span>
+                                <img class="w-100 rounded mx-4" height="300px" style="object-fit:cover" src="{{asset('storage/'.$item->media1)}}">
                                 <span>
                                     <h5 class="d-md-flex align-items-center">{{$item->judul}} <span class="ms-4 text-danger" style="font-size: 12px">{{$item->kategori->kategori}}</span></h5>
                                     <p>

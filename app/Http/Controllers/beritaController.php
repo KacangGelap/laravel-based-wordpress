@@ -11,6 +11,9 @@ class beritaController extends Controller
     private function storeFile($file)
     {
         $filename = $file->getClientOriginalName();
+	if(Storage::disk('public')->exists('images/'.$filename)){
+	   Storage::disk('public')->delete('images/'.$filename);
+	}
         return $file->storeAs('images', $filename, 'public');
     }
     public function index(){

@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\layout, App\Models\post, App\Models\submenu, App\Models\subsubmenu, App\Models\subsubsubmenu;
+use App\Rules\YoutubeUrl;
 class layoutController extends Controller
 {
     private function storeFile($file)
     {
         $filename = $file->getClientOriginalName();
+	$path = 'images/'.$filename;
+	if (\Storage::disk('public')->exists($path)){
+	    \Storage::disk('public')->delete($path);
+	}
         return $file->storeAs('images', $filename, 'public');
     }
     public function index(){
@@ -21,6 +27,20 @@ class layoutController extends Controller
         return view('template.index')->with('data', $layout);
     }
     public function galeri(){
+	$isYt = new YoutubeUrl();
+	$link1 = submenu::select('link')->where('link','!=', null)->get();
+	$link2 = subsubmenu::select('link')->where('link','!=', null)->get();
+	$link3 = subsubsubmenu::select('link')->where('link','!=',null)->get();
+	$links = $link1->merge($link2)->merge($link3);
+	$video = [];
+	foreach($links as $data){
+	   $filterYt = 'https://youtu.be/'.$data->link;
+	   
+		if($isYt->passes('link', $filterYt)){
+		   $video[] = $isYt->videoId;
+		}
+	}
+	
         $berita = post::all();
         $submenu = submenu::where('type' , 'page')
                     ->where('filetype', '!=', 'pdf')
@@ -28,13 +48,15 @@ class layoutController extends Controller
                     ->where('type', '!=', 'id.pdupt')
                     ->where('type', '!=', 'dropdown')
                     ->where('type', '!=', 'link')
-                    ->get();
+                    ->orderBy('created_at', 'desc')->limit(5)
+		    ->get();
         $subsubmenu = subsubmenu::where('type' , 'page')
                     ->where('filetype', '!=', 'pdf')
                     ->orWhere('filetype', null)
                     ->where('type', '!=', 'id.pdupt')
                     ->where('type', '!=', 'dropdown')
                     ->where('type', '!=', 'link')
+		    ->orderBy('created_at', 'desc')->limit(5)
                     ->get();
         $subsubsubmenu = subsubsubmenu::where('type' , 'page')
                     ->where('filetype', '!=', 'pdf')
@@ -42,8 +64,9 @@ class layoutController extends Controller
                     ->where('type', '!=', 'id.pdupt')
                     ->where('type', '!=', 'dropdown')
                     ->where('type', '!=', 'link')
+		    ->orderBy('created_at', 'desc')->limit(5)
                     ->get();
-        return view('post.galeri')->with('berita',$berita)->with('submenu',$submenu)->with('subsubmenu', $subsubmenu)->with('subsubsubmenu',$subsubsubmenu);
+        return view('post.galeri')->with('berita',$berita)->with('submenu',$submenu)->with('subsubmenu', $subsubmenu)->with('subsubsubmenu',$subsubsubmenu)->with('video', $video);
     }
     public function create(){
         $data = layout::all();
@@ -108,7 +131,7 @@ class layoutController extends Controller
                 return redirect()->route('slider.index')->with('sukses', 'galeri geser berhasil diubah');
             }
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
             return back()->with('gagal', 'Terjadi Kesalahan');
         }
     }

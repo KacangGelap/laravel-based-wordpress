@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\menu, App\Models\submenu, App\Models\subsubmenu, App\Models\subsubsubmenu, App\Models\halaman;
 use App\Rules\YoutubeUrl, App\Rules\GoogleMapsUrl, App\Rules\SafeUrl, App\Rules\SocialMediaUrl;
 use App\Helpers\SanitizeHelper;
@@ -12,6 +13,14 @@ class halamanController extends Controller
     private function storeFile($file)
     {
         $filename = $file->getClientOriginalName();
+	if($file->getMimeType() === 'application/pdf'){
+	  $path = 'pdfs/'.$filename;
+	}else{
+	  $path = 'image/'.$filename;
+	}
+	if(\Storage::disk('public')->exists($path)){
+	   \Storage::disk('public')->delete($path);
+	}
         return $file->storeAs( $file->getMimeType() === 'application/pdf' ? 'pdfs' : 'images', $filename, 'public');
     }
     
@@ -281,6 +290,7 @@ class halamanController extends Controller
                 $rules['tambahan2'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
                 $rules['tambahan3'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
                 $rules['text'] = 'required_unless:filetype,null|string';
+		$rules['link'] = ['nullable', 'string', new YoutubeUrl];
             }
         }
 
@@ -355,6 +365,12 @@ class halamanController extends Controller
                     $data->tambahan2 = $request->has('tambahan2') ? $this->storeFile($validatedData['tambahan2']) : null;
                     $data->tambahan3 = $request->has('tambahan3') ? $this->storeFile($validatedData['tambahan3']) : null;
                     $data->text = $validatedData['text'];
+		    if($request->has('link')){
+			$isYt = new YoutubeUrl();
+			if($isYt->passes('link', $validatedData['link'] ?? null)){
+                    		$data->link = $isYt->videoId ?? null;
+                	}
+		    }
                     // dd($data);
                 }
             }
@@ -559,6 +575,7 @@ class halamanController extends Controller
                 $rules['tambahan2'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
                 $rules['tambahan3'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
                 $rules['text'] = 'nullable|string';
+		$rules['link'] = ['nullable', 'string', new YoutubeUrl];
             }
         }
         // Additional rules for 'link' type
@@ -648,7 +665,6 @@ class halamanController extends Controller
                     : $data->tambahan3,
 
                 // 'yt_id' => $validatedData['yt_id'] ?? $data->yt_id,
-                'link' => $validatedData['link'] ?? $data->link,
                 'alamat' => $validatedData['alamat'] ?? $data->alamat,
                 'telp' => $validatedData['telp'] ?? $data->telp,
                 'wa' => $validatedData['wa'] ?? $data->wa,
@@ -663,6 +679,18 @@ class halamanController extends Controller
                 'maps' => $validatedData['maps'] ?? $data->maps,
                 'text' => $validatedData['text'] ?? $data->text,
             ]);
+	    if($request->has('link')){
+		$isYt = new YoutubeUrl();
+		if($isYt->passes('link', $validatedData['link'] ?? null)){
+		   $data->update([
+		     'link' => $isYt->videoId ?? $data->link
+		   ]);
+		}else{
+		   $data->update([
+		     'link' => $data->link
+		   ]);
+		}
+	    }
             if($routeName === 'submenu.update'){
                 return redirect()->route('submenu.index', $menu_id)->with('sukses', 'submenu berhasil dibuat');
             }

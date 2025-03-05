@@ -30,7 +30,7 @@
                         <a href="{{route('subsubsubmenu.create',['subsubmenu' => $subsubmenu->id, 'tambah' => 0])}}" class="badge text-decoration-none text-bg-primary mx-1"><i class="bi-file-earmark me-1"></i>File</a>
                         <a href="{{route('subsubsubmenu.create',['subsubmenu' => $subsubmenu->id, 'tambah' => 1])}}" class="badge text-decoration-none text-bg-warning mx-1"><i class="bi-image me-1"></i>Gambar</a>
                         <a href="{{route('subsubsubmenu.create',['subsubmenu' => $subsubmenu->id, 'tambah' => 2])}}" class="badge text-decoration-none text-bg-secondary mx-1"><i class="bi-card-text me-1"></i>Halaman</a>
-                        @if($isExists === false && strcasecmp($subsubmenu->submenu->menu->menu, "tentang") == 0)<a href="{{route('subsubmenu.create',['subsubmenu' => $subsubmenu->id, 'tambah' => 3])}}" class="badge text-decoration-none text-bg-success mx-1"><i class="bi-diagram-3 me-1"></i>Identitas PD/UPT</a>@endif
+                        @if($isExists === false && strcasecmp($subsubmenu->submenu->menu->menu, "tentang") == 0)<a href="{{route('subsubsubmenu.create',['subsubmenu' => $subsubmenu->id, 'tambah' => 3])}}" class="badge text-decoration-none text-bg-success mx-1"><i class="bi-diagram-3 me-1"></i>Identitas PD/UPT</a>@endif
                         <a href="{{route('subsubsubmenu.create',['subsubmenu' => $subsubmenu->id, 'tambah' => 4])}}" class="badge text-decoration-none text-bg-info mx-1"><i class="bi-globe me-1"></i>Link Medsos / GForm</a>
                     </div>
                 </div>

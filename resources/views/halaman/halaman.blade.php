@@ -84,29 +84,32 @@
                 @else
                     {{-- Halaman --}}
                     <p class="text-muted" style="font-size: 14px;text-align:justify">{!! nl2br(e($page->text)) !!}</p>
-                    @if(\Storage::mimeType('public/'. $page->media) == 'application/pdf')
-                        <iframe src="{{ asset('storage/'.$page->media) }}" class="min-vh-100 w-100 mb-4"></iframe>
-                    @else
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="{{ asset('storage/'.$page->media) }}">
-                            <img src="{{ asset('storage/'.$page->media) }}" height="350px" class="w-100" style="object-fit: cover">
-                        </a>
-                    @endif
+	            @if(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'.$page->media)) === 'application/pdf')
+    			<iframe src="{{ asset('storage/'.$page->media) }}" class="min-vh-100 w-100 mb-4"></iframe>
+		    @else
+			<a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="{{ asset('storage/'.$page->media) }}">
+        			<img src="{{ asset('storage/'.$page->media) }}" class="w-100 py-4" style="object-fit: cover">
+    			</a>
+    			
+		    @endif
                     @if($page->tambahan1)
                     <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="{{asset('storage/'.$page->tambahan1) }}">
-                        <img src="{{ asset('storage/'.$page->tambahan1) }}" height="350px" class="w-100 my-4" style="object-fit: cover">
+                        <img src="{{ asset('storage/'.$page->tambahan1) }}" class="w-100 my-4" style="object-fit: cover">
                     </a>
                     @endif
                     @if($page->tambahan2)
                     <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="{{ asset('storage/'.$page->tambahan2) }}">
-                        <img src="{{ asset('storage/'.$page->tambahan2) }}" height="350px" class="w-100 my-4" style="object-fit: cover">
+                        <img src="{{ asset('storage/'.$page->tambahan2) }}" class="w-100 my-4" style="object-fit: cover">
                     </a>
                     @endif
                     @if($page->tambahan3)
                     <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="{{asset('storage/'.$page->tambahan3) }}">
-                        <img src="{{asset('storage/'.$page->tambahan3) }}" height="350px" class="w-100 my-4" style="object-fit: cover">
+                        <img src="{{asset('storage/'.$page->tambahan3) }}" class="w-100 my-4" style="object-fit: cover">
                     </a>
                     @endif
-
+		    @if($page->link)
+		    <iframe src="https://youtube.com/embed/{{$page->link}}" class="w-100" height="450px"></iframe>
+		    @endif
                     {{-- Modal for Images --}}
                     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
