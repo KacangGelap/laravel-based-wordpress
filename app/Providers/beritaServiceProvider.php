@@ -29,6 +29,7 @@ class beritaServiceProvider extends ServiceProvider
             view()->share('trending', $trending);
             $getBerita = \Request::has('post') ? Post::findOrFail(\Request::get('post')) : null;
 
+            // metadata
             $title = $getBerita->judul ?? config('app.name');
             view()->share('title', $title);
 
