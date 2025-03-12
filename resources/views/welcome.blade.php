@@ -65,5 +65,5 @@
              modalImage.src = imageUrl;
          });
      });
- </script>r
+ </script>
 @endsection

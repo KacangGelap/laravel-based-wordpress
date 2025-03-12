@@ -40,7 +40,7 @@
                     @endif
                     @if($subsubmenu->count() >= 1)
                         @foreach ($subsubmenu as $data)
-                            @if(\Storage::mimeType('public/'. $data->media) != 'application/pdf')<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
+                        @if(Str::startsWith(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'. $data->media)), 'images/'))<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
 				<img src="{{asset('storage/'.$data->media)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
 			    </a>@endif
                             @if($data->tambahan1)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
@@ -56,7 +56,7 @@
                     @endif
                     @if($subsubsubmenu->count() >= 1)
                         @foreach ($subsubsubmenu as $data)
-                            @if(\Storage::mimeType('public/'. $data->media) != 'application/pdf')<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
+                        @if(Str::startsWith(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'. $data->media)), 'images/'))<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
 				<img src="{{asset('storage/'.$data->media)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
 			    </a>@endif
                             @if($data->tambahan1)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
