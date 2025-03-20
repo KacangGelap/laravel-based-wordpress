@@ -41,14 +41,14 @@ class layoutController extends Controller
 		}
 	}
 	
-        $berita = post::all();
+        $berita = post::limit(5)->get();
         $submenu = submenu::where('type' , 'page')
                     ->where('filetype', '!=', 'pdf')
                     ->orWhere('filetype', null)
                     ->where('type', '!=', 'id.pdupt')
                     ->where('type', '!=', 'dropdown')
                     ->where('type', '!=', 'link')
-                    ->orderBy('created_at', 'desc')->limit(5)
+                    ->orderBy('created_at', 'desc')->limit(2)
 		    ->get();
         $subsubmenu = subsubmenu::where('type' , 'page')
                     ->where('filetype', '!=', 'pdf')
@@ -56,7 +56,7 @@ class layoutController extends Controller
                     ->where('type', '!=', 'id.pdupt')
                     ->where('type', '!=', 'dropdown')
                     ->where('type', '!=', 'link')
-		    ->orderBy('created_at', 'desc')->limit(5)
+		    ->orderBy('created_at', 'desc')->limit(2)
                     ->get();
         $subsubsubmenu = subsubsubmenu::where('type' , 'page')
                     ->where('filetype', '!=', 'pdf')
@@ -64,7 +64,7 @@ class layoutController extends Controller
                     ->where('type', '!=', 'id.pdupt')
                     ->where('type', '!=', 'dropdown')
                     ->where('type', '!=', 'link')
-		    ->orderBy('created_at', 'desc')->limit(5)
+		    ->orderBy('created_at', 'desc')->limit(2)
                     ->get();
         return view('post.galeri')->with('berita',$berita)->with('submenu',$submenu)->with('subsubmenu', $subsubmenu)->with('subsubsubmenu',$subsubsubmenu)->with('video', $video);
     }

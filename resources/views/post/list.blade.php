@@ -8,9 +8,12 @@
                     <hr>
                     @foreach ($berita as $item)
                         <a href="{{route('post.view',['post'=> $item->id])}}" class="text-decoration-none text-dark">
-                            <div class="d-md-flex justify-content-between">
-                                <img class="w-100 rounded mx-4" height="300px" style="object-fit:cover" src="{{asset('storage/'.$item->media1)}}">
-                                <span>
+                            <div class="row justify-content-between">
+                                <span class="col">
+                                    <img class="w-100 rounded px-4" height="300px" style="object-fit:cover" src="{{asset('storage/'.$item->media1)}}">    
+                                </span>
+                                
+                                <span class="col">
                                     <h5 class="d-md-flex align-items-center">{{$item->judul}} <span class="ms-4 text-danger" style="font-size: 12px">{{$item->kategori->kategori}}</span></h5>
                                     <p>
                                         {{Str::limit($item->deskripsi,'100'). ' Baca Selengkapnya'}}

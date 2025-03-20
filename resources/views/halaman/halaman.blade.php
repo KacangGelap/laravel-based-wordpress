@@ -112,7 +112,7 @@
 		    @endif
                     {{-- Modal for Images --}}
                     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="imageModalLabel">Detail Gambar</h5>
@@ -120,7 +120,7 @@
                             </div>
                             <div class="modal-body">
                                 <!-- Full-sized Image in the Modal -->
-                                <img id="modalImage" class="w-100" style="object-fit: contain" />
+                                <img id="modalImage" class="w-100 h-100" style="object-fit: contain" />
                             </div>
                         </div>
                     </div>

@@ -8,73 +8,41 @@
                 <div class="row">
                     @if($berita->count() >= 1)
                         @foreach ($berita as $data)
-                            <a href="{{route('post.view', ['post'=>$data->id])}}" class="col-md-3 rounded text-decoration-none" >
-				<img src="{{asset('storage/'.$data->media1)}}" class="img-fluid" style="height:250px; object-fit:cover">
-			    </a>
-                            @if($data->media2)<a href="{{route('post.view', ['post'=>$data->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->media2)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                            @if($data->media3)<a href="{{route('post.view', ['post'=>$data->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->media3)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                            @if($data->media4)<a href="{{route('post.view', ['post'=>$data->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->media4)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
+                            <a href="{{route('post.view', ['post'=>$data->id])}}" class="pb-2 col-md-3 rounded text-decoration-none" >
+                                <img src="{{asset('storage/'.$data->media1)}}" class="w-100 rounded img-fluid" style="height:250px;object-fit:cover" loading="lazy">
+                            </a>
+                            @if($data->media2)<a href="{{route('post.view', ['post'=>$data->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->media2)}}" class="w-100 rounded img-fluid" style="height:250px;object-fit:cover" loading="lazy">
+                            </a>@endif
+                            @if($data->media3)<a href="{{route('post.view', ['post'=>$data->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->media3)}}" class="w-100 rounded img-fluid" style="height:250px;object-fit:cover" loading="lazy">
+                            </a>@endif
+                            @if($data->media4)<a href="{{route('post.view', ['post'=>$data->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->media4)}}" class="w-100 rounded img-fluid" style="height:250px;object-fit:cover" loading="lazy">
+                            </a>@endif
                         @endforeach
                     @endif
                     @if($submenu->count() >= 1)
                         @foreach ($submenu as $data)
                             @if(Str::startsWith(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'. $data->media)), 'images/'))<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->media)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                            @if($data->tambahan1)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->tambahan1)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                            @if($data->tambahan2)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->tambahan2)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                            @if($data->tambahan3)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->tambahan3)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                        @endforeach
-                    @endif
-                    @if($subsubmenu->count() >= 1)
-                        @foreach ($subsubmenu as $data)
-                        @if(Str::startsWith(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'. $data->media)), 'images/'))<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->media)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                            @if($data->tambahan1)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->tambahan1)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                            @if($data->tambahan2)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->tambahan2)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                            @if($data->tambahan3)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->tambahan3)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                        @endforeach
-                    @endif
-                    @if($subsubsubmenu->count() >= 1)
-                        @foreach ($subsubsubmenu as $data)
-                        @if(Str::startsWith(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'. $data->media)), 'images/'))<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->media)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                            @if($data->tambahan1)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->tambahan1)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                            @if($data->tambahan2)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->tambahan2)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
-                            @if($data->tambahan3)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
-				<img src="{{asset('storage/'.$data->tambahan3)}}" class="rounded img-fluid" style="height:250px; object-fit:cover">
-			    </a>@endif
+                                <img src="{{asset('storage/'.$data->media)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
+                            </a>@endif
+                            @if($data->tambahan1)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->tambahan1)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
+                            </a>@endif
+                            @if($data->tambahan2)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->tambahan2)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
+                            </a>@endif
+                            @if($data->tambahan3)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->tambahan3)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
+                            </a>@endif
                         @endforeach
                     @endif
                     <h4 class="my-4">Galeri Video</h4>
                     <hr>
-		    @foreach($video as $item)
-			<iframe src="https://youtube.com/embed/{{$item}}" height="400px"></iframe>
-		    @endforeach
+                    @foreach($video as $item)
+                        <iframe src="https://youtube.com/embed/{{$item}}" height="400px"></iframe>
+                    @endforeach
                 </div>
             </div>
             @include('layouts.sidebar')

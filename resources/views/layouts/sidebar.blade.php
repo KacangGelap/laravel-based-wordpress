@@ -48,7 +48,7 @@
 		
                 @foreach ($link_terkait as $item)
 		<div class="d-md-flex justify-content-center">
-                    <a href="{{$item->url}}" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                    <a href="{{$item->url}}" target="_blank" rel="noopener noreferrer" class="d-flex text-decoration-none justify-content-center">
                         <img src="{{ asset("storage/$item->media")}}" class="img-fluid" style="object-fit: cover;object-position:50% 50%">
                     </a>
 		</div>

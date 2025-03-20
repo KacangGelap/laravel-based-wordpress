@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
             view()->share('menus', $menus);
         }
         if (Schema::hasTable('link')){
-            $link_terkait = link::all();
+            $link_terkait = link::limit(5)->get();
             view()->share('link_terkait', $link_terkait);
         }
         if (Schema::hasTable('layout')) {
