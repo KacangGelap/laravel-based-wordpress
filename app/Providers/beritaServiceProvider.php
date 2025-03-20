@@ -22,29 +22,12 @@ class beritaServiceProvider extends ServiceProvider
     {
        // Check if the posts table exists before querying
         if (Schema::hasTable('post')) {
-            $latest = Post::orderBy('created_at', 'desc')->get();
+            $latest = Post::orderBy('created_at', 'desc')->take(5)->get();
             view()->share('latest', $latest);
 
-            $trending = Post::orderBy('pengunjung', 'desc')->get();
+            $trending = Post::orderBy('pengunjung', 'desc')->take(5)->get();
             view()->share('trending', $trending);
-            $getBerita = \Request::has('post') ? Post::findOrFail(\Request::get('post')) : null;
-
-            // metadata
-            $title = $getBerita->judul ?? config('app.name');
-            view()->share('title', $title);
-
-            $description = \Str::limit($getBerita->deskripsi ?? '', 50);
-            view()->share('description', $description);
-
-            $image = $getBerita ? asset('storage/'.$getBerita->media1) : null;
-            view()->share('image', $image);
-
-            $url = config('app.url');
-            view()->share('url', $url);
-
-            $type = $getBerita ? 'berita' : 'uncategorized';
-            view()->share('type', $type);
-    
+            
         }
     }
 }

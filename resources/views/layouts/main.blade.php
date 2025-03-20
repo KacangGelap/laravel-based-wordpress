@@ -6,11 +6,11 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta property="og:title" content="{{$title}}" />
-    <meta property="og:description" content="{{$description}}" />
-    <meta property="og:image" content="{{$image}}" />
-    <meta property="og:url" content="{{$url}}" />
-    <meta property="og:type" content="{{$type}}" />
+    <meta property="og:title" content="{{app('metadata')['title']}}" />
+    <meta property="og:description" content="{{app('metadata')['description']}}" />
+    <meta property="og:image" content="{{app('metadata')['image']}}" />
+    <meta property="og:url" content="{{app('metadata')['url']}}" />
+    <meta property="og:type" content="{{app('metadata')['type']}}" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 

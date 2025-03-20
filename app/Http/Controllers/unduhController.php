@@ -25,8 +25,8 @@ class unduhController extends Controller
         $file = unduh::findOrFail($id); 
         $filePath = $file->media;
     
-        if (Storage::exists("public/$filePath")) {
-            return Storage::download("public/$filePath");
+        if (Storage::exists("$filePath")) {
+            return Storage::download("$filePath");
         } else {
             return redirect()->back()->with('gagal', 'File not found.');
         }

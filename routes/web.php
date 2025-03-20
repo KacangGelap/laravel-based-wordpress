@@ -116,7 +116,7 @@ Route::middleware(['auth'])->group( function () {
     Route::delete('/link/delete/{link}', [App\Http\Controllers\linkController::class, 'destroy'])->name('link.delete');
 });
 //FITUR TANPA AUTENTIKASI
-Route::middleware(['pengunjung'])->group( function (){
+Route::middleware(['pengunjung','meta'])->group( function (){
     Route::get('/', function () {
         return view('welcome');
     });
