@@ -36,15 +36,11 @@
                             <div class="col-md-6">
                                 <select name="type" id="type" class="form-select @error('type') is-invalid @enderror" required>
                                     <option selected disabled>[Pilih Urutan Galeri Geser]</option>
-                                    <div class="dropdown">
-                                        <div class="dropdown-menu">
-                                                <option value="carousel-1" {{$data->where('type','carousel-1')->isNotEmpty() ? 'disabled' : ''}}>Slider-1</option>
-                                                <option value="carousel-2" {{$data->where('type','carousel-2')->isNotEmpty() ? 'disabled' : ''}}>Slider-2</option>
-                                                <option value="carousel-3" {{$data->where('type','carousel-3')->isNotEmpty() ? 'disabled' : ''}}>Slider-3</option>
-                                                <option value="carousel-4" {{$data->where('type','carousel-4')->isNotEmpty() ? 'disabled' : ''}}>Slider-4</option>
-                                                <option value="carousel-5" {{$data->where('type','carousel-5')->isNotEmpty() ? 'disabled' : ''}}>Slider-5</option>
-                                        </div>
-                                    </div>
+                                    <option value="carousel-1" {{$data->where('type','carousel-1')->isNotEmpty() ? 'disabled' : ''}}>Slider-1</option>
+                                    <option value="carousel-2" {{$data->where('type','carousel-2')->isNotEmpty() ? 'disabled' : ''}}>Slider-2</option>
+                                    <option value="carousel-3" {{$data->where('type','carousel-3')->isNotEmpty() ? 'disabled' : ''}}>Slider-3</option>
+                                    <option value="carousel-4" {{$data->where('type','carousel-4')->isNotEmpty() ? 'disabled' : ''}}>Slider-4</option>
+                                    <option value="carousel-5" {{$data->where('type','carousel-5')->isNotEmpty() ? 'disabled' : ''}}>Slider-5</option>
                                 </select>
                                 @error('type')
                                     <span class="invalid-feedback" role="alert">

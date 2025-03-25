@@ -30,13 +30,9 @@
                             <div class="col-md-6">
                                 <select name="kategori" id="kategori" class="form-select @error('kategori') is-invalid @enderror">
                                     <option value="{{$data->filecat_id}}" selected>[{{$data->filecat->cat}}]</option>
-                                    <div class="dropdown">
-                                        <div class="dropdown-menu">
-                                            @foreach ($filecat as $item)
-                                                <option value="{{$item->id}}">{{$item->cat}}</option>
-                                            @endforeach  
-                                        </div>
-                                    </div>
+                                    @foreach ($filecat as $item)
+                                        <option value="{{$item->id}}">{{$item->cat}}</option>
+                                    @endforeach  
                                 </select>
 
                                 @error('kategori')

@@ -11,13 +11,9 @@
                 </button> --}}
                 <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror">
                     <option selected disabled>[Pilih Kategori Berita]</option>
-                    <div class="dropdown">
-                        <div class="dropdown-menu">
-                            @foreach ($kategori as $item)
-                                <option value="{{$item->id}}">{{$item->kategori}}</option>
-                            @endforeach  
-                        </div>
-                    </div>
+                    @foreach ($kategori as $item)
+                        <option value="{{$item->id}}">{{$item->kategori}}</option>
+                    @endforeach  
                 </select>
                 @error('kategori_id')
                         <span class="invalid-feedback" role="alert">
