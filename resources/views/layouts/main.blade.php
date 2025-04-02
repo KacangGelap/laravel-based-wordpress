@@ -41,7 +41,7 @@
             {{-- banner --}}
             <div class="container-fluid p-0">
                 @if(isset($banner))
-                <img src="{{asset('storage/'.$banner->media)}}" class="w-100">
+                <img src="{{asset('storage/'.$banner->media)}}" class="w-100"  style="aspect-ratio:10/1.5">
                 @endif
             </div>
             
