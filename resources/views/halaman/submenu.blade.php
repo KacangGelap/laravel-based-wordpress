@@ -4,7 +4,7 @@
         <div class="card min-vh-100">
             <div class="d-flex card-header justify-content-between">
                 <div>
-                    <h3>Daftar Sub-Menu Pada Menu {{ucfirst(strtolower($menu->menu))}}</h3>
+                    <h3>Daftar Sub-Menu Pada Menu <span style="text-decoration: underline">{{ucfirst(strtolower($menu->menu))}}</span></h3>
                     <div class="container fw-bold text-secondary">
                         <a href="{{ route('menu.index') }}" class="text-dark text-decoration-none">Menu</a>
                         <span class="mx-1">></span>
@@ -92,8 +92,8 @@
                                                 </a>
                                                 @endif
                                             @elseif($item->type == 'id.pdupt')
-                                                <a href="{{route('page.show',['id'=>$item->halaman->first()->id])}}" class="btn btn-secondary mx-2">
-                                                    <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu</span>
+                                                <a href="{{route('page.show',['id'=>$item->halaman->first()->id])}}" class="btn btn-secondary mx-2 col" style="font-size: 12px">
+                                                    <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Sub-Menu</span>
                                                 </a>
                                                 <a href="{{ route('submenu.edit', ['menu'=>$item->menu->id, 'submenu' => $item->id, 'edit'=>3]) }}" class="btn btn-warning mx-2 col" style="font-size: 12px">
                                                     <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>

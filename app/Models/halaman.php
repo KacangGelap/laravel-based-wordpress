@@ -15,6 +15,7 @@ class halaman extends Model
         'sub_menu_id',
         'sub_sub_menu_id',
         'sub_sub_sub_menu_id',
+        'sub_sub_sub_sub_menu_id',
     ];
     public function menu(){
         return $this->belongsTo(menu::class, 'menu_id');
@@ -27,5 +28,8 @@ class halaman extends Model
     }
     public function subsubsubmenu(){
         return $this->belongsTo(subsubsubmenu::class, 'sub_sub_sub_menu_id');
+    }
+    public function subsubsubsubmenu(){
+        return $this->belongsTo(subsubsubsubmenu::class, 'sub_sub_sub_sub_menu_id');
     }
 }

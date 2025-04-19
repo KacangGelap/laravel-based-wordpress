@@ -105,6 +105,23 @@
                                                                                     {{ $subSubSubMenu->sub_sub_sub_menu }}
                                                                                 </a>
                                                                             </li>
+                                                                            @elseif ($subSubMenu->type === 'dropdown')
+                                                                            <li class="dropdown-submenu dropright">
+                                                                                <a class="dropdown-item dropdown-toggle" href="#">
+                                                                                    {{ $subSubMenu->sub_sub_menu }}
+                                                                                </a>
+                                                                                <ul class="dropdown-menu">
+                                                                                        @foreach ($subSubSubMenu->subSubSubSubMenus as $subSubSubSubMenu)
+                                                                                            @if($subSubSubSubMenu->type === 'page' || $subSubSubSubMenu->type === 'id.pdupt')
+                                                                                            <li>
+                                                                                                <a class="dropdown-item" href="{{ route('page.show', ['id'=>$subSubSubSubMenu->halaman->first()->id]) }}">
+                                                                                                    {{ $subSubSubSubMenu->sub_sub_sub_sub_menu }}
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            @endif
+                                                                                        @endforeach
+                                                                                    </ul>
+                                                                                </li>
                                                                             @endif
                                                                         @endforeach
                                                                     </ul>

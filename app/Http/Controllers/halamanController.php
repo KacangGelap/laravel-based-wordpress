@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\menu, App\Models\submenu, App\Models\subsubmenu, App\Models\subsubsubmenu, App\Models\halaman;
+use App\Models\menu, App\Models\submenu, App\Models\subsubmenu, App\Models\subsubsubmenu, App\Models\subsubsubsubmenu,App\Models\halaman;
 use App\Rules\YoutubeUrl, App\Rules\GoogleMapsUrl, App\Rules\SafeUrl, App\Rules\SocialMediaUrl;
 use App\Helpers\SanitizeHelper;
 class halamanController extends Controller
@@ -151,6 +151,20 @@ class halamanController extends Controller
             return back()->with('gagal','halaman yang dicari tidak ditemukan');
         }
     }
+    public function subsubsubsubmenu($subsubsubmenu){
+        try {
+            $subsubsubsubmenu = subsubsubsubmenu::where('sub_sub_sub_menu_id', $subsubsubmenu)->get();
+            if(subsubsubmenu::find($subsubsubmenu)->type === 'dropdown'){
+                return view('halaman.subsubsubsubmenu')->with('subsubsubsubmenu', $subsubsubsubmenu)->with('subsubsubmenu', subsubsubmenu::findOrFail($subsubsubmenu))->with('isExists', $this->isIdentityExist());
+            }
+            else{
+                return back()->with('gagal', 'halaman yang dituju harus bertipe dropdown');
+            }
+        } catch (\Throwable $th) {
+            // throw $th;
+            return back()->with('gagal','halaman yang dicari tidak ditemukan');
+        }
+    }
 
     /**
      * 
@@ -219,6 +233,20 @@ class halamanController extends Controller
             return back()->with('gagal','gagal menambahkan sub-sub-menu karena id menu tidak sesuai');
         }   
     }
+    public function create_subsubsubsubmenu(Request $request, $subsubsubmenu){
+        try {
+            $validate = $request->validate([
+                'tambah' => 'required|numeric|min:0|max:6'
+            ]); 
+            session([
+                'sub_sub_sub_menu_id' => $subsubsubmenu
+            ]);
+            return $this->create_provider($validate['tambah']);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return back()->with('gagal','gagal menambahkan sub-sub-menu karena id menu tidak sesuai');
+        }   
+    }
     public function store(Request $request){
     // Prepare all attributes
         //route-based store systems (submenu ... sub-n-menu)
@@ -250,6 +278,13 @@ class halamanController extends Controller
             }
             $identifier = subsubmenu::find($sub_sub_menu_id)->submenu->menu->menu;
         }
+        elseif(\Route::current()->getName() === 'subsubsubsubmenu.store'){
+            $sub_sub_sub_menu_id = session('sub_sub_sub_menu_id');
+            if (!$sub_sub_sub_menu_id) {
+                return redirect()->route('menu.index')->with('gagal', 'Sub-menu ID tidak ditemukan, ulangi proses sebelumnya.');
+            }
+            $identifier = subsubsubmenu::find($sub_sub_sub_menu_id)->subsubmenu->submenu->menu->menu;
+        }
         //ambil atribut dari session sebelumnya
         if(session('filetype') !== null){
             $request->merge([
@@ -263,7 +298,7 @@ class halamanController extends Controller
             ]);
         }
         // Define base validation rules
-        if(\Route::current()->getName() === 'subsubsubmenu.store'){
+        if(\Route::current()->getName() === 'subsubsubsubmenu.store'){
             $rules = [
                 'judul' => 'required|string|max:50',
                 'type' => 'required|string|in:page,link,id.pdupt',
@@ -336,17 +371,16 @@ class halamanController extends Controller
             // if ($youtubeRule->passes('yt_id', $validatedData['yt_id'] ?? null)) {
             //     $validatedData['yt_id'] = $youtubeRule->videoId ?? null;
             // }
-            
             if($validatedData['maps'] !== null){
                 $embed_code = strip_tags($validatedData['maps'], '<iframe>');
             }
         }
         // dd($validatedData['pdf']->getMimeType()); 
         try {
-            //get the id based on routes
-            $data = \Route::current()->getName() === 'submenu.store' ? new submenu() : (\Route::current()->getName() === 'subsubmenu.store' ? new subsubmenu() : new subsubsubmenu());
-            \Route::current()->getName() === 'submenu.store' ? $data->menu_id = $menu_id : (\Route::current()->getName() === 'subsubmenu.store' ? $data->sub_menu_id = $sub_menu_id : $data->sub_sub_menu_id = $sub_sub_menu_id);
-            \Route::current()->getName() === 'submenu.store' ? $data->sub_menu = $validatedData['judul'] : (\Route::current()->getName() === 'subsubmenu.store' ? $data->sub_sub_menu = $validatedData['judul'] : $data->sub_sub_sub_menu = $validatedData['judul']);
+            //get the id based on routes 
+            $data = \Route::current()->getName() === 'submenu.store' ? new submenu() : (\Route::current()->getName() === 'subsubmenu.store' ? new subsubmenu() : (\Route::current()->getName() === 'subsubsubmenu.store' ? new subsubsubmenu() : new subsubsubsubmenu()));
+            \Route::current()->getName() === 'submenu.store' ? $data->menu_id = $menu_id : (\Route::current()->getName() === 'subsubmenu.store' ? $data->sub_menu_id = $sub_menu_id : (\Route::current()->getName() === 'subsubsubmenu.store' ? $data->sub_sub_menu_id = $sub_sub_menu_id : $data->sub_sub_sub_menu_id = $sub_sub_sub_menu_id));
+            \Route::current()->getName() === 'submenu.store' ? $data->sub_menu = $validatedData['judul'] : (\Route::current()->getName() === 'subsubmenu.store' ? $data->sub_sub_menu = $validatedData['judul'] : (\Route::current()->getName() === 'subsubsubmenu.store' ? $data->sub_sub_sub_menu = $validatedData['judul'] : $data->sub_sub_sub_sub_menu = $validatedData['judul']));
             $data->type = $validatedData['type'];
             if($validatedData['type'] == 'page'){
                 if ($request->has('filetype')) {
@@ -365,12 +399,12 @@ class halamanController extends Controller
                     $data->tambahan2 = $request->has('tambahan2') ? $this->storeFile($validatedData['tambahan2']) : null;
                     $data->tambahan3 = $request->has('tambahan3') ? $this->storeFile($validatedData['tambahan3']) : null;
                     $data->text = $validatedData['text'];
-		    if($request->has('link')){
-			$isYt = new YoutubeUrl();
-			if($isYt->passes('link', $validatedData['link'] ?? null)){
-                    		$data->link = $isYt->videoId ?? null;
-                	}
-		    }
+                    if($request->has('link')){
+                        $isYt = new YoutubeUrl();
+                        if($isYt->passes('link', $validatedData['link'] ?? null)){
+                            $data->link = $isYt->videoId ?? null;
+                        }
+                    }
                     // dd($data);
                 }
             }
@@ -400,6 +434,10 @@ class halamanController extends Controller
                             + subsubsubmenu::where('type', 'id.pdupt')
                                 ->whereHas('subsubmenu.submenu.menu', function($query) use ($identifier) {
                                     $query->where('menu', $identifier);
+                                })->count()
+                            + subsubsubsubmenu::where('type', 'id.pdupt')
+                                ->whereHas('subsubsubmenu.subsubmenu.submenu.menu', function($query) use ($identifier) {
+                                    $query->where('menu', $identifier);
                                 })->count();
                 if($isExists === 0){
                     $data['alamat'] = $validatedData['alamat'];
@@ -414,31 +452,51 @@ class halamanController extends Controller
                     $data['youtube'] = $validatedData['youtube_channel'];
                     $data['tiktok'] = $validatedData['tiktok_username'];
                     $data['x'] = $validatedData['x_username'];
-                    $data['maps']  = $embed_code;
+                    $data['maps']  = $validatedData['maps'] !== null ? $embed_code : null;
                 }else{
                     return back()->with('gagal','data sudah ada, mohon hapus atau ubah data sebelumnya');
                 }
             }
             // dd($data); 
             $data->save();
-            
             //buat id halamannya agar bisa dipanggil
             if($validatedData['type'] !== 'dropdown' && $validatedData['type'] !== 'link'){
                 $halaman = new halaman();
-                $halaman->menu_id = \Route::current()->getName() == 'submenu.store' ? $menu_id : (\Route::current()->getName() === 'subsubmenu.store' ? $data->submenu->menu->id : $data->subsubmenu->submenu->menu->id);
-                $halaman->sub_menu_id = \Route::current()->getName() == 'submenu.store' ? $data->id  : (\Route::current()->getName() === 'subsubmenu.store' ? $data->submenu->id : $data->subsubmenu->submenu->id);
-                $halaman->sub_sub_menu_id = \Route::current()->getName() == 'subsubmenu.store' ? $data->id : (\Route::current()->getName() === 'subsubsubmenu.store' ? $data->subsubmenu->id : null);
-                $halaman->sub_sub_sub_menu_id = \Route::current()->getName() == 'subsubsubmenu.store' ? $data->id : null;
+                //ambil id menu sesuai route
+                $halaman->menu_id = \Route::current()->getName() == 'submenu.store' ? $menu_id 
+                : (\Route::current()->getName() === 'subsubmenu.store' ? $data->submenu->menu->id 
+                : (\Route::current()->getName() === 'subsubsubmenu.store' ? $data->subsubmenu->submenu->menu->id 
+                : $data->subsubsubmenu->subsubmenu->submenu->menu->id)); 
+                //ambil id submenu sesuai route
+                $halaman->sub_menu_id = \Route::current()->getName() == 'submenu.store' ? $data->id  
+                : (\Route::current()->getName() === 'subsubmenu.store' ? $data->submenu->id 
+                : (\Route::current()->getName() === 'subsubsubmenu.store' ? $data->subsubmenu->submenu->id 
+                : $data->subsubsubmenu->subsubmenu->submenu->id));
+                //ambil id subsubmenu sesuai route
+                $halaman->sub_sub_menu_id = \Route::current()->getName() == 'subsubmenu.store' ? $data->id 
+                : (\Route::current()->getName() === 'subsubsubmenu.store' ? $data->subsubmenu->id 
+                : (\Route::current()->getName() === 'subsubsubsubmenu.store' ? $data->subsubsubmenu->subsubmenu->id  
+                : null));
+                //ambil id subsubsubmenu sesuai route
+                $halaman->sub_sub_sub_menu_id = \Route::current()->getName() == 'subsubsubmenu.store' ? $data->id 
+                : (\Route::current()->getName() === 'subsubsubsubmenu.store' ? $data->subsubsubmenu->id 
+                : null);
+                //ambil id subsubsubsubmenu sesuai route
+                $halaman->sub_sub_sub_sub_menu_id = \Route::current()->getName() == 'subsubsubsubmenu.store' ? $data->id 
+                : null;
                 $halaman->save();
             }
             if(\Route::current()->getName() === 'submenu.store'){
-                return redirect()->route('submenu.index', $menu_id)->with('sukses', 'submenu berhasil dibuat');
+                return redirect()->route('submenu.index', $menu_id)->with('sukses', 'sub-menu berhasil dibuat');
             }
             elseif(\Route::current()->getName() === 'subsubmenu.store'){
-                return redirect()->route('subsubmenu.index', $sub_menu_id)->with('sukses', 'subsubmenu berhasil dibuat');
+                return redirect()->route('subsubmenu.index', $sub_menu_id)->with('sukses', 'sub-sub-menu berhasil dibuat');
             }
             elseif(\Route::current()->getName() === 'subsubsubmenu.store'){
-                return redirect()->route('subsubsubmenu.index', $sub_sub_menu_id)->with('sukses', 'subsubsubmenu berhasil dibuat');
+                return redirect()->route('subsubsubmenu.index', $sub_sub_menu_id)->with('sukses', 'sub-sub-sub-menu berhasil dibuat');
+            }
+            elseif(\Route::current()->getName() === 'subsubsubsubmenu.store'){
+                return redirect()->route('subsubsubsubmenu.index', $sub_sub_sub_menu_id)->with('sukses', 'sub-sub-sub-sub-menu berhasil dibuat');
             }
         } catch (\Throwable $th) {
             throw $th;
@@ -459,7 +517,7 @@ class halamanController extends Controller
             ]);
             $halaman = halaman::find($validate['id']);
             //cek apakah itu page(id unik)
-            $currentpage = subsubsubmenu::find($halaman->sub_sub_sub_menu_id) ?? subsubmenu::find($halaman->sub_sub_menu_id) ?? submenu::find($halaman->sub_menu_id);
+            $currentpage = subsubsubsubmenu::find($halaman->sub_sub_sub_sub_menu_id) ?? subsubsubmenu::find($halaman->sub_sub_sub_menu_id) ?? subsubmenu::find($halaman->sub_sub_menu_id) ?? submenu::find($halaman->sub_menu_id);
             return view('halaman.halaman')->with('halaman', $halaman)->with('page', $currentpage);
         } catch (\Throwable $th) {
             // throw $th;
@@ -521,6 +579,22 @@ class halamanController extends Controller
             return back()->with('gagal','gagal menambahkan sub-sub-sub-menu karena id subsubmenu atau id data tidak sesuai');
         }   
     }
+    public function edit_subsubsubsubmenu(Request $request, $subsubsubmenu, $subsubsubsubmenu){
+        try {
+            $validate = $request->validate([
+                'edit' => 'required|numeric|min:0|max:6'
+            ]);
+            session([
+                'sub_sub_sub_menu_id' => $subsubsubmenu,
+                'sub_sub_sub_sub_menu_id' => $subsubsubsubmenu
+            ]);
+            $data = subsubsubsubmenu::findOrFail($subsubsubsubmenu);
+            return $this->create_provider($validate['edit'], $data);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return back()->with('gagal','gagal menambahkan sub-sub-sub-menu karena id subsubmenu atau id data tidak sesuai');
+        }   
+    }
     public function update(Request $request){
         // dd($request);
         //init id seperti fungsi store sesuai dengan route
@@ -536,6 +610,10 @@ class halamanController extends Controller
         elseif ($routeName === 'subsubsubmenu.update') {
             $subsubmenu_id = session('sub_sub_menu_id');
             $subsubsubmenu_id = session('sub_sub_sub_menu_id');
+        }
+        elseif ($routeName === 'subsubsubsubmenu.update') {
+            $subsubsubmenu_id = session('sub_sub_sub_menu_id');
+            $subsubsubsubmenu_id = session('sub_sub_sub_sub_menu_id');
         }
         //ambil atribut dari session sebelumnya
         if(session('filetype') !== null){
@@ -642,6 +720,11 @@ class halamanController extends Controller
                 $data->update([
                     'sub_sub_sub_menu' => $validatedData['judul'] ?? $data->sub_sub_sub_menu
                 ]);
+            }elseif($routeName == 'subsubsubsubmenu.update'){
+                $data = subsubsubsubmenu::findOrFail($subsubsubsubmenu_id);
+                $data->update([
+                    'sub_sub_sub_sub_menu' => $validatedData['judul'] ?? $data->sub_sub_sub_sub_menu
+                ]);
             }
             $data->update([
                 'media' => isset($validatedData['media']) && is_file($validatedData['media']->getRealPath()) 
@@ -692,13 +775,16 @@ class halamanController extends Controller
 		}
 	    }
             if($routeName === 'submenu.update'){
-                return redirect()->route('submenu.index', $menu_id)->with('sukses', 'submenu berhasil dibuat');
+                return redirect()->route('submenu.index', $menu_id)->with('sukses', 'sub-menu berhasil diupdate');
             }
             elseif($routeName === 'subsubmenu.update'){
-                return redirect()->route('subsubmenu.index', $submenu_id)->with('sukses', 'subsubmenu berhasil dibuat');
+                return redirect()->route('subsubmenu.index', $submenu_id)->with('sukses', 'sub-sub-menu berhasil diupdate');
             }
             elseif($routeName === 'subsubsubmenu.update'){
-                return redirect()->route('subsubsubmenu.index', $subsubmenu_id)->with('sukses', 'subsubsubmenu berhasil dibuat');
+                return redirect()->route('subsubsubmenu.index', $subsubmenu_id)->with('sukses', 'sub-sub-sub-menu berhasil diupdate');
+            }
+            elseif($routeName === 'subsubsubsubmenu.update'){
+                return redirect()->route('subsubsubsubmenu.index', $subsubsubmenu_id)->with('sukses', 'sub-sub-sub-sub-menu berhasil diupdate');
             }
         } catch (\Throwable $th) {
             throw $th;
@@ -742,6 +828,17 @@ class halamanController extends Controller
     public function destroy_subsubsubmenu($subsubmenu, $subsubsubmenu){
         try {
             $data = subsubsubmenu::find($subsubsubmenu);
+            $data->delete();
+
+            return back()->with('sukses','data berhasil dihapus');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return back()->with('gagal', 'terjadi kesalahan');
+        }
+    }
+    public function destroy_subsubsubsubmenu($subsubsubmenu, $subsubsubsubmenu){
+        try {
+            $data = subsubsubsubmenu::find($subsubsubsubmenu);
             $data->delete();
 
             return back()->with('sukses','data berhasil dihapus');

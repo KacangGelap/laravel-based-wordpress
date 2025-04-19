@@ -61,6 +61,14 @@ Route::middleware(['auth'])->group( function () {
         Route::put('/halaman/subsubsubmenu/{subsubmenu}/edit/{subsubsubmenu}', [App\Http\Controllers\halamanController::class, 'update'])->name('subsubsubmenu.update');
         Route::delete('/halaman/subsubsubmenu/{subsubmenu}/edit/{subsubsubmenu}', [App\Http\Controllers\halamanController::class, 'destroy_subsubsubmenu'])->name('subsubsubmenu.delete');
 
+        //manajemen halaman: subsubsubsubmenu
+        Route::get('/halaman/subsubsubsubmenu/{subsubsubmenu}',[App\Http\Controllers\halamanController::class,'subsubsubsubmenu'])->name('subsubsubsubmenu.index');
+        Route::get('/halaman/subsubsubsubmenu/{subsubsubmenu}/create', [App\Http\Controllers\halamanController::class, 'create_subsubsubsubmenu'])->name('subsubsubsubmenu.create');
+        Route::post('/halaman/subsubsubsubmenu/{subsubsubmenu}/create', [App\Http\Controllers\halamanController::class, 'store'])->name('subsubsubsubmenu.store');
+        Route::get('/halaman/subsubsubsubmenu/{subsubsubmenu}/edit/{subsubsubsubmenu}', [App\Http\Controllers\halamanController::class, 'edit_subsubsubsubmenu'])->name('subsubsubsubmenu.edit');
+        Route::put('/halaman/subsubsubsubmenu/{subsubsubmenu}/edit/{subsubsubsubmenu}', [App\Http\Controllers\halamanController::class, 'update'])->name('subsubsubsubmenu.update');
+        Route::delete('/halaman/subsubsubsubmenu/{subsubsubmenu}/edit/{subsubsubsubmenu}', [App\Http\Controllers\halamanController::class, 'destroy_subsubsubsubmenu'])->name('subsubsubsubmenu.delete');
+
         //manajemen template /layout website
         Route::get('/galeri-geser', [App\Http\Controllers\layoutController::class, 'index'])->name('slider.index');
         Route::get('/galeri-geser/create',[App\Http\Controllers\layoutController::class, 'create'])->name('slider.create');

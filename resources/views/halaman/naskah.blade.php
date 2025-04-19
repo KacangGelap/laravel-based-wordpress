@@ -11,18 +11,21 @@
                         $routeName = \Route::current()->getName();
                         $submenuRoute = $routeName === 'submenu.create' || $routeName === 'submenu.edit';
                         $subsubmenuRoute = $routeName === 'subsubmenu.create' || $routeName === 'subsubmenu.edit';
+                        $subsubsubmenuRoute = $routeName === 'subsubsubmenu.create' || $routeName === 'subsubsubmenu.edit';
                         // Get session data for the menu and submenu IDs
                         $menuId = session('menu_id');
                         $subMenuId = session('sub_menu_id');
                         $subSubMenuId = session('sub_sub_menu_id');
-                        
+                        $subSubSubMenuId = session('sub_sub_sub_menu_id');
                         // Determine the return URL based on available session data
                         if ($menuId && $submenuRoute) {
                             $backUrl = route('submenu.index', $menuId);
                         } elseif ($subMenuId && $subsubmenuRoute) {
                             $backUrl = route('subsubmenu.index', $subMenuId);
-                        } else {
+                        } elseif ($subSubMenuId && $subsubsubmenuRoute) {
                             $backUrl = route('subsubsubmenu.index', $subSubMenuId);
+                        } else {
+                            $backUrl = route('subsubsubsubmenu.index', $subSubSubMenuId);
                         }
                     @endphp
                     <a href="{{ $backUrl }}" class="btn btn-dark">Kembali</a>
@@ -43,8 +46,10 @@
                                 $routeAction = route('submenu.update', ['menu'=>$data->menu->id,'submenu'=>$data->id]);
                             } elseif ($routeName == 'subsubmenu.edit') {
                                 $routeAction = route('subsubmenu.update', ['submenu'=>$data->submenu->id, 'subsubmenu'=>$data->id]);
-                            } else {
+                            } elseif ($routeName == 'subsubsubmenu.edit') {
                                 $routeAction = route('subsubsubmenu.update',  ['subsubmenu'=>$data->subsubmenu->id, 'subsubsubmenu'=>$data->id]);
+                            } else {
+                                $routeAction = route('subsubsubsubmenu.update',  ['subsubsubmenu'=>$data->subsubsubmenu->id, 'subsubsubsubmenu'=>$data->id]);
                             }
                         } else {
                             // If creating, use the store route for submenu, subsubmenu, or subsubsubmenu
@@ -52,8 +57,10 @@
                                 $routeAction = route('submenu.store', session('menu_id'));
                             } elseif ($routeName == 'subsubmenu.create') {
                                 $routeAction = route('subsubmenu.store', session('sub_menu_id'));
-                            } else {
+                            } elseif ($routeName == 'subsubsubmenu.create') {
                                 $routeAction = route('subsubsubmenu.store', session('sub_sub_menu_id'));
+                            } else {
+                                $routeAction = route('subsubsubsubmenu.store', session('sub_sub_sub_menu_id'));
                             }
                         }
                     @endphp
@@ -63,10 +70,10 @@
                             @method('PUT')
                         @endif
                         <div class="row mb-3">
-                            <label for="judul" class="col-md-4 col-form-label text-md-end">Judul {{Route::current()->getName() == 'submenu.create' ? 'Sub-Menu' : (Route::current()->getName() == 'subsubmenu.create' ? 'Sub-Sub-Menu' : 'Sub-Sub-Sub-Menu')}}<span class="text-danger">*</span></label>
+                            <label for="judul" class="col-md-4 col-form-label text-md-end">Judul {{ Route::current()->getName() == 'submenu.create' || Route::current()->getName() == 'submenu.edit' ? 'Sub-Menu' : (Route::current()->getName() == 'subsubmenu.create' || Route::current()->getName() == 'subsubmenu.edit' ? 'Sub-Sub-Menu' : (Route::current()->getName() == 'subsubmenu.create' || Route::current()->getName() == 'subsubmenu.edit' ? 'Sub-Sub-Sub-Menu' : 'Sub-Sub-Sub-Sub-Menu')) }}<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="judul" type="text" class="form-control @error('judul') is-invalid @enderror" name="judul" value="{{ $data->sub_menu ?? $data->sub_sub_menu ?? $data->sub_sub_sub_menu ?? old('judul') }}" required autocomplete="judul" autofocus>
+                                <input id="judul" type="text" class="form-control @error('judul') is-invalid @enderror" name="judul" value="{{ $data->sub_menu ?? $data->sub_sub_menu ?? $data->sub_sub_sub_menu ?? $data->sub_sub_sub_sub_menu ?? old('judul') }}" required autocomplete="judul" autofocus>
 
                                 @error('judul')
                                     <span class="invalid-feedback" role="alert">
@@ -139,7 +146,7 @@
                                 @enderror
                             </div>
                         </div>
-			<div class="row mb-3">
+			            <div class="row mb-3">
                             <label for="link" class="col-md-4 col-form-label text-md-end">Link Youtube</label>
 
                             <div class="col-md-6">

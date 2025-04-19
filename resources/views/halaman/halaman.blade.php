@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('content') 
     <div class="bg-light container min-vh-100 pt-4">
-        <h4>{{$page->sub_sub_sub_menu ?? $page->sub_sub_menu ?? $page->sub_menu }}</h4>
+        <h4>{{$page->sub_sub_sub_sub_menu ?? $page->sub_sub_sub_menu ?? $page->sub_sub_menu ?? $page->sub_menu }}</h4>
         <hr class="mb-4 col-lg-8">
         <div class="row">
             <div class="col-lg-8">

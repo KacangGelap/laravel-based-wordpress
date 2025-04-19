@@ -4,7 +4,7 @@
         <div class="card min-vh-100">
             <div class="d-md-flex card-header justify-content-between">
                 <div>
-                    <h3>List Sub-Sub-Menu Pada Sub-Menu {{$submenu->sub_menu}}</h3>
+                    <h3>List Sub-Sub-Menu Pada Sub-Menu <span style="text-decoration: underline">{{ucfirst(strtolower($submenu->sub_menu))}}</span></h3>
                     <div class="container fw-bold text-secondary">
                         <a href="{{ route('menu.index') }}" class="text-dark text-decoration-none">Menu</a>
                         <span class="mx-1">></span>
@@ -71,35 +71,35 @@
                                     </td>
                                     <td class="d-md-flex" style="font-size: 12px">
                                         @if($item->type == 'dropdown')
-                                        <a href="{{ route('subsubsubmenu.index', ['subsubmenu' => $item->id]) }}" class="btn btn-secondary mx-2 col" style="font-size: 12px">
-                                            <i class="bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu Bertingkat</span>
-                                        </a>
-                                        <a href="{{route('subsubmenu.edit', ['submenu' =>$item->submenu->id , 'subsubmenu'=>$item->id, 'edit' => 5])}}" class="btn btn-warning mx-2 col" style="font-size: 12px">
-                                            <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit-Sub-Sub-Menu</span>
-                                        </a>
+                                            <a href="{{ route('subsubsubmenu.index', ['subsubmenu' => $item->id]) }}" class="btn btn-secondary mx-2 col" style="font-size: 12px">
+                                                <i class="bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu Bertingkat</span>
+                                            </a>
+                                            <a href="{{route('subsubmenu.edit', ['submenu' =>$item->submenu->id , 'subsubmenu'=>$item->id, 'edit' => 5])}}" class="btn btn-warning mx-2 col" style="font-size: 12px">
+                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit-Sub-Sub-Menu</span>
+                                            </a>
                                         @elseif($item->type == 'page')
-                                        <a href="{{route('page.show',['id'=>$item->halaman->first()->id])}}" class="btn btn-secondary mx-2 col" style="font-size: 12px">
-                                            <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu</span>
-                                        </a>
-                                        @if($item->filetype == 'pdf')
-                                            <a href="{{ route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu' => $item->id, 'edit'=>0]) }}" class="btn btn-warning mx-2 col" style="font-size: 12px">
-                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
+                                            <a href="{{route('page.show',['id'=>$item->halaman->first()->id])}}" class="btn btn-secondary mx-2 col" style="font-size: 12px">
+                                                <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu</span>
                                             </a>
-                                        @elseif($item->filetype == 'foto')
-                                            <a href="{{ route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu' => $item->id, 'edit'=>1]) }}" class="btn btn-warning mx-2 col" style="font-size: 12px">
-                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
-                                            </a>
-                                        @else
-                                            <a href="{{ route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu' => $item->id, 'edit'=>2]) }}" class="btn btn-warning mx-2 col" style="font-size: 12px">
-                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
-                                            </a>
-                                        @endif
+                                            @if($item->filetype == 'pdf')
+                                                <a href="{{ route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu' => $item->id, 'edit'=>0]) }}" class="btn btn-warning mx-2 col" style="font-size: 12px">
+                                                    <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
+                                                </a>
+                                            @elseif($item->filetype == 'foto')
+                                                <a href="{{ route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu' => $item->id, 'edit'=>1]) }}" class="btn btn-warning mx-2 col" style="font-size: 12px">
+                                                    <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
+                                                </a>
+                                            @else
+                                                <a href="{{ route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu' => $item->id, 'edit'=>2]) }}" class="btn btn-warning mx-2 col" style="font-size: 12px">
+                                                    <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
+                                                </a>
+                                            @endif
                                         @elseif($item->type == 'id.pdupt')
                                             <a href="{{route('page.show',['id'=>$item->halaman->first()->id])}}" class="btn btn-secondary mx-2 col" style="font-size: 12px">
                                                 <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Sub-Sub-Menu</span>
                                             </a>
                                             <a href="{{route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu'=>$item->id, 'edit'=>3])}}"class="btn btn-warning mx-2 col" style="font-size: 12px">
-                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
+                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Sub-Menu</span>
                                             </a>
                                         @elseif($item->type == 'link')
                                             @if($item->filetype == 'video')
@@ -112,7 +112,7 @@
                                             </a>
                                             @endif
                                             <a href="{{ route('subsubmenu.edit', ['submenu'=>$item->submenu->id, 'subsubmenu' => $item->id, 'edit'=>4]) }}" class="btn btn-warning mx-2 col" style="font-size: 12px">
-                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Menu</span>
+                                                <i class="bi-pencil"></i> <span class="d-none d-md-inline">Edit Sub-Sub-Menu</span>
                                             </a>
                                         @endif
                                         <button class="btn btn-danger mx-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $item->id }}">
