@@ -105,10 +105,10 @@
                                                                                     {{ $subSubSubMenu->sub_sub_sub_menu }}
                                                                                 </a>
                                                                             </li>
-                                                                            @elseif ($subSubMenu->type === 'dropdown')
+                                                                            @elseif ($subSubSubMenu->type === 'dropdown')
                                                                             <li class="dropdown-submenu dropright">
                                                                                 <a class="dropdown-item dropdown-toggle" href="#">
-                                                                                    {{ $subSubMenu->sub_sub_menu }}
+                                                                                    {{ $subSubSubMenu->sub_sub_sub_menu }}
                                                                                 </a>
                                                                                 <ul class="dropdown-menu">
                                                                                         @foreach ($subSubSubMenu->subSubSubSubMenus as $subSubSubSubMenu)
