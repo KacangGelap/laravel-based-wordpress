@@ -628,7 +628,7 @@ class halamanController extends Controller
             ]);
         }
         // Define base validation rules
-        if($routeName === 'subsubsubmenu.update'){
+        if($routeName === 'subsubsubsubmenu.update'){
             $rules = [
                 'judul' => 'nullable|string|max:50',
                 'type' => 'nullable|string|in:page,link,id.pdupt',

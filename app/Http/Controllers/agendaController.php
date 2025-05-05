@@ -7,7 +7,7 @@ use App\Models\agenda;
 class agendaController extends Controller
 {
     public function index(){
-        $data = agenda::orderBy('created_at','desc')->simplePaginate(15);
+        $data = agenda::orderBy('mulai','desc')->simplePaginate(15);
         return view('kalender.index')->with('data', $data);
     }
     public function create(){
@@ -73,7 +73,7 @@ class agendaController extends Controller
         }
     }
     public function show(){
-        $data = agenda::orderBy('created_at', 'desc')->get();
+        $data = agenda::orderBy('mulai', 'desc')->get();
         return view('kalender.show')->with('data', $data);
     }
     public function destroy($id){

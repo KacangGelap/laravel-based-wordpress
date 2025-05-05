@@ -71,7 +71,7 @@
 
                         <div class="row mb-3">
                             <label for="judul" class="col-md-4 col-form-label text-md-end">
-                                Judul {{ Route::current()->getName() == 'submenu.create' || Route::current()->getName() == 'submenu.edit' ? 'Sub-Menu' : (Route::current()->getName() == 'subsubmenu.create' || Route::current()->getName() == 'subsubmenu.edit' ? 'Sub-Sub-Menu' : (Route::current()->getName() == 'subsubmenu.create' || Route::current()->getName() == 'subsubmenu.edit' ? 'Sub-Sub-Sub-Menu' : 'Sub-Sub-Sub-Sub-Menu')) }}
+                                Judul {{ Route::current()->getName() == 'submenu.create' || Route::current()->getName() == 'submenu.edit' ? 'Sub-Menu' : (Route::current()->getName() == 'subsubmenu.create' || Route::current()->getName() == 'subsubmenu.edit' ? 'Sub-Sub-Menu' : (Route::current()->getName() == 'subsubsubmenu.create' || Route::current()->getName() == 'subsubsubmenu.edit' ? 'Sub-Sub-Sub-Menu' : 'Sub-Sub-Sub-Sub-Menu')) }}
                             </label>
 
                             <div class="col-md-6">
