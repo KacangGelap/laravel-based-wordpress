@@ -22,7 +22,7 @@
                         <span class="mx-1">></span>
                         <span class="text-capitalize">{{ strtolower($subsubsubmenu->sub_sub_sub_menu) }}</span>
                         <span class="mx-1">></span>
-                        <a href="{{ route('subsubsubsubmenu.index', $subsubsubmenu->id) }}" class="text-dark text-decoration-none">Sub-Sub-Sub-Menu</a>
+                        <a href="{{ route('subsubsubsubmenu.index', $subsubsubmenu->id) }}" class="text-dark text-decoration-none">Sub-Sub-Sub-Sub-Menu</a>
                     </div>
                 </div>
                 <div><a href="{{route('subsubsubmenu.index',$subsubsubmenu->subsubmenu->id)}}" class="btn btn-dark">Kembali</a></div>

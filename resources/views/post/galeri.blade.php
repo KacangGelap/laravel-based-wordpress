@@ -38,11 +38,41 @@
                             </a>@endif
                         @endforeach
                     @endif
+                    @if($subsubmenu->count() >= 1)
+                        @foreach ($subsubmenu as $data)
+                            @if(Str::startsWith(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'. $data->media)), 'images/'))<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->media)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
+                            </a>@endif
+                            @if($data->tambahan1)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->tambahan1)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
+                            </a>@endif
+                            @if($data->tambahan2)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->tambahan2)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
+                            </a>@endif
+                            @if($data->tambahan3)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->tambahan3)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
+                            </a>@endif
+                        @endforeach
+                    @endif
+                    @if($subsubsubmenu->count() >= 1)
+                        @foreach ($subsubsubmenu as $data)
+                            @if(Str::startsWith(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'. $data->media)), 'images/'))<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->media)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
+                            </a>@endif
+                            @if($data->tambahan1)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->tambahan1)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
+                            </a>@endif
+                            @if($data->tambahan2)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->tambahan2)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
+                            </a>@endif
+                            @if($data->tambahan3)<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                                <img src="{{asset('storage/'.$data->tambahan3)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
+                            </a>@endif
+                        @endforeach
+                    @endif
                     <h4 class="my-4">Galeri Video</h4>
                     <hr>
-                    @foreach($video as $item)
-                        <iframe src="https://youtube.com/embed/{{$item}}" height="400px"></iframe>
-                    @endforeach
+                        <iframe src="https://youtube.com/embed/{{$video}}" height="400px"></iframe>
                 </div>
             </div>
             @include('layouts.sidebar')

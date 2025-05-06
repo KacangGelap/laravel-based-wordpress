@@ -317,10 +317,10 @@ class halamanController extends Controller
             if ($request->has('filetype')) {
                 $rules['filetype'] = 'required|string|in:foto,video,pdf';
                 $rules['image'] = 'required_if:filetype,foto|image|mimes:png,jpeg,jpg|max:3000';
-                $rules['pdf'] = 'required_if:filetype,pdf|mimes:pdf|max:10000';
+                $rules['pdf'] = 'required_if:filetype,pdf|mimes:pdf|max:30000';
                 // $rules['yt_id'] = ['required_if:filetype,video', 'string', 'max:50', new YoutubeUrl]; // Sanitized YouTube ID
             } else {
-                $rules['media'] = 'required|mimes:pdf,png,jpeg,jpg|max:10000';
+                $rules['media'] = 'required|mimes:pdf,png,jpeg,jpg|max:30000';
                 $rules['tambahan1'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
                 $rules['tambahan2'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
                 $rules['tambahan3'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
@@ -645,10 +645,10 @@ class halamanController extends Controller
             if ($request->has('filetype')) {
                 $rules['filetype'] = 'nullable|string|in:foto,video,pdf';
                 $rules['image'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
-                $rules['pdf'] = 'nullable|mimes:pdf|max:10000';
+                $rules['pdf'] = 'nullable|mimes:pdf|max:30000';
                 // $rules['yt_id'] = ['nullable', 'string', 'max:50', new YoutubeUrl]; // Sanitized YouTube ID
             } else {
-                $rules['media'] = 'nullable|mimes:pdf,png,jpeg,jpg|max:10000';
+                $rules['media'] = 'nullable|mimes:pdf,png,jpeg,jpg|max:30000';
                 $rules['tambahan1'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
                 $rules['tambahan2'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
                 $rules['tambahan3'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';

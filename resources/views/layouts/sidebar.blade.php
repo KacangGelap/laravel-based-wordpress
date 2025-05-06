@@ -1,4 +1,5 @@
 <div class="col-lg-4">
+    @if(\Route::current()->getName() !== 'page.show')
     <!-- Trending Tabs -->
     <ul class="nav nav-tabs" id="trendingTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -39,6 +40,7 @@
             @endforeach
         </div>
     </div>
+    @endif
     <h5 class="fw-bold pt-4">Link Terkait</h5>
     <hr>
     <div class="tab-content mt-3">

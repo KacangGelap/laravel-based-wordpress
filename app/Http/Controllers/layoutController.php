@@ -26,22 +26,26 @@ class layoutController extends Controller
         
         return view('template.index')->with('data', $layout);
     }
-    public function galeri(){
-	$isYt = new YoutubeUrl();
-	$link1 = submenu::select('link')->where('link','!=', null)->get();
-	$link2 = subsubmenu::select('link')->where('link','!=', null)->get();
-	$link3 = subsubsubmenu::select('link')->where('link','!=',null)->get();
-	$links = $link1->merge($link2)->merge($link3);
-	$video = [];
-	foreach($links as $data){
-	   $filterYt = 'https://youtu.be/'.$data->link;
-	   
-		if($isYt->passes('link', $filterYt)){
-		   $video[] = $isYt->videoId;
-		}
-	}
-	
-        $berita = post::limit(5)->get();
+    public function galeri(){ //only berita on images and 1 video on every linked menu
+        $isYt = new YoutubeUrl();
+        $models = [submenu::class, subsubmenu::class, subsubsubmenu::class];
+        $video = null;
+        
+        foreach ($models as $model) {
+            $data = $model::whereNotNull('link')
+                         ->orderBy('created_at', 'desc')
+                         ->first();
+        
+            if ($data) {
+                $filterYt = 'https://youtu.be/' . $data->link;
+                if ($isYt->passes('link', $filterYt)) {
+                    $video = $isYt->videoId;
+                    break; // Stop after the first valid one is found
+                }
+            }
+        }                        
+	// dd($video);
+        $berita = post::orderBy('created_at', 'desc')->limit(5)->get();
         $submenu = submenu::where('type' , 'page')
                     ->where('filetype', '!=', 'pdf')
                     ->orWhere('filetype', null)
