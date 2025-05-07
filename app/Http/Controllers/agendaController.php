@@ -73,7 +73,7 @@ class agendaController extends Controller
         }
     }
     public function show(){
-        $data = agenda::orderBy('mulai', 'desc')->get();
+        $data = agenda::orderBy('mulai', 'desc')->limit(20)->get();
         return view('kalender.show')->with('data', $data);
     }
     public function destroy($id){
