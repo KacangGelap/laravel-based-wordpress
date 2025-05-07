@@ -45,7 +45,7 @@ class layoutController extends Controller
             }
         }                        
 	// dd($video);
-        $berita = post::orderBy('created_at', 'desc')->limit(5)->get();
+        $berita = post::orderBy('created_at', 'desc')->limit(15)->get();
         $submenu = submenu::where('type' , 'page')
                     ->where('filetype', '!=', 'pdf')
                     ->orWhere('filetype', null)

@@ -22,7 +22,7 @@
                             </a>@endif
                         @endforeach
                     @endif
-                    @if($submenu->count() >= 1)
+                    {{-- @if($submenu->count() >= 1)
                         @foreach ($submenu as $data)
                             @if(Str::startsWith(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'. $data->media)), 'images/'))<a href="{{route('page.show', ['id'=>$data->halaman->first()->id])}}" class="col-md-3 rounded text-decoration-none">
                                 <img src="{{asset('storage/'.$data->media)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
@@ -69,7 +69,7 @@
                                 <img src="{{asset('storage/'.$data->tambahan3)}}" class="w-100 rounded img-fluid" style="height:250px; object-fit:cover" loading="lazy">
                             </a>@endif
                         @endforeach
-                    @endif
+                    @endif --}}
                     <h4 class="my-4">Galeri Video</h4>
                     <hr>
                         <iframe src="https://youtube.com/embed/{{$video}}" height="400px"></iframe>
