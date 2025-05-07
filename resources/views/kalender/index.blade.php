@@ -29,7 +29,7 @@
                         <tbody>
                             @foreach ($data as $item)
                                 <tr style="font-size: 12px">
-                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{ $loop->iteration + $data->firstItem() - 1 }}</td>
                                     <td style="text-align: justify">{{$item->nama_kegiatan}}</td>
                                     <td>{{$item->penyelenggara}}</td>
                                     @php
@@ -56,6 +56,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="d-flex justify-content-center">{{$data->links()}}</div>
             </div>
         </div>
     </div>

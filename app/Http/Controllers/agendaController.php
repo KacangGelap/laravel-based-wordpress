@@ -7,7 +7,7 @@ use App\Models\agenda;
 class agendaController extends Controller
 {
     public function index(){
-        $data = agenda::orderBy('mulai','desc')->simplePaginate(15);
+        $data = agenda::orderBy('mulai','desc')->simplePaginate(20);
         return view('kalender.index')->with('data', $data);
     }
     public function create(){
