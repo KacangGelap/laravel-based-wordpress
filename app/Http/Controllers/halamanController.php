@@ -337,8 +337,8 @@ class halamanController extends Controller
         // Additional rules for 'id.pdupt' type
         elseif ($request->input('type') == 'id.pdupt') {
             $rules['alamat'] = 'required|string|max:100';
-            $rules['telp'] = 'required|numeric|digits_between:11,13';
-            $rules['wa'] = 'required|numeric|digits_between:11,13';
+            $rules['telp'] = 'required|string';
+            $rules['wa'] = 'required|numeric|digits_between:11,14';
             $rules['fax'] = 'nullable|string';
             $rules['email'] = 'nullable|email';
             $rules['website'] = ['nullable', 'string', new SafeUrl]; // Sanitized website URL
@@ -664,8 +664,8 @@ class halamanController extends Controller
         // Additional rules for 'id.pdupt' type
         elseif ($request->input('type') == 'id.pdupt') {
             $rules['alamat'] = 'nullable|string|max:100';
-            $rules['telp'] = 'nullable|numeric|digits_between:11,13';
-            $rules['wa'] = 'nullable|numeric|digits_between:11,13';
+            $rules['telp'] = 'nullable|string';
+            $rules['wa'] = 'nullable|numeric|digits_between:11,14';
             $rules['fax'] = 'nullable|string';
             $rules['email'] = 'nullable|email';
             $rules['website'] = ['nullable', 'string', new SafeUrl]; // Sanitized website URL

@@ -28,22 +28,38 @@ class layoutController extends Controller
     }
     public function galeri(){ //only berita on images and 1 video on every linked menu
         $isYt = new YoutubeUrl();
-        $models = [submenu::class, subsubmenu::class, subsubsubmenu::class];
-        $video = null;
-        
-        foreach ($models as $model) {
-            $data = $model::whereNotNull('link')
-                         ->orderBy('created_at', 'desc')
-                         ->first();
-        
-            if ($data) {
-                $filterYt = 'https://youtu.be/' . $data->link;
-                if ($isYt->passes('link', $filterYt)) {
-                    $video = $isYt->videoId;
-                    break; // Stop after the first valid one is found
+        $videos = [];
+
+        // Fetch up to 10 recent records per model (or more if needed)
+        $records = collect();
+
+        $records = $records->merge(
+            submenu::whereNotNull('link')->orderBy('created_at', 'desc')->limit(10)->get()
+        );
+        $records = $records->merge(
+            subsubmenu::whereNotNull('link')->orderBy('created_at', 'desc')->limit(10)->get()
+        );
+        $records = $records->merge(
+            subsubsubmenu::whereNotNull('link')->orderBy('created_at', 'desc')->limit(10)->get()
+        );
+
+        // Sort all records globally by created_at descending
+        $sortedRecords = $records->sortByDesc('created_at');
+
+        foreach ($sortedRecords as $data) {
+            $filterYt = 'https://youtu.be/' . $data->link;
+
+            if ($isYt->passes('link', $filterYt)) {
+                $videos[] = $isYt->videoId;
+
+                if (count($videos) === 4) {
+                    break;
                 }
             }
-        }                        
+        }
+
+
+                  
 	// dd($video);
         $berita = post::orderBy('created_at', 'desc')->limit(15)->get();
         $submenu = submenu::where('type' , 'page')
@@ -70,7 +86,7 @@ class layoutController extends Controller
                     ->where('type', '!=', 'link')
 		    ->orderBy('created_at', 'desc')->limit(2)
                     ->get();
-        return view('post.galeri')->with('berita',$berita)->with('submenu',$submenu)->with('subsubmenu', $subsubmenu)->with('subsubsubmenu',$subsubsubmenu)->with('video', $video);
+        return view('post.galeri')->with('berita',$berita)->with('submenu',$submenu)->with('subsubmenu', $subsubmenu)->with('subsubsubmenu',$subsubsubmenu)->with('videos', $videos);
     }
     public function create(){
         $data = layout::all();

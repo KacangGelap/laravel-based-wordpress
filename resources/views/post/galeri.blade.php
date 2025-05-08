@@ -72,7 +72,10 @@
                     @endif --}}
                     <h4 class="my-4">Galeri Video</h4>
                     <hr>
-                        <iframe src="https://youtube.com/embed/{{$video}}" height="400px"></iframe>
+                    @foreach ($videos as $video)
+                    <iframe src="https://youtube.com/embed/{{$video}}" height="400px"></iframe>
+                    @endforeach
+                        
                 </div>
             </div>
             @include('layouts.sidebar')

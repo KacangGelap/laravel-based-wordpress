@@ -95,7 +95,7 @@
                             <label for="telp" class="col-md-4 col-form-label text-md-end">Nomor Telepon<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="telp" type="number" class="form-control @error('telp') is-invalid @enderror" name="telp" value="{{ $data->telp ?? old('telp') }}" required autocomplete="telp" autofocus>
+                                <input id="telp" type="text" class="form-control @error('telp') is-invalid @enderror" name="telp" value="{{ $data->telp ?? old('telp') }}" required autocomplete="telp" autofocus>
 
                                 @error('telp')
                                     <span class="invalid-feedback" role="alert">
@@ -121,7 +121,7 @@
                             <label for="fax" class="col-md-4 col-form-label text-md-end">Nomor FAX (opsional)</label>
 
                             <div class="col-md-6">
-                                <input id="fax" type="string" class="form-control @error('fax') is-invalid @enderror" name="fax" value="{{ $data->fax ?? old('fax') }}" autocomplete="fax" autofocus>
+                                <input id="fax" type="text" class="form-control @error('fax') is-invalid @enderror" name="fax" value="{{ $data->fax ?? old('fax') }}" autocomplete="fax" autofocus>
 
                                 @error('fax')
                                     <span class="invalid-feedback" role="alert">
