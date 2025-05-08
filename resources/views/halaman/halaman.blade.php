@@ -1,7 +1,28 @@
 @extends('layouts.main')
 @section('content') 
     <div class="bg-light container min-vh-100 pt-4">
-        
+        @php
+            function makeLinksClickable($text) {
+                $escaped = e($text); // Escape to prevent XSS
+                $linked = preg_replace_callback(
+                    '~(https?://[^\s<]+)~i',
+                    function ($matches) {
+                        $url = $matches[1];
+                        // Strip trailing punctuation like . , ! ?
+                        $trailing = '';
+                        if (preg_match('/[.,!?)]+$/', $url, $trailMatch)) {
+                            $trailing = $trailMatch[0];
+                            $url = substr($url, 0, -strlen($trailing));
+                        }
+
+                        return '<a href="' . e($url) . '" target="_blank" rel="noopener noreferrer">'
+                            . e($url) . '</a>' . e($trailing);
+                    },
+                    $escaped
+                );
+                return $linked;
+            }
+        @endphp
         <div class="row">
             <div class="col-lg-8">
                 <h4>{{$page->sub_sub_sub_sub_menu ?? $page->sub_sub_sub_menu ?? $page->sub_sub_menu ?? $page->sub_menu }}</h4>
@@ -84,7 +105,7 @@
                     <img src="{{ asset('storage/'.$page->media) }}" class="w-100 mb-4">
                 @else
                     {{-- Halaman --}}
-                    <p class="text-muted" style="font-size: 14px;text-align:justify">{!! nl2br(e($page->text)) !!}</p>
+                    <p class="text-muted" style="font-size: 14px;text-align:justify">{!! nl2br(makeLinksClickable($page->text)) !!}</p>
                     @if(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'.$page->media)) === 'application/pdf')
                         <iframe src="{{ asset('storage/'.$page->media) }}" class="min-vh-100 w-100 mb-4"></iframe>
                     @else
