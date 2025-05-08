@@ -2,26 +2,56 @@
 @section('content') 
     <div class="bg-light container min-vh-100 pt-4">
         @php
-            function makeLinksClickable($text) {
-                $escaped = e($text); // Escape to prevent XSS
-                $linked = preg_replace_callback(
-                    '~(https?://[^\s<]+)~i',
-                    function ($matches) {
-                        $url = $matches[1];
-                        // Strip trailing punctuation like . , ! ?
-                        $trailing = '';
-                        if (preg_match('/[.,!?)]+$/', $url, $trailMatch)) {
-                            $trailing = $trailMatch[0];
-                            $url = substr($url, 0, -strlen($trailing));
-                        }
+use Illuminate\Support\Str;
 
-                        return '<a href="' . e($url) . '" target="_blank" rel="noopener noreferrer">'
-                            . e($url) . '</a>' . e($trailing);
-                    },
-                    $escaped
-                );
-                return $linked;
+function makeLinksSmart($text) {
+    $placeholders = [];
+
+    // 1. Convert Markdown-style links [label](url)
+    $text = preg_replace_callback(
+        '/\[(.*?)\]\((https?:\/\/[^\s<]+)\)/i',
+        function ($matches) use (&$placeholders) {
+            $label = e($matches[1]);
+            $url = $matches[2];
+
+            if (!Str::startsWith($url, ['http://', 'https://'])) {
+                return e($matches[0]);
             }
+
+            $placeholder = '[[[LINK_' . count($placeholders) . ']]]';
+            $placeholders[$placeholder] = '<a href="' . e($url) . '" target="_blank" rel="noopener noreferrer">' . $label . '</a>';
+            return $placeholder;
+        },
+        $text
+    );
+
+    // 2. Escape the full remaining text
+    $text = e($text);
+
+    // 3. Convert plain URLs to clickable links
+    $text = preg_replace_callback(
+        '~(https?://[^\s<]+)~i',
+        function ($matches) {
+            $url = $matches[1];
+            $trailing = '';
+
+            if (preg_match('/[.,!?)]+$/', $url, $trailMatch)) {
+                $trailing = $trailMatch[0];
+                $url = substr($url, 0, -strlen($trailing));
+            }
+
+            return '<a href="' . e($url) . '" target="_blank" rel="noopener noreferrer">'
+                . e($url) . '</a>' . e($trailing);
+        },
+        $text
+    );
+
+    // 4. Replace placeholders back with real <a> tags
+    $text = str_replace(array_keys($placeholders), array_values($placeholders), $text);
+
+    return $text;
+}
+
         @endphp
         <div class="row">
             <div class="col-lg-8">
@@ -105,7 +135,7 @@
                     <img src="{{ asset('storage/'.$page->media) }}" class="w-100 mb-4">
                 @else
                     {{-- Halaman --}}
-                    <p class="text-muted" style="font-size: 14px;text-align:justify">{!! nl2br(makeLinksClickable($page->text)) !!}</p>
+                    <p class="text-muted" style="font-size: 14px;text-align:justify">{!! nl2br(makeLinksSmart($page->text)) !!}</p>
                     @if(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'.$page->media)) === 'application/pdf')
                         <iframe src="{{ asset('storage/'.$page->media) }}" class="min-vh-100 w-100 mb-4"></iframe>
                     @else
