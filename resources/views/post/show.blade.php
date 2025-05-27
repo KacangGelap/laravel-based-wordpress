@@ -1,6 +1,58 @@
 @extends('layouts.main')
 
 @section('content')
+@php
+use Illuminate\Support\Str;
+
+function makeLinksSmart($text) {
+    $placeholders = [];
+
+    // 1. Convert Markdown-style links [label](url)
+    $text = preg_replace_callback(
+        '/\[(.*?)\]\((https?:\/\/[^\s<]+)\)/i',
+        function ($matches) use (&$placeholders) {
+            $label = e($matches[1]);
+            $url = $matches[2];
+
+            if (!Str::startsWith($url, ['http://', 'https://'])) {
+                return e($matches[0]);
+            }
+
+            $placeholder = '[[[LINK_' . count($placeholders) . ']]]';
+            $placeholders[$placeholder] = '<a href="' . e($url) . '" target="_blank" rel="noopener noreferrer">' . $label . '</a>';
+            return $placeholder;
+        },
+        $text
+    );
+
+    // 2. Escape the full remaining text
+    $text = e($text);
+
+    // 3. Convert plain URLs to clickable links
+    $text = preg_replace_callback(
+        '~(https?://[^\s<]+)~i',
+        function ($matches) {
+            $url = $matches[1];
+            $trailing = '';
+
+            if (preg_match('/[.,!?)]+$/', $url, $trailMatch)) {
+                $trailing = $trailMatch[0];
+                $url = substr($url, 0, -strlen($trailing));
+            }
+
+            return '<a href="' . e($url) . '" target="_blank" rel="noopener noreferrer">'
+                . e($url) . '</a>' . e($trailing);
+        },
+        $text
+    );
+
+    // 4. Replace placeholders back with real <a> tags
+    $text = str_replace(array_keys($placeholders), array_values($placeholders), $text);
+
+    return $text;
+}
+
+@endphp
 <div class="bg-light container pt-4">
     <div class="row">
         <!-- Main Content -->
@@ -26,7 +78,7 @@
             <!-- Post Content -->
             <div class="mb-4">
                 <img src="{{ asset('storage/' . $post->media1) }}" alt="Post Image" class="w-100 img-fluid rounded mb-3">
-                <p class="text-muted" style="font-size: 14px; text-align:justify;">{!!nl2br(e($post->deskripsi)) !!}</p>
+                <p class="text-muted" style="font-size: 14px; text-align:justify;">{!!nl2br(makeLinksSmart($post->deskripsi)) !!}</p>
                 @php
                     $mediaCount = collect([$post->media2, $post->media3, $post->media4])->filter()->count();
                     $colSize = $mediaCount > 0 ? 12 / $mediaCount : 12;

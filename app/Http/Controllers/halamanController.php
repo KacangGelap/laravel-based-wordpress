@@ -342,7 +342,7 @@ class halamanController extends Controller
             $rules['fax'] = 'nullable|string';
             $rules['email'] = 'nullable|email';
             $rules['website'] = ['nullable', 'string', new SafeUrl]; // Sanitized website URL
-            $rules['link'] = ['nullable','string','regex:/^https:\/\/(docs\.google\.com\/forms\/d\/e\/[a-zA-Z0-9_-]+\/viewform|goo\.gl\/forms\/[a-zA-Z0-9_-]+|forms\.gle\/[a-zA-Z0-9_-]+)$/'];
+            $rules['link'] = ['nullable','string', new SafeUrl];
             $rules['instagram'] = ['nullable', 'string', new SocialMediaUrl]; // Validate Instagram URL
             $rules['facebook'] = ['nullable', 'string', new SocialMediaUrl]; // Validate Facebook URL
             $rules['youtube'] = ['nullable', 'string', new SocialMediaUrl]; // Validate YouTube URL

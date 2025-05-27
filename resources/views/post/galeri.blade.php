@@ -11,7 +11,7 @@
                             <a href="{{route('post.view', ['post'=>$data->id])}}" class="pb-2 col-md-3 rounded text-decoration-none" >
                                 <img src="{{asset('storage/'.$data->media1)}}" class="w-100 rounded img-fluid" style="height:250px;object-fit:cover" loading="lazy">
                             </a>
-                            @if($data->media2)<a href="{{route('post.view', ['post'=>$data->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
+                            {{-- @if($data->media2)<a href="{{route('post.view', ['post'=>$data->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
                                 <img src="{{asset('storage/'.$data->media2)}}" class="w-100 rounded img-fluid" style="height:250px;object-fit:cover" loading="lazy">
                             </a>@endif
                             @if($data->media3)<a href="{{route('post.view', ['post'=>$data->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
@@ -19,7 +19,7 @@
                             </a>@endif
                             @if($data->media4)<a href="{{route('post.view', ['post'=>$data->id])}}" class="pb-2 col-md-3 rounded text-decoration-none">
                                 <img src="{{asset('storage/'.$data->media4)}}" class="w-100 rounded img-fluid" style="height:250px;object-fit:cover" loading="lazy">
-                            </a>@endif
+                            </a>@endif --}}
                         @endforeach
                     @endif
                     {{-- @if($submenu->count() >= 1)
