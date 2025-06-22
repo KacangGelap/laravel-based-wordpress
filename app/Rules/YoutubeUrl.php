@@ -17,7 +17,7 @@ class YoutubeUrl implements Rule
      */
     public function passes($attribute, $value)
     {
-        $regex = '/^(?:https?:\/\/)?(?:www\.youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:\?.*)?$/';
+        $regex = '/^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:\?.*)?$/';
 
         if (preg_match($regex, $value, $matches)) {
             $this->videoId = $matches[1]; // Extract video ID

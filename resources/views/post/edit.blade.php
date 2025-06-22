@@ -54,57 +54,137 @@
             @enderror
         </div>
         <div class="row justify-content-center">
-            <div class="col-md-3">
-            {{-- media 1 --}}
-                <label for="media1" id="label-media1" class="d-flex flex-column justify-content-center align-items-center border border-dark rounded mb-3" style="height: 200px; cursor: pointer; background-image:url({{$post->media1}}); background-size:cover; background-position:0% 50%">
-                    <input type="file" id="media1" name="media1" class="d-none @error('media1') is-invalid @enderror">
-                    
-                    <p class="text-center mt-2 btn btn-primary" id="text-media1">Upload gambar 1</p>
+           <div class="col-md-3">
+                <div class="card shadow-sm border border-dark position-relative">
+                    {{-- Preview background --}}
+                    <label for="media1" id="label-media1" 
+                        class="d-flex flex-column justify-content-center align-items-center"
+                        style="height: 200px; cursor: pointer; background-image:url('/storage/{{$post->media1}}'); background-size:cover; background-position:center; background-repeat:no-repeat;">
+                        
+                        <input type="file" id="media1" name="media1" class="d-none @error('media1') is-invalid @enderror">
+                        
+                        {{-- Overlay tombol --}}
+                        <div class="position-absolute top-50 start-50 translate-middle">
+                            <p class="btn btn-primary m-0 px-3 py-1" id="text-media1">Upload gambar 1</p>
+                        </div>
+                    </label>
+                    {{-- Checkbox Hapus --}}
+                    <div class="d-flex form-check justify-content-center bg-light py-2">
+                        <input class="form-check-input me-2" type="checkbox" name="" id="" disabled>
+                        <label class="form-check-label large" for="">
+                            Hapus gambar
+                        </label>
+                    </div>
                     @error('media1')
-                        <span class="invalid-feedback" role="alert">
+                        <span class="invalid-feedback d-block text-center" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-                </label>
+                </div>
             </div>
+
             <div class="col-md-3">
-                {{-- media 2 --}}
-                <label for="media2" id="label-media2" class="d-flex flex-column justify-content-center align-items-center border border-dark rounded mb-3" style="height: 200px; cursor: pointer; background-image:url({{$post->media2}}); background-size:cover; background-position:0% 50%">
-                    <input type="file" id="media2" name="media2" class="d-none @error('media2') is-invalid @enderror">
-                    
-                    <p class="text-center mt-2 btn btn-primary" id="text-media2">Upload gambar 2</p>
+                <div class="card shadow-sm border border-dark position-relative">
+                    {{-- Preview background --}}
+                    <label for="media2" id="label-media2" 
+                        class="d-flex flex-column justify-content-center align-items-center"
+                        style="height: 200px; cursor: pointer; background-image:url('/storage/{{$post->media2}}'); background-size:cover; background-position:center; background-repeat:no-repeat;">
+                        
+                        <input type="file" id="media2" name="media2" class="d-none @error('media2') is-invalid @enderror">
+                        
+                        {{-- Overlay tombol --}}
+                        <div class="position-absolute top-50 start-50 translate-middle">
+                            <p class="btn btn-primary m-0 px-3 py-1" id="text-media2">Upload gambar 2</p>
+                        </div>
+                    </label>
+                   {{-- Checkbox Hapus --}}
+                    <div class="d-flex form-check justify-content-center bg-light py-2">
+                        <input class="form-check-input me-2" 
+                            type="checkbox" 
+                            name="hapus_media2" 
+                            id="hapus_media2" 
+                            value="1"
+                            {{ empty($post->media2) ? 'disabled' : '' }}>
+                            
+                        <label class="form-check-label large" for="hapus_media2">
+                            Hapus gambar
+                        </label>
+                    </div>
                     @error('media2')
-                        <span class="invalid-feedback" role="alert">
+                        <span class="invalid-feedback d-block text-center" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-                </label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border border-dark position-relative">
+                    {{-- Preview background --}}
+                    <label for="media3" id="label-media3" 
+                        class="d-flex flex-column justify-content-center align-items-center"
+                        style="height: 200px; cursor: pointer; background-image:url('/storage/{{$post->media3}}'); background-size:cover; background-position:center; background-repeat:no-repeat;">
+                        
+                        <input type="file" id="media3" name="media3" class="d-none @error('media3') is-invalid @enderror">
+                        
+                        {{-- Overlay tombol --}}
+                        <div class="position-absolute top-50 start-50 translate-middle">
+                            <p class="btn btn-primary m-0 px-3 py-1" id="text-media3">Upload gambar 3</p>
+                        </div>
+                    </label>
+                   {{-- Checkbox Hapus --}}
+                    <div class="d-flex form-check justify-content-center bg-light py-2">
+                        <input class="form-check-input me-2" 
+                            type="checkbox" 
+                            name="hapus_media3" 
+                            id="hapus_media3" 
+                            value="1"
+                            {{ empty($post->media3) ? 'disabled' : '' }}>
+                            
+                        <label class="form-check-label large" for="hapus_media3">
+                            Hapus gambar
+                        </label>
+                    </div>
+                    @error('media3')
+                        <span class="invalid-feedback d-block text-center" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
             </div>
             <div class="col-md-3">
-                {{-- media 3 --}}
-                <label for="media3" id="label-media3" class="d-flex flex-column justify-content-center align-items-center border border-dark rounded mb-3" style="height: 200px; cursor: pointer; background-image:url({{$post->media3}}); background-size:cover; background-position:0% 50%">
-                    <input type="file" id="media3" name="media3" class="d-none @error('media3') is-invalid @enderror">
-                    
-                    <p class="text-center mt-2 btn btn-primary" id="text-media3">Upload gambar 3</p>
-                    @error('media3')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </label>
-            </div>
-            <div class="col-3">
-                {{-- media 4 --}}
-                <label for="media4" id="label-media4" class="d-flex flex-column justify-content-center align-items-center border border-dark rounded mb-3" style="height: 200px; cursor: pointer; background-image:url({{$post->media4}}); background-size:cover; background-position:0% 50%">
-                    <input type="file" id="media4" name="media4" class="d-none @error('media4') is-invalid @enderror">
-                    
-                    <p class="text-center mt-2 btn btn-primary" id="text-media4">Upload gambar 4</p>
+                <div class="card shadow-sm border border-dark position-relative">
+                    {{-- Preview background --}}
+                    <label for="media4" id="label-media4" 
+                        class="d-flex flex-column justify-content-center align-items-center"
+                        style="height: 200px; cursor: pointer; background-image:url('/storage/{{$post->media4}}'); background-size:cover; background-position:center; background-repeat:no-repeat;">
+                        
+                        <input type="file" id="media4" name="media4" class="d-none @error('media4') is-invalid @enderror">
+                        
+                        {{-- Overlay tombol --}}
+                        <div class="position-absolute top-50 start-50 translate-middle">
+                            <p class="btn btn-primary m-0 px-3 py-1" id="text-media4">Upload gambar 3</p>
+                        </div>
+                    </label>
+                   {{-- Checkbox Hapus --}}
+                    <div class="d-flex form-check justify-content-center bg-light py-2">
+                        <input class="form-check-input me-2" 
+                            type="checkbox" 
+                            name="hapus_media4" 
+                            id="hapus_media4" 
+                            value="1"
+                            {{ empty($post->media4) ? 'disabled' : '' }}>
+                            
+                        <label class="form-check-label large" for="hapus_media4">
+                            Hapus gambar
+                        </label>
+                    </div>
                     @error('media4')
-                        <span class="invalid-feedback" role="alert">
+                        <span class="invalid-feedback d-block text-center" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-                </label>
+                </div>
             </div>
         </div>
     </div>

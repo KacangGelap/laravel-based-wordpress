@@ -38,9 +38,9 @@
                                     <tbody>
                                         @foreach ($item->unduh as $file)
                                             <tr style="font-size: 12px">
-                                                <td>{{$loop->iteration}}</td>
-                                                <td style="text-align: justify">{{$file->nama}}</td>
-                                                <td class="" style="font-size: 12px">
+                                                <td class="col-1">{{$loop->iteration}}</td>
+                                                <td class="col-8"style="text-align: justify">{{$file->nama}}</td>
+                                                <td class="col-3" style="font-size: 12px">
                                                     <div class="d-md-flex">
                                                         <a href="{{asset("storage/$file->media")}}" target="_blank" rel="noopener noreferrer" class="col btn btn-secondary"><i class="bi bi-eye"></i></a>
                                                         <a href="{{route('unduh.edit',$file->id)}}" class="col btn btn-warning mx-2">

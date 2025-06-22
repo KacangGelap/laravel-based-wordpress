@@ -31,7 +31,7 @@
             <h5 class="fw-bold mt-4">Government Public Relation</h5>
             <hr class="mb-2">
             {{-- GPR --}}
-            <script type="text/javascript" src="https://widget.kominfo.go.id/gpr-widget-kominfo.min.js" async></script>
+            <script type="text/javascript" src="js/gpr.min.js" async></script>
             <div class="rounded py-5" style="background-color:#23277B;border: 6px solid #23277B!important">
                 <div id="gpr-kominfo-widget-body"></div>
             </div>  

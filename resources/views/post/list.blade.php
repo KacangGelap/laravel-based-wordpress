@@ -5,6 +5,7 @@
             <div class="col-lg-8">
                 @if($berita->count() >= 1)
                     <h4 class="mx-4 mb-4">{{\Route::current()->getName() === 'post.list' ? 'List Berita' : 'Hasil Pencarian : '.$query}}</h4>
+                    <div class="d-flex justify-content-center">{{$berita->links()}}</div>
                     <hr>
                     @foreach ($berita as $item)
                         <a href="{{route('post.view',['post'=> $item->id])}}" class="text-decoration-none text-dark">
@@ -23,6 +24,7 @@
                         </a>
                         <hr>
                     @endforeach
+                    <div class="d-flex justify-content-center">{{$berita->links()}}</div>
                 @else
                 <h4 class="text-muted text-center">Tidak Ada Berita</h4>
                 @endif

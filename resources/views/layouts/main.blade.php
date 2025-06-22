@@ -92,6 +92,13 @@
                                                                         {{ $subSubMenu->sub_sub_menu }}
                                                                     </a>
                                                                 </li>
+                                                            @elseif ($subSubMenu->type === 'link')
+                                                            <li>
+                                                                <a class="dropdown-item" href="{{$subSubMenu->filetype == 'video' ? 'https://youtu.be/'.$subSubMenu->link : $subSubMenu->link}}" target="_blank">
+                                                                    {{ $subSubMenu->sub_sub_menu }}
+                                                                    <i class="bi-box-arrow-up-right"></i>
+                                                                </a>
+                                                            </li>
                                                             @elseif ($subSubMenu->type === 'dropdown')
                                                                 <li class="dropdown-submenu dropright">
                                                                     <a class="dropdown-item dropdown-toggle" href="#">
@@ -105,6 +112,13 @@
                                                                                     {{ $subSubSubMenu->sub_sub_sub_menu }}
                                                                                 </a>
                                                                             </li>
+                                                                            @elseif ($subSubSubMenu->type === 'link')
+                                                                            <li>
+                                                                                <a class="dropdown-item" href="{{$subSubSubMenu->filetype == 'video' ? 'https://youtu.be/'.$subSubSubMenu->link : $subSubSubMenu->link}}" target="_blank">
+                                                                                    {{ $subSubSubMenu->sub_sub_sub_menu }}
+                                                                                    <i class="bi-box-arrow-up-right"></i>
+                                                                                </a>
+                                                                            </li>
                                                                             @elseif ($subSubSubMenu->type === 'dropdown')
                                                                             <li class="dropdown-submenu dropright">
                                                                                 <a class="dropdown-item dropdown-toggle" href="#">
@@ -116,6 +130,13 @@
                                                                                             <li>
                                                                                                 <a class="dropdown-item" href="{{ route('page.show', ['id'=>$subSubSubSubMenu->halaman->first()->id]) }}">
                                                                                                     {{ $subSubSubSubMenu->sub_sub_sub_sub_menu }}
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            @elseif ($subSubSubSubMenu->type === 'link')
+                                                                                            <li>
+                                                                                                <a class="dropdown-item" href="{{$subSubSubSubMenu->filetype == 'video' ? 'https://youtu.be/'.$subSubSubSubMenu->link : $subSubSubMenu->link}}" target="_blank">
+                                                                                                    {{ $subSubSubSubMenu->sub_sub_sub_sub_menu }}
+                                                                                                    <i class="bi-box-arrow-up-right"></i>
                                                                                                 </a>
                                                                                             </li>
                                                                                             @endif

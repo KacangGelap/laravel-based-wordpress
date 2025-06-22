@@ -23,7 +23,7 @@ class beritaController extends Controller
                 ->with('kategori', $kategori);
     }
     public function list(){
-        $berita = post::orderBy('created_at', 'desc')->get();
+        $berita = post::orderBy('created_at', 'desc')->simplePaginate(20);
         $kategori = kategori::all();
         return view('post.list')->with('berita', $berita)->with('kategori', $kategori);
     }
@@ -107,16 +107,30 @@ class beritaController extends Controller
 
         try {
             $post = Post::findOrFail($postId);
-            $post->update([
-                'judul'       => $request->input('judul'),
-                'media1'      => $request->hasFile('media1') ? $this->storeFile($request->file('media1')) : $post->media1,
-                'media2'      => $request->hasFile('media2') ? $this->storeFile($request->file('media2')) : $post->media2,
-                'media3'      => $request->hasFile('media3') ? $this->storeFile($request->file('media3')) : $post->media3,
-                'media4'      => $request->hasFile('media4') ? $this->storeFile($request->file('media4')) : $post->media4,
-                'deskripsi'   => $request->filled('deskripsi') ? $request->input('deskripsi') : $post->deskripsi,
-                'contributor' => $request->filled('contributor') ? $request->input('contributor') : $post->contributor,
-                'kategori_id' => $request->filled('kategori_id') ? $request->input('kategori_id') : $post->kategori_id,
-            ]);
+
+            // Hapus media jika diminta
+            foreach (['media1', 'media2', 'media3', 'media4'] as $mediaField) {
+                if ($request->has("hapus_$mediaField")) {
+                    if ($post->$mediaField && file_exists(public_path($post->$mediaField))) {
+                        @unlink(public_path($post->$mediaField)); // hapus file fisik
+                    }
+                    $post->$mediaField = null; // kosongkan field di DB
+                } elseif ($request->hasFile($mediaField)) {
+                    // Upload media baru jika ada file
+                    if ($post->$mediaField && file_exists(public_path($post->$mediaField))) {
+                        @unlink(public_path($post->$mediaField)); // hapus file lama
+                    }
+                    $post->$mediaField = $this->storeFile($request->file($mediaField));
+                }
+                // jika tidak dihapus dan tidak diubah, biarkan nilai lama tetap
+            }
+
+            // Update field lainnya
+            $post->judul = $request->input('judul');
+            $post->deskripsi = $request->filled('deskripsi') ? $request->input('deskripsi') : $post->deskripsi;
+            $post->contributor = $request->filled('contributor') ? $request->input('contributor') : $post->contributor;
+            $post->kategori_id = $request->filled('kategori_id') ? $request->input('kategori_id') : $post->kategori_id;
+            $post->save();
 
         } catch (\Throwable $th) {
             return redirect()->back()->with('gagal', 'Terjadi Kesalahan');
@@ -124,6 +138,7 @@ class beritaController extends Controller
 
         return redirect()->route('post.view', ['post' => $post->id])->with('sukses', 'Data berhasil diubah');
     }
+
 
     public function show(Request $request){
         try {

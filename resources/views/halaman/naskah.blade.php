@@ -108,57 +108,134 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="tambahan1" class="col-md-4 col-form-label text-md-end">Masukkan Gambar tambahan (opsional)</label>
-
+                            <label class="col-md-4 col-form-label text-md-end">Gambar Tambahan 1 (opsional)</label>
                             <div class="col-md-6">
-                                <input id="tambahan1" type="file" class="form-control @error('tambahan1') is-invalid @enderror" name="tambahan1" value="{{ old('tambahan1') }}" autocomplete="tambahan1" autofocus>
+                                <div class="card shadow-sm border position-relative">
+                                    <label for="tambahan1" id="label-tambahan1" 
+                                        class="d-flex flex-column justify-content-center align-items-center"
+                                        style="height: 200px; cursor: pointer;
+                                            background-image: url('{{ isset($data->tambahan1) ? "/storage/$data->tambahan1" : '' }}');
+                                            background-size: cover;
+                                            background-position: center;">
+                                        
+                                        <input type="file" id="tambahan1" name="tambahan1" class="d-none @error('tambahan1') is-invalid @enderror">
+                                        
+                                        <div class="position-absolute top-50 start-50 translate-middle">
+                                            <p class="btn btn-primary m-0 px-3 py-1" id="text-tambahan1">Upload gambar</p>
+                                        </div>
+                                    </label>
 
-                                @error('tambahan1')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                    {{-- Checkbox Hapus --}}
+                                    <div class="d-flex form-check justify-content-center bg-light py-2">
+                                        <input class="form-check-input me-2" type="checkbox" name="hapus_tambahan1" id="hapus_tambahan1" value="1"
+                                            {{ empty($data->tambahan1) ? 'disabled' : '' }}>
+                                        <label class="form-check-label small {{ empty($data->tambahan1) ? 'text-muted' : '' }}" for="hapus_tambahan1">
+                                            Hapus gambar
+                                        </label>
+                                    </div>
+
+                                    @error('tambahan1')
+                                        <span class="invalid-feedback d-block text-center" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label text-md-end">Gambar Tambahan 2 (opsional)</label>
+                            <div class="col-md-6">
+                                <div class="card shadow-sm border position-relative">
+                                    <label for="tambahan2" id="label-tambahan2" 
+                                        class="d-flex flex-column justify-content-center align-items-center"
+                                        style="height: 200px; cursor: pointer;
+                                            background-image: url('{{ isset($data->tambahan2) ? "/storage/$data->tambahan2" : '' }}');
+                                            background-size: cover;
+                                            background-position: center;">
+                                        
+                                        <input type="file" id="tambahan2" name="tambahan2" class="d-none @error('tambahan2') is-invalid @enderror">
+                                        
+                                        <div class="position-absolute top-50 start-50 translate-middle">
+                                            <p class="btn btn-primary m-0 px-3 py-1" id="text-tambahan2">Upload gambar</p>
+                                        </div>
+                                    </label>
+
+                                    {{-- Checkbox Hapus --}}
+                                    <div class="d-flex form-check justify-content-center bg-light py-2">
+                                        <input class="form-check-input me-2" type="checkbox" name="hapus_tambahan2" id="hapus_tambahan2" value="1"
+                                            {{ empty($data->tambahan2) ? 'disabled' : '' }}>
+                                        <label class="form-check-label small {{ empty($data->tambahan2) ? 'text-muted' : '' }}" for="hapus_tambahan2">
+                                            Hapus gambar
+                                        </label>
+                                    </div>
+
+                                    @error('tambahan2')
+                                        <span class="invalid-feedback d-block text-center" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="tambahan2" class="col-md-4 col-form-label text-md-end">Masukkan Gambar tambahan (opsional)</label>
-
+                            <label class="col-md-4 col-form-label text-md-end">Gambar Tambahan 3 (opsional)</label>
                             <div class="col-md-6">
-                                <input id="tambahan2" type="file" class="form-control @error('tambahan2') is-invalid @enderror" name="tambahan2" value="{{ old('tambahan2') }}" autocomplete="tambahan2" autofocus>
+                                <div class="card shadow-sm border position-relative">
+                                    <label for="tambahan3" id="label-tambahan3" 
+                                        class="d-flex flex-column justify-content-center align-items-center"
+                                        style="height: 200px; cursor: pointer;
+                                            background-image: url('{{ isset($data->tambahan3) ? "/storage/$data->tambahan3" : '' }}');
+                                            background-size: cover;
+                                            background-position: center;">
+                                        
+                                        <input type="file" id="tambahan3" name="tambahan3" class="d-none @error('tambahan3') is-invalid @enderror">
+                                        
+                                        <div class="position-absolute top-50 start-50 translate-middle">
+                                            <p class="btn btn-primary m-0 px-3 py-1" id="text-tambahan3">Upload gambar</p>
+                                        </div>
+                                    </label>
 
-                                @error('tambahan2')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="tambahan3" class="col-md-4 col-form-label text-md-end">Masukkan Gambar tambahan (opsional)</label>
+                                    {{-- Checkbox Hapus --}}
+                                    <div class="d-flex form-check justify-content-center bg-light py-2">
+                                        <input class="form-check-input me-2" type="checkbox" name="hapus_tambahan3" id="hapus_tambahan3" value="1"
+                                            {{ empty($data->tambahan3) ? 'disabled' : '' }}>
+                                        <label class="form-check-label small {{ empty($data->tambahan3) ? 'text-muted' : '' }}" for="hapus_tambahan3">
+                                            Hapus gambar
+                                        </label>
+                                    </div>
 
-                            <div class="col-md-6">
-                                <input id="tambahan3" type="file" class="form-control @error('tambahan3') is-invalid @enderror" name="tambahan3" value="{{ old('tambahan3') }}" autocomplete="tambahan3" autofocus>
-
-                                @error('tambahan3')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                    @error('tambahan3')
+                                        <span class="invalid-feedback d-block text-center" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
 			            <div class="row mb-3">
                             <label for="link" class="col-md-4 col-form-label text-md-end">Link Youtube</label>
-
                             <div class="col-md-6">
-                                <input id="link" type="text" class="form-control @error('link') is-invalid @enderror" name="link" value="{{ $data->link ?? old('link') }}" autocomplete="link" autofocus>
+                                <input id="link" type="text" class="form-control @error('link') is-invalid @enderror"
+                                    name="link" value="{{ "https://youtube.com/watch?v=$data->link" ?? old('link') }}" autocomplete="link" autofocus>
 
                                 @error('link')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+
+                                {{-- Checkbox hapus link --}}
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="hapus_link" name="hapus_link" value="1"
+                                        {{ empty($data->link) ? 'disabled' : '' }}>
+                                    <label class="form-check-label {{ empty($data->link) ? 'text-muted' : '' }}" for="hapus_link">
+                                        Hapus link YouTube
+                                    </label>
+                                </div>
                             </div>
                         </div>
+
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

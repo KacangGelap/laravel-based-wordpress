@@ -390,9 +390,7 @@ class halamanController extends Controller
                     }elseif ($validatedData['filetype'] == 'foto') {
                         $data->media = $this->storeFile($validatedData['image']);
                     }
-                    // elseif($validatedData['filetype'] == 'video'){
-                    //     $data->yt_id = $validatedData['yt_id'];
-                    // }
+                  
                 } else {
                     $data->media = $this->storeFile($validatedData['media']);
                     $data->tambahan1 = $request->has('tambahan1') ? $this->storeFile($validatedData['tambahan1']) : null;
@@ -735,17 +733,18 @@ class halamanController extends Controller
                             ? $this->storeFile($validatedData['image'])
                             : $data->media)),
 
-                'tambahan1' => isset($validatedData['tambahan1']) && is_file($validatedData['tambahan1']->getRealPath()) 
-                    ? $this->storeFile($validatedData['tambahan1'])
-                    : $data->tambahan1,
-
-                'tambahan2' => isset($validatedData['tambahan2']) && is_file($validatedData['tambahan2']->getRealPath()) 
-                    ? $this->storeFile($validatedData['tambahan2'])
-                    : $data->tambahan2,
-
-                'tambahan3' => isset($validatedData['tambahan3']) && is_file($validatedData['tambahan3']->getRealPath()) 
-                    ? $this->storeFile($validatedData['tambahan3'])
-                    : $data->tambahan3,
+                'tambahan1' => $request->has('hapus_tambahan1') ? null :
+                    (isset($validatedData['tambahan1']) && is_file($validatedData['tambahan1']->getRealPath()) 
+                        ? $this->storeFile($validatedData['tambahan1']) 
+                        : $data->tambahan1),
+                'tambahan2' => $request->has('hapus_tambahan2') ? null :
+                    (isset($validatedData['tambahan2']) && is_file($validatedData['tambahan2']->getRealPath()) 
+                        ? $this->storeFile($validatedData['tambahan2']) 
+                        : $data->tambahan2),
+                'tambahan3' => $request->has('hapus_tambahan3') ? null :
+                    (isset($validatedData['tambahan3']) && is_file($validatedData['tambahan3']->getRealPath()) 
+                        ? $this->storeFile($validatedData['tambahan3']) 
+                        : $data->tambahan3),
 
                 // 'yt_id' => $validatedData['yt_id'] ?? $data->yt_id,
                 'alamat' => $validatedData['alamat'] ?? $data->alamat,
@@ -762,19 +761,17 @@ class halamanController extends Controller
                 'maps' => $validatedData['maps'] ?? $data->maps,
                 'text' => $validatedData['text'] ?? $data->text,
             ]);
-	    if($request->has('link')){
-		$isYt = new YoutubeUrl();
-        // dd($isYt->passes('link', $validatedData['link'] ?? null));
-		if($isYt->passes('link', $validatedData['link'] ?? null)){
-		   $data->update([
-		     'link' => $isYt->videoId ?? $data->link
-		   ]);
-		}else{
-		   $data->update([
-		     'link' => $validatedData['link'] ?? $data->link
-		   ]);
-		}
-	    }
+            if ($request->has('hapus_link')) {
+                $data->update(['link' => null]);
+            } elseif ($request->has('link')) {
+                $isYt = new YoutubeUrl();
+                if ($isYt->passes('link', $validatedData['link'] ?? null)) {
+                    $data->update(['link' => $isYt->videoId ?? $data->link]);
+                } else {
+                    $data->update(['link' => $validatedData['link'] ?? $data->link]);
+                }
+            }
+
             if($routeName === 'submenu.update'){
                 return redirect()->route('submenu.index', $menu_id)->with('sukses', 'sub-menu berhasil diupdate');
             }
