@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Auth;
+use Auth, App\Models\logs;
 class LoginController extends Controller
 {
     /*
@@ -39,6 +39,12 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
+    private function log($action){
+        $log = new logs();
+        $log->user_id = Auth::Id();
+        $log->action = $action;
+        return $log->save();
+    }
     public function authenticate(Request $request) 
     {
         $validator = Validator::make($request->all(), [
@@ -54,6 +60,7 @@ class LoginController extends Controller
             }else{
                 if (Auth::attempt($credentials)) {
                     $request->session()->regenerate();
+                    $this->log('memasuki website');
                     return redirect()->route('home');
                   }
                   else{

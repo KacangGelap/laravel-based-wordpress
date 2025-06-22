@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\kategori, App\Models\post;
+use App\Models\kategori, App\Models\post, App\Models\logs;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 class beritaController extends Controller
 {
+    private function log($action){
+        $log = new logs();
+        $log->user_id = Auth::Id();
+        $log->action = $action;
+        return $log->save();
+    }
     private function storeFile($file)
     {
         $filename = $file->getClientOriginalName();
@@ -79,8 +85,9 @@ class beritaController extends Controller
             $data->media4 = $request->hasFile('media4') ? $this->storeFile($request->file('media4')) : null;
 
             $data->save();
+            $this->log('Menambah berita :'. $data->judul);
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return redirect()->route('post.create')->with('gagal', 'Terjadi kesalahan');
         }
 
@@ -131,7 +138,7 @@ class beritaController extends Controller
             $post->contributor = $request->filled('contributor') ? $request->input('contributor') : $post->contributor;
             $post->kategori_id = $request->filled('kategori_id') ? $request->input('kategori_id') : $post->kategori_id;
             $post->save();
-
+            $this->log('Mengubah berita :'. $post->judul);
         } catch (\Throwable $th) {
             return redirect()->back()->with('gagal', 'Terjadi Kesalahan');
         }
@@ -158,9 +165,11 @@ class beritaController extends Controller
     public function destroy(string $post){
         try {
             $post = post::findOrFail($post);
+            $this->log('Menghapus berita :'. $post->judul);
             $post->delete();
             return redirect()->route('post.index')->with('sukses','Berita berhasil dihapus');
         } catch (\Throwable $th) {
+            // throw $th;
             return redirect()->route('post.index')->with('gagal','terjadi kesalahan');
         }
         
@@ -179,6 +188,7 @@ class beritaController extends Controller
             $data->kategori = $validated['kategori'];
             if(kategori::all()->count() !== 6){
                 $data->save();
+                $this->log('Menambah kategori berita :'. $data->kategori);
                 return redirect()->route('post.index')->with('sukses', 'kategori berhasil ditambah');
             }
             else{
@@ -204,9 +214,10 @@ class beritaController extends Controller
             $data->update([
                 'kategori' => $validated['kategori'] ?? $data->kategori
             ]);
+            $this->log('Mengubah kategori berita :'. $data->kategori);
             return redirect()->route('post.index')->with('sukses', 'kategori berhasil diubah');
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return redirect()->route('post.index')->with('gagal', 'terjadi kesalahan');
         }
     }

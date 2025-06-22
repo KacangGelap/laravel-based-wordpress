@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\menu, App\Models\submenu, App\Models\subsubmenu, App\Models\subsubsubmenu, App\Models\subsubsubsubmenu,App\Models\halaman;
+use App\Models\menu, App\Models\submenu, App\Models\subsubmenu, App\Models\subsubsubmenu, App\Models\subsubsubsubmenu, App\Models\halaman, App\Models\logs;
 use App\Rules\YoutubeUrl, App\Rules\GoogleMapsUrl, App\Rules\SafeUrl, App\Rules\SocialMediaUrl;
 use App\Helpers\SanitizeHelper;
 class halamanController extends Controller
 {
+    private function log($action){
+        $log = new logs();
+        $log->user_id = Auth::Id();
+        $log->action = $action;
+        $log->save();
+    }
     //simpan file
     private function storeFile($file)
     {
@@ -133,7 +139,7 @@ class halamanController extends Controller
                 return back()->with('gagal', 'halaman yang dituju harus bertipe dropdown');
             }
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return back()->with('gagal','halaman yang dicari tidak ditemukan');
         }
     }
@@ -182,6 +188,7 @@ class halamanController extends Controller
                 $menu = new menu();
                 $menu->menu = strtoupper($validate['menu']);
                 $menu->save();  
+                $this->log('Menambah menu :'. $menu->menu);
                 return redirect()->route('menu.index')->with('sukses', 'menu berhasil ditambah');
             } else {
                 return back()->with('gagal', 'menu tidak boleh lebih dari 6');
@@ -497,7 +504,7 @@ class halamanController extends Controller
                 return redirect()->route('subsubsubsubmenu.index', $sub_sub_sub_menu_id)->with('sukses', 'sub-sub-sub-sub-menu berhasil dibuat');
             }
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return back()->with('gagal','gagal saat menambahkan data');
         }
     }
@@ -785,7 +792,7 @@ class halamanController extends Controller
                 return redirect()->route('subsubsubsubmenu.index', $subsubsubmenu_id)->with('sukses', 'sub-sub-sub-sub-menu berhasil diupdate');
             }
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return back()->with('gagal', 'terjadi kesalahan');
         }
     }
@@ -796,7 +803,7 @@ class halamanController extends Controller
 
             return back()->with('sukses', 'data berhasil dihapus');
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return back()->with('gagal', 'terjadi kesalahan');
         }
     }

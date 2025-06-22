@@ -32,13 +32,11 @@
                                 <a href="{{route('user.index')}}" class="nav-link px-0 align-middle text-white">
                                     <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Pengguna</span> </a>
                             </li>
-                            @endif
                             <li>
                                 <a href=" {{ route('banner.index') }} " class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-image-fill"></i> <span class="ms-1 d-none d-sm-inline">Banner</span>
                                 </a>
                             </li>
-                            @if(\Auth::user()->role === 'admin')
                             <li>
                                 <a href=" {{ route('menu.index') }} " class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-file-earmark-code"></i> <span class="ms-1 d-none d-sm-inline">Navigasi</span>

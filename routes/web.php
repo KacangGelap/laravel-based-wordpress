@@ -24,6 +24,10 @@ Route::middleware(['auth'])->group( function () {
     });
     //FITUR ADMIN 
     Route::middleware(['iso'])->group( function () {
+        Route::get('/logs', function() {
+            $logs = App\Models\logs::orderBy('created_at', 'desc')->simplePaginate(20);
+            return view('logs')->with('logs', $logs);
+        })->name('logs');
         //manajemen pengguna
         Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
         Route::get('/user/create', [App\Http\Controllers\UserController::class, 'create'])->name('user.create');
@@ -70,6 +74,13 @@ Route::middleware(['auth'])->group( function () {
         Route::delete('/halaman/subsubsubsubmenu/{subsubsubmenu}/edit/{subsubsubsubmenu}', [App\Http\Controllers\halamanController::class, 'destroy_subsubsubsubmenu'])->name('subsubsubsubmenu.delete');
 
         //manajemen template /layout website
+        
+        Route::get('/banner',[App\Http\Controllers\layoutController::class, 'index'])->name('banner.index');
+        Route::get('/banner/create',[App\Http\Controllers\layoutController::class, 'create'])->name('banner.create');
+        Route::post('/banner/create',[App\Http\Controllers\layoutController::class, 'store'])->name('banner.store');
+        Route::get('/banner/edit/{banner}', [App\Http\Controllers\layoutController::class, 'edit'])->name('banner.edit');
+        Route::put('/banner/edit/{banner}',[App\Http\Controllers\layoutController::class, 'update'])->name('banner.update');
+
         Route::get('/galeri-geser', [App\Http\Controllers\layoutController::class, 'index'])->name('slider.index');
         Route::get('/galeri-geser/create',[App\Http\Controllers\layoutController::class, 'create'])->name('slider.create');
         Route::post('/galeri-geser/create',[App\Http\Controllers\layoutController::class, 'store'])->name('slider.store');
@@ -89,12 +100,6 @@ Route::middleware(['auth'])->group( function () {
     Route::get('/post/edit/{post}', [App\Http\Controllers\beritaController::class, 'edit'])->name('post.edit');
     Route::put('/post/update/{post}', [App\Http\Controllers\beritaController::class, 'update'])->name('post.update');
     Route::delete('/post/delete/{post}', [App\Http\Controllers\beritaController::class, 'destroy'])->name('post.delete');
-
-    Route::get('/banner',[App\Http\Controllers\layoutController::class, 'index'])->name('banner.index');
-    Route::get('/banner/create',[App\Http\Controllers\layoutController::class, 'create'])->name('banner.create');
-    Route::post('/banner/create',[App\Http\Controllers\layoutController::class, 'store'])->name('banner.store');
-    Route::get('/banner/edit/{banner}', [App\Http\Controllers\layoutController::class, 'edit'])->name('banner.edit');
-    Route::put('/banner/edit/{banner}',[App\Http\Controllers\layoutController::class, 'update'])->name('banner.update');
 
     Route::get('/agenda-kegiatan', [App\Http\Controllers\agendaController::class, 'index'])->name('kalender.index');
     Route::get('/agenda-kegiatan/create', [App\Http\Controllers\agendaController::class, 'create'])->name('kalender.create');

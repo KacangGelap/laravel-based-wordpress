@@ -33,11 +33,11 @@
                     <div class="card bg-warning-subtle">
                         <div class="card-header">Log Aktivitas Pengguna Terakhir</div>
                         <div class="card-body">
-                            {{Carbon\Carbon::now()->translatedFormat('d M Y H:i T')}} : {{Auth::user()->name}} memasuki website
-                        </div>                       
+                            {{Carbon\Carbon::parse($log->created_at)->translatedFormat('d M Y H:i T')}} - <b>{{$log->user->name ." $log->action"}}</b>
+                        </div>
                         <div class="p-2 ms-auto">
                             @if(Auth::user()->role == 'admin')
-                                <a href="#">Lihat semua aktivitas pengguna</a>
+                                <a href="{{route('logs')}}">Lihat semua aktivitas pengguna</a>
                             @endif
                         </div>
                     </div>
