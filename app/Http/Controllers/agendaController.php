@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\agenda, App\Models\logs;
+use Auth;
 class agendaController extends Controller
 {
     private function log($action){
@@ -42,7 +43,7 @@ class agendaController extends Controller
             $this->log('Menambah data agenda kegiatan :'. $data->nama_kegiatan);
             return redirect()->route('kalender.index')->with('sukses','agenda berhasil dibuat');
         } catch (\Throwable $th) {
-            //throw $th;
+            // throw $th;
             return back()->with('gagal','terjadi kesalahan');
         }
     }

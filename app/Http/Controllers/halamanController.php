@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\menu, App\Models\submenu, App\Models\subsubmenu, App\Models\subsubsubmenu, App\Models\subsubsubsubmenu, App\Models\halaman, App\Models\logs;
 use App\Rules\YoutubeUrl, App\Rules\GoogleMapsUrl, App\Rules\SafeUrl, App\Rules\SocialMediaUrl;
-use App\Helpers\SanitizeHelper;
+use App\Helpers\SanitizeHelper, Auth;
 class halamanController extends Controller
 {
     private function log($action){
