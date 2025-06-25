@@ -37,7 +37,7 @@ class metadata
                     'title' => $getBerita->judul,
                     'description' => \Str::limit($getBerita->deskripsi ?? '', 50),
                     'image' => asset("storage/$getBerita->media1"),
-                    'url' => URL::full(),
+                    'url' => request()->fullUrlWithQuery(['utp' => 'share']),
                     'type' => 'berita',
                 ];
             }
