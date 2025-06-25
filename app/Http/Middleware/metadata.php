@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\models\post;
+use Illuminate\Support\Facades\URL;
 class metadata
 {
     /**
@@ -23,7 +24,7 @@ class metadata
             'title' => config('app.name'),
             'description' => '',
             'image' => null,
-            'url' => config('app.url'),
+            'url' => URL::full(),
             'type' => 'uncategorized',
         ];
 
@@ -36,7 +37,7 @@ class metadata
                     'title' => $getBerita->judul,
                     'description' => \Str::limit($getBerita->deskripsi ?? '', 50),
                     'image' => asset("storage/$getBerita->media1"),
-                    'url' => config('app.url'),
+                    'url' => URL::full(),
                     'type' => 'berita',
                 ];
             }
