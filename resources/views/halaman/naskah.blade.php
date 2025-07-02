@@ -217,7 +217,7 @@
                             <label for="link" class="col-md-4 col-form-label text-md-end">Link Youtube</label>
                             <div class="col-md-6">
                                 <input id="link" type="text" class="form-control @error('link') is-invalid @enderror"
-                                    name="link" value="{{ "https://youtube.com/watch?v=$data->link" ?? old('link') }}" autocomplete="link" autofocus>
+                                    name="link" value="{{ isset($data->link) ? "https://youtube.com/watch?v=$data->link" : old('link') }}" autocomplete="link" autofocus>
 
                                 @error('link')
                                     <span class="invalid-feedback" role="alert">
