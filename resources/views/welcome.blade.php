@@ -62,6 +62,7 @@
                     </button>
                 </div> 
             </div>
+            @if(\Schema::hasTable('card'))
             <div class="mt-4 py-2 d-flex flex-wrap justify-content-evenly gap-3">
                 @foreach ($card as $c)
                     <div class="col-md-3 img-hover-container" data-bs-toggle="modal" data-bs-target="#mediaModal" data-bs-image="{{ asset('storage/'.$c->image) }}">
@@ -72,6 +73,7 @@
                     </div>
                 @endforeach
             </div>
+            @endif
             <hr>
             <h4 class="text-center my-2">Selayang Pandang</h4>
             <hr>
@@ -84,6 +86,7 @@
                 allowfullscreen
                 class="p-2 w-100 py-4">
             </iframe>
+            @if(\Schema::hasTable('advanced_carousel_category') && \Schema::hasTable('advanced_carousel'))
             @foreach ($advanced_cat as $catIndex => $category)
                 @if ($category->carousels->isNotEmpty())
 

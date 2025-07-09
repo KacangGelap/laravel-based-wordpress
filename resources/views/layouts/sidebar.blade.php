@@ -41,67 +41,68 @@
         </div>
     </div>
     @endif
-    <!-- Dynamic Tabs -->
-    <ul class="nav nav-tabs" id="embedTab" role="tablist">
-        @foreach ($embeds as $index => $cat)
-            <li class="nav-item" role="presentation">
-                <a class="nav-link @if ($index === 0) active @endif"
-                id="tab-{{ $cat->id }}"
-                data-bs-toggle="tab"
-                href="#tabcontent-{{ $cat->id }}"
-                role="tab"
-                aria-controls="tabcontent-{{ $cat->id }}"
-                aria-selected="{{ $index === 0 ? 'true' : 'false' }}"
-                style="font-size: 12px">
-                    {{ $cat->kategori }}
-                </a>
-            </li>
-        @endforeach
-    </ul>
+    @if(\Schema::hasTable('page_embed_category') && \Schema::hasTable('page_embed'))
+        <!-- Dynamic Tabs -->
+        <ul class="nav nav-tabs" id="embedTab" role="tablist">
+            @foreach ($embeds as $index => $cat)
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link @if ($index === 0) active @endif"
+                    id="tab-{{ $cat->id }}"
+                    data-bs-toggle="tab"
+                    href="#tabcontent-{{ $cat->id }}"
+                    role="tab"
+                    aria-controls="tabcontent-{{ $cat->id }}"
+                    aria-selected="{{ $index === 0 ? 'true' : 'false' }}"
+                    style="font-size: 12px">
+                        {{ $cat->kategori }}
+                    </a>
+                </li>
+            @endforeach
+        </ul>
 
-    <div class="tab-content mt-3">
-        @foreach ($embeds as $index => $cat)
-            <div class="tab-pane fade @if ($index === 0) show active @endif"
-                id="tabcontent-{{ $cat->id }}"
-                role="tabpanel"
-                aria-labelledby="tab-{{ $cat->id }}">
+        <div class="tab-content mt-3">
+            @foreach ($embeds as $index => $cat)
+                <div class="tab-pane fade @if ($index === 0) show active @endif"
+                    id="tabcontent-{{ $cat->id }}"
+                    role="tabpanel"
+                    aria-labelledby="tab-{{ $cat->id }}">
 
-                @if (isset($cat->paginated_valid_embeds) && $cat->paginated_valid_embeds->count())
-                    @foreach ($cat->paginated_valid_embeds as $embed)
-                        @php $halaman = $embed->halaman; @endphp
-                        <a href="{{ url('/page?id=' . ($halaman->id ?? 0)) }}" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-                            <div class="d-flex mb-3">
-                                <img src="{{ asset('storage/' . ($embed->currentpage->media ?? 'default.jpg')) }}"
-                                    class="me-3 rounded"
-                                    style="width: 70px; height: 70px;"
-                                    alt="Thumb">
-                                <div>
-                                    <span class="fw-bold text-dark">
-                                        {{ $embed->currentpage->sub_sub_sub_sub_menu
-                                            ?? $embed->currentpage->sub_sub_sub_menu
-                                            ?? $embed->currentpage->sub_sub_menu
-                                            ?? $embed->currentpage->sub_menu
-                                            ?? 'Tanpa Judul' }}
-                                    </span>
-                                    <p class="text-muted small mb-0">
-                                        {{ \Carbon\Carbon::parse($halaman->created_at)->format('F d, Y') }}
-                                    </p>
+                    @if (isset($cat->paginated_valid_embeds) && $cat->paginated_valid_embeds->count())
+                        @foreach ($cat->paginated_valid_embeds as $embed)
+                            @php $halaman = $embed->halaman; @endphp
+                            <a href="{{ url('/page?id=' . ($halaman->id ?? 0)) }}" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                                <div class="d-flex mb-3">
+                                    <img src="{{ asset('storage/' . ($embed->currentpage->media ?? 'default.jpg')) }}"
+                                        class="me-3 rounded"
+                                        style="width: 70px; height: 70px;"
+                                        alt="Thumb">
+                                    <div>
+                                        <span class="fw-bold text-dark">
+                                            {{ $embed->currentpage->sub_sub_sub_sub_menu
+                                                ?? $embed->currentpage->sub_sub_sub_menu
+                                                ?? $embed->currentpage->sub_sub_menu
+                                                ?? $embed->currentpage->sub_menu
+                                                ?? 'Tanpa Judul' }}
+                                        </span>
+                                        <p class="text-muted small mb-0">
+                                            {{ \Carbon\Carbon::parse($halaman->created_at)->format('F d, Y') }}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    @endforeach
+                            </a>
+                        @endforeach
 
-                    {{-- Pagination --}}
-                    <div class="d-flex justify-content-center">
-                        {{ $cat->paginated_valid_embeds->appends(request()->except("page_{$cat->id}"))->links('pagination::bootstrap-4') }}
-                    </div>
-                @else
-                    <p class="text-muted">Belum ada halaman di kategori ini.</p>
-                @endif
-            </div>
-        @endforeach
-    </div>
-
+                        {{-- Pagination --}}
+                        <div class="d-flex justify-content-center">
+                            {{ $cat->paginated_valid_embeds->appends(request()->except("page_{$cat->id}"))->links('pagination::bootstrap-4') }}
+                        </div>
+                    @else
+                        <p class="text-muted">Belum ada halaman di kategori ini.</p>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+    @endif
     <h5 class="fw-bold pt-4">Link Terkait</h5>
     <hr>
     <div class="tab-content mt-3">
