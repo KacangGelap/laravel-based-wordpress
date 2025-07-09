@@ -18,6 +18,7 @@
                 <a class="text-white" href="https://instagram.com/{{$master->instagram ?? ''}}"><i class="bi bi-instagram me-2"></i>{{ucfirst($master->instagram ?? 'Instagram')}}</a><br>
                 <a class="text-white" href="https://youtube.com/{{$master->youtube ?? ''}}"><i class="bi bi-youtube me-2"></i>{{ucfirst($master->youtube ?? 'Youtube')}}</a><br>
             </div>
+            <br>
             <div class="mt-2">
                 <h6 class="border-bottom">Statistik Pengunjung Website</h6>
                 Today's visitors: {{ $today_visitors }} <br>
@@ -26,11 +27,18 @@
                 Total page views: {{ $total_page_views }} <br>
             </div>
         </div>  
+        {{-- Kolom Maps --}}
         <div class="col-md-3 mb-3 d-flex align-items-stretch">
-                {!! $master->maps ?? '<iframe> </iframe>'!!}
+            <div class="w-100 h-100">
+                {!! str_replace('<iframe', '<iframe class="w-100 h-100" style="border:0;"', $master->maps ?? '<iframe class="w-100 h-100" style="border:0;"></iframe>') !!}
+            </div>
         </div>
-        <div class="col-md-3 mb-3">
-            <img src="/img/112.jpeg" frameborder="0" class="w-100">
+
+        {{-- Kolom Gambar --}}
+        <div class="col-md-3 mb-3 d-flex align-items-stretch">
+            <div class="w-100 h-100">
+                <img src="/img/112.jpeg" class="w-100 h-100" style="object-fit: cover;">
+            </div>
         </div>
     </div>
     {{-- bagian bawah --}}
@@ -52,7 +60,7 @@
             function updateTime() {
                 var now = new Date();
                 var formattedTime = now.toLocaleTimeString('en-US', { hour12: false });
-                currentTimeElement.textContent = "Sekarang Jam : " + formattedTime + " WITA";
+                currentTimeElement.textContent = "Sekarang Pukul : " + formattedTime + " WITA";
             }
 
             // Update the time immediately

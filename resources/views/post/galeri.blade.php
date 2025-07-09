@@ -73,7 +73,16 @@
                     <h4 class="my-4">Galeri Video</h4>
                     <hr>
                     @foreach ($videos as $video)
-                    <iframe src="https://youtube.com/embed/{{$video}}" height="400px"></iframe>
+                        <iframe 
+                            loading="lazy"
+                            width="560" 
+                            height="400" 
+                            src="https://www.youtube.com/embed/{{ $video }}?autoplay=0" 
+                            frameborder="0" 
+                            allow="autoplay; encrypted-media" 
+                            allowfullscreen
+                            class="p-2">
+                        </iframe>
                     @endforeach
                         
                 </div>

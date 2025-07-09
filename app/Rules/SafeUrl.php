@@ -38,9 +38,16 @@ class SafeUrl implements Rule
         $host = $parsedUrl['host'];
         $ip = gethostbyname($host);
 
-        if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
-            return false; // Unsafe IP (e.g., private or reserved ranges)
+        // Check if DNS resolution succeeded
+        if ($ip === $host) {
+            return false; // DNS resolution failed
         }
+
+        // Check if the result is a valid IP (without blocking private/reserved)
+        if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+            return false; // Not a valid IP
+        }
+
 
         // Check for XSS patterns
         $xssPatterns = [

@@ -332,7 +332,7 @@ class halamanController extends Controller
                 $rules['tambahan2'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
                 $rules['tambahan3'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
                 $rules['text'] = 'required_unless:filetype,null|string';
-		$rules['link'] = ['nullable', 'string', new YoutubeUrl];
+		        $rules['link'] = ['nullable', 'string', new YoutubeUrl];
             }
         }
 
@@ -520,7 +520,7 @@ class halamanController extends Controller
             $validate = $request->validate([
                 'id' => 'required|numeric|min:1'
             ]);
-            $halaman = halaman::find($validate['id']);
+            $halaman = halaman::findOrFail($validate['id']);
             //cek apakah itu page(id unik)
             $currentpage = subsubsubsubmenu::find($halaman->sub_sub_sub_sub_menu_id) ?? subsubsubmenu::find($halaman->sub_sub_sub_menu_id) ?? subsubmenu::find($halaman->sub_sub_menu_id) ?? submenu::find($halaman->sub_menu_id);
             return view('halaman.halaman')->with('halaman', $halaman)->with('page', $currentpage);

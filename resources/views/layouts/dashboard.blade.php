@@ -47,6 +47,31 @@
                                     <i class="fs-4 bi-images"></i> <span class="ms-1 d-none d-sm-inline">Galeri Geser</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href=" {{ route('card.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-layout-three-columns"></i> <span class="ms-1 d-none d-sm-inline">Kartu Statis</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href=" {{ route('video.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-film"></i> <span class="ms-1 d-none d-sm-inline">Video homepage</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href=" {{ route('carousel.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-images"></i> <span class="ms-1 d-none d-sm-inline">Kartu Geser</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href=" {{ route('embed.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-card-list"></i> <span class="ms-1 d-none d-sm-inline">Tautan Laman</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href=" {{ route('quote.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-quote"></i> <span class="ms-1 d-none d-sm-inline">Quote</span>
+                                </a>
+                            </li>
                             @endif
                             <li class="nav-item">
                                 <a href=" {{ route('post.index') }} " class="nav-link align-middle px-0 text-white">

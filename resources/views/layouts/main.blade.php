@@ -223,15 +223,16 @@
                 </div>
             </div>
 
-            <!-- Toggle Chat Button -->
-            <button id="toggleChatBtn" class="btn btn-success rounded-circle shadow-lg" style="position: absolute; bottom: 75px; right: 16px;">
-                <span class="position-absolute top-75 start-100 translate-middle p-2 bg-danger border border-light rounded-circle" id="chatBadge">
+          <!-- Toggle Chat Button -->
+            <button id="toggleChatBtn" class="btn btn-success rounded-pill shadow-lg align-items-center px-3 py-2" style="position: absolute; bottom: 75px; right: 16px; width:275px">
+                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle" id="chatBadge">
                     <span class="visually-hidden">New alerts</span>
                 </span>
-                <i class="bi bi-whatsapp fs-4 text-white"></i>
+                <div class="d-flex justify-content-evenly align-items-center">
+                    <i class="bi bi-whatsapp fs-5 text-white"> </i>
+                    <span class="text-white">Ada yang bisa kami bantu?</span>
+                </div>
             </button>
-
-
             <!-- Scroll to Top Button -->
             <button id="scrollTopBtn" class="btn btn-primary d-none rounded-circle" 
                     onclick="scrollToTop()" title="Go to top">

@@ -9,7 +9,7 @@
                     </div>
                     <div class="card-body">
                         @foreach ($filecat as $item)
-                            <h4 class="text-decoration-bold">{{"$item->cat"}}</h4>
+                            <h4 class="text-decoration-bold">{{ $item->cat }}</h4>
                             <div class="table-responsive text-center">
                                 <table class="table table-striped table-hover">
                                     <thead>
@@ -20,17 +20,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($item->unduh as $file)
+                                        @foreach ($item->unduh()->orderBy('nama', 'asc')->paginate(15) as $file)
                                             <tr style="font-size: 12px">
-                                                <td class="col-1">{{$loop->iteration}}</td>
-                                                <td class="col-9" style="text-align: justify">{{str_replace(".pdf","",$file->nama)}}</td>
+                                                <td class="col-1">{{ $loop->iteration }}</td>
+                                                <td class="col-9" style="text-align: justify">{{ str_replace(".pdf", "", $file->nama) }}</td>
                                                 <td class="col-2" style="font-size: 12px">
                                                     <div class="d-md-flex">
-                                                        <a href="{{asset("storage/$file->media")}}" target="_blank" rel="noopener noreferrer" class="col btn btn-secondary"><i class="bi bi-eye"></i></a>
-                                                        <a href="{{route('unduh-file', $file->id)}}" class="col btn btn-dark mx-2">
+                                                        <a href="{{ asset("storage/$file->media") }}" target="_blank" rel="noopener noreferrer" class="col btn btn-secondary">
+                                                            <i class="bi bi-eye"></i>
+                                                        </a>
+                                                        <a href="{{ route('unduh-file', $file->id) }}" class="col btn btn-dark mx-2">
                                                             <i class="bi-download"></i>
                                                         </a>
-                                                        
                                                     </div>
                                                 </td>
                                             </tr>
