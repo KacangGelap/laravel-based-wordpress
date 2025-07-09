@@ -63,16 +63,16 @@
                 </div> 
             </div>
             @if(\Schema::hasTable('card'))
-            <div class="mt-4 py-2 d-flex flex-wrap justify-content-evenly gap-3">
-                @foreach ($card as $c)
-                    <div class="col-md-3 img-hover-container" data-bs-toggle="modal" data-bs-target="#mediaModal" data-bs-image="{{ asset('storage/'.$c->image) }}">
-                        <img src="{{ asset('storage/'.$c->image) }}" alt="Image">
-                        <div class="img-hover-overlay">
-                            <h5 class="m-0">{{ $c->judul }}</h5>
+                <div class="mt-4 py-2 d-flex flex-wrap justify-content-evenly gap-3">
+                    @foreach ($card as $c)
+                        <div class="col-md-3 img-hover-container" data-bs-toggle="modal" data-bs-target="#mediaModal" data-bs-image="{{ asset('storage/'.$c->image) }}">
+                            <img src="{{ asset('storage/'.$c->image) }}" alt="Image">
+                            <div class="img-hover-overlay">
+                                <h5 class="m-0">{{ $c->judul }}</h5>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
             @endif
             <hr>
             <h4 class="text-center my-2">Selayang Pandang</h4>
@@ -87,46 +87,47 @@
                 class="p-2 w-100 py-4">
             </iframe>
             @if(\Schema::hasTable('advanced_carousel_category') && \Schema::hasTable('advanced_carousel'))
-            @foreach ($advanced_cat as $catIndex => $category)
-                @if ($category->carousels->isNotEmpty())
+                @foreach ($advanced_cat as $catIndex => $category)
+                    @if ($category->carousels->isNotEmpty())
 
-                @php
-                    // chunk carousels jadi per 6
-                    $carouselChunks = $category->carousels->chunk(6);
-                    $colors = ['#e0f0ff', '#d0ffd0', '#ffe0ff', '#fdfdcf'];
-                    $bgColor = $colors[$catIndex % count($colors)];
-                    $carouselId = 'carouselCat' . $category->id;
-                @endphp
-                <div class="p-3 mb-4" style="background-color: {{ $bgColor }}">
-                    {{-- Carousel khusus kategori ini --}}
-                    <div id="{{ $carouselId }}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
-                        <div class="carousel-inner">
-                            @foreach ($carouselChunks as $chunkIndex => $chunk)
-                                <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">
-                                    <div class="row justify-content-center g-3">
-                                        @foreach ($chunk as $carousel)
-                                            <div class="col-6 col-sm-6 col-md-4 col-lg-2 position-relative">
-                                                <img src="{{ asset('storage/' . $carousel->media) }}"
-                                                    class="img-fluid rounded shadow"
-                                                    style="height: 150px; object-fit: cover; cursor:pointer;"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#mediaModal"
-                                                    data-bs-image="{{ asset('storage/' . $carousel->media) }}"
-                                                    alt="image" 
-                                                    loading="lazy"/>
-                                            </div>
-                                        @endforeach
+                    @php
+                        // chunk carousels jadi per 6
+                        $carouselChunks = $category->carousels->chunk(6);
+                        $colors = ['#e0f0ff', '#d0ffd0', '#ffe0ff', '#fdfdcf'];
+                        $bgColor = $colors[$catIndex % count($colors)];
+                        $carouselId = 'carouselCat' . $category->id;
+                    @endphp
+                    <div class="p-3 mb-4" style="background-color: {{ $bgColor }}">
+                        {{-- Carousel khusus kategori ini --}}
+                        <div id="{{ $carouselId }}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+                            <div class="carousel-inner">
+                                @foreach ($carouselChunks as $chunkIndex => $chunk)
+                                    <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">
+                                        <div class="row justify-content-center g-3">
+                                            @foreach ($chunk as $carousel)
+                                                <div class="col-6 col-sm-6 col-md-4 col-lg-2 position-relative">
+                                                    <img src="{{ asset('storage/' . $carousel->media) }}"
+                                                        class="img-fluid rounded shadow"
+                                                        style="height: 150px; object-fit: cover; cursor:pointer;"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#mediaModal"
+                                                        data-bs-image="{{ asset('storage/' . $carousel->media) }}"
+                                                        alt="image" 
+                                                        loading="lazy"/>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     </div>
-                                </div>
 
-                            @endforeach
+                                @endforeach
+                            </div>
+                            {{-- Judul --}}
+                            <h5 class="mt-4 text-center fw-bold">{{ $category->kategori }}</h5>
                         </div>
-                        {{-- Judul --}}
-                        <h5 class="mt-4 text-center fw-bold">{{ $category->kategori }}</h5>
                     </div>
-                </div>
-                @endif
-            @endforeach
+                    @endif
+                @endforeach
+            @endif
             @if(\Storage::exists('profil.txt'))
                 <figure class="text-center bg-secondary-subtle py-4">
                     <blockquote class="blockquote">
