@@ -128,7 +128,7 @@
                     @endif
                 @endforeach
             @endif
-            @if(\Storage::exists('profil.txt'))
+            @if(\Storage::exists('quote.txt'))
                 <figure class="text-center bg-secondary-subtle py-4">
                     <blockquote class="blockquote">
                         <p>{{ucfirst($quote)}}</p>
