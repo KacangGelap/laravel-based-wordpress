@@ -102,7 +102,7 @@
 
                     @php
                         // chunk carousels jadi per 6
-                        $carouselChunks = $category->carousels->chunk(6);
+                        $carouselChunks = $category->carousels->chunk(5);
                         $colors = ['#e0f0ff', '#d0ffd0', '#ffe0ff', '#fdfdcf'];
                         $timeinterval = ['2000', '0', '5000' ,'0', '7000'];
                         $bgColor = $colors[$catIndex % count($colors)];
