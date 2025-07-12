@@ -62,8 +62,9 @@
                     </button>
                 </div> 
             </div>
+            <hr class="mt-4">
             @if(\Schema::hasTable('card'))
-                <div class="mt-4 py-2 d-flex flex-wrap justify-content-evenly gap-3">
+                <div class="py-4 d-flex flex-wrap justify-content-evenly gap-3">
                     @foreach ($card as $c)
                         <div class="col-md-3 img-hover-container" data-bs-toggle="modal" data-bs-target="#mediaModal" data-bs-image="{{ asset('storage/'.$c->image) }}">
                             <img src="{{ asset('storage/'.$c->image) }}" alt="Image">
@@ -74,18 +75,27 @@
                     @endforeach
                 </div>
             @endif
+            <div class="bg-primary-subtle">
+                <hr>
+                <h4 class="text-center my-2 fw-bold" style="font-size:40px;font-family: Dancing Script, cursive">Selayang Pandang</h4>
+                <hr>
+            </div>
+            
+            <div class="row justify-content-center py-4">
+                <div class="d-flex w-100 justify-content-center">
+                    <iframe 
+                    loading="lazy"
+                    height="500px"
+                    src="https://www.youtube.com/embed/{{ \Storage::exists('profil.txt') ? \Storage::get('profil.txt') : '' }}?autoplay=0&muted=0" 
+                    frameborder="0" 
+                    allow="autoplay; encrypted-media" 
+                    allowfullscreen
+                    class="w-75">
+                </iframe>
+                </div>
+                <a class="mt-4 text-center fw-bold btn btn-danger col-md-3 col-8">Tonton di YouTube</a>
+            </div>
             <hr>
-            <h4 class="text-center my-2">Selayang Pandang</h4>
-            <hr>
-            <iframe 
-                loading="lazy"
-                height="500px"
-                src="https://www.youtube.com/embed/{{ \Storage::exists('profil.txt') ? \Storage::get('profil.txt') : '' }}?autoplay=1&muted=0" 
-                frameborder="0" 
-                allow="autoplay; encrypted-media" 
-                allowfullscreen
-                class="p-2 w-100 py-4">
-            </iframe>
             @if(\Schema::hasTable('advanced_carousel_category') && \Schema::hasTable('advanced_carousel'))
                 @foreach ($advanced_cat as $catIndex => $category)
                     @if ($category->carousels->isNotEmpty())
@@ -94,13 +104,14 @@
                         // chunk carousels jadi per 6
                         $carouselChunks = $category->carousels->chunk(6);
                         $colors = ['#e0f0ff', '#d0ffd0', '#ffe0ff', '#fdfdcf'];
+                        $timeinterval = ['2000', '0', '5000' ,'0', '7000'];
                         $bgColor = $colors[$catIndex % count($colors)];
                         $carouselId = 'carouselCat' . $category->id;
                     @endphp
-                    <div class="p-3 mb-4" style="background-color: {{ $bgColor }}">
+                    <div class="py-3 mb-4 min-vh-50" style="">
                         {{-- Carousel khusus kategori ini --}}
-                        <div id="{{ $carouselId }}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
-                            <div class="carousel-inner">
+                        <div id="{{ $carouselId }}" class="row carousel slide justify-content-center" data-bs-ride="carousel" data-bs-interval="{{$timeinterval[$catIndex % count($timeinterval)]}}">
+                            <div class="carousel-inner w-75">
                                 @foreach ($carouselChunks as $chunkIndex => $chunk)
                                     <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">
                                         <div class="row justify-content-center g-3">
@@ -118,24 +129,70 @@
                                             @endforeach
                                         </div>
                                     </div>
-
                                 @endforeach
+                                
                             </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#{{ $carouselId }}" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon rounded bg-dark py-5" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#{{ $carouselId }}" data-bs-slide="next">
+                                <span class="carousel-control-next-icon rounded bg-dark py-5" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                             {{-- Judul --}}
-                            <h5 class="mt-4 text-center fw-bold">{{ $category->kategori }}</h5>
+                            <h5 class="my-4 text-center fw-bold">{{ $category->kategori }}</h5>
                         </div>
                     </div>
+                    <hr>
                     @endif
                 @endforeach
             @endif
+            @if(\Schema::hasTable('kalender'))
+                <div class="py-4 table-responsive text-center">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Nama Agenda</th>
+                                    <th>Penyelenggara</th>
+                                    <th>Tanggal</th>
+                                    <th>Jam Mulai</th>
+                                    <th>Jam Selesai</th>
+                                    <th>Lokasi dan Alamat</th>
+                                    <th>Menghadiri</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($agenda as $agenda)
+                                    <tr style="font-size: 12px">
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td style="text-align: justify;">{{$agenda->nama_kegiatan}}</td>
+                                        <td>{{$agenda->penyelenggara}}</td>
+                                        @php
+                                            $tgl_mulai = Carbon\Carbon::parse($agenda->mulai)->translatedFormat('d M Y');
+                                            $tgl_selesai = Carbon\Carbon::parse($agenda->selesai)->translatedFormat('d M Y');
+                                        @endphp
+                                        <td>{{$tgl_mulai === $tgl_selesai ? $tgl_mulai : "$tgl_mulai - $tgl_selesai"}}</td>
+                                        <td>{{Carbon\Carbon::parse($agenda->mulai)->translatedFormat('H:i T')}}</td>
+                                        <td>{{Carbon\Carbon::parse($agenda->selesai)->translatedFormat('H:i T')}}</td>
+                                        <td style="text-align: justify;">{{"$agenda->lokasi, $agenda->alamat"}}</td>
+                                        <td>{{$agenda->menghadiri}}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <h5 class="fw-bold">Agenda Kegiatan</h5>
+                    </div>
+            @endif
             @if(\Storage::exists('quote.txt'))
                 <figure class="text-center bg-secondary-subtle py-4">
-                    <blockquote class="blockquote">
-                        <p>{{ucfirst($quote)}}</p>
+                    <blockquote class="blockquote fw-bold">
+                        <i>" {{ucfirst($quote)}} "</i>
                     </blockquote>
-                    <figcaption class="blockquote-footer">
+                    {{-- <figcaption class="blockquote-footer">
                         {{parse_url(url('/'), PHP_URL_HOST)}}
-                    </figcaption>
+                    </figcaption> --}}
                 </figure>
             @endif
         </div>

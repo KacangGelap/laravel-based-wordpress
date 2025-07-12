@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\halaman, App\Models\menu, App\Models\submenu, App\Models\subsubmenu, App\Models\subsubsubmenu, App\Models\subsubsubsubmenu, App\Models\layout, App\Models\link;
-use App\Models\card;
+use App\Models\card, App\Models\agenda;
 use App\Models\advanced_carousel_category, App\Models\advanced_carousel;
 use App\Models\page_embed_category, App\Models\page_embed;
 use Illuminate\Support\Facades\Schema;
@@ -70,6 +70,10 @@ class AppServiceProvider extends ServiceProvider
             $advanced_cat = advanced_carousel_category::with('carousels')->get();
             view()->share('advanced_cat', $advanced_cat);
         }
+        if(Schema::hasTable('kalender')){
+            $agenda = agenda::orderBy('mulai','desc')->limit(5)->get();
+            view()->share('agenda', $agenda);
+        }
         if (Schema::hasTable('page_embed_category') && Schema::hasTable('page_embed')) {
             $selfHost = parse_url(url('/'), PHP_URL_HOST);
 
@@ -129,6 +133,10 @@ class AppServiceProvider extends ServiceProvider
         if(\Storage::exists('quote.txt')){
             $quote = \Storage::get('quote.txt');
             view()->share('quote', $quote);
+        }
+        if(\Storage::exists('faq.txt')){
+            $faq = \Storage::get('faq.txt');
+            view()->share('faq', $faq);
         }
         if (
             Schema::hasTable('sub_menus') &&

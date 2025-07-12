@@ -17,6 +17,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/css/bootstrap.css">
     <script src="/js/bootstrap.bundle.js"></script>
@@ -196,7 +197,7 @@
         @include('layouts.footer')
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
             <!-- Chat Window -->
-            <div id="chatWindow" class="card shadow-lg border-0 d-none mb-5 rounded" style="width: 300px; position: absolute; bottom: 90px; right: 16px;">
+            <div id="chatWindow" class="card shadow-lg border-0 d-none mb-5 rounded" style="width: 300px; position: absolute; bottom: 90px; right: 80px;">
                 <div class="card-header d-flex align-items-center bg-success text-white">
                     <div class="me-3">
                         <img src="/img/user.png" alt="Admin" class="rounded-circle" width="50" height="50">
@@ -224,7 +225,7 @@
             </div>
 
           <!-- Toggle Chat Button -->
-            <button id="toggleChatBtn" class="btn btn-success rounded-pill shadow-lg align-items-center px-3 py-2" style="position: absolute; bottom: 75px; right: 16px; width:275px">
+            <button id="toggleChatBtn" class="btn btn-success rounded-pill shadow-lg align-items-center px-3 py-2" style="position: absolute;bottom:20px; right: 80px; width:275px">
                 <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle" id="chatBadge">
                     <span class="visually-hidden">New alerts</span>
                 </span>
@@ -235,7 +236,7 @@
             </button>
             <!-- Scroll to Top Button -->
             <button id="scrollTopBtn" class="btn btn-primary d-none rounded-circle" 
-                    onclick="scrollToTop()" title="Go to top">
+                    onclick="scrollToTop()" title="Go to top" style="bottom: 20px">
                 <i class="bi bi-arrow-up fs-4 text-white"></i>
             </button>
         </div>        

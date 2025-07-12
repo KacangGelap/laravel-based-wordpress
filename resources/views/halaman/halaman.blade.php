@@ -96,7 +96,7 @@ function makeLinksSmart($text) {
                                     <td class="col-md-8">{{$page->website}}</td>
                                 </tr>
                                 <tr class="border-bottom">
-                                    <td class="col-md-4"><b>{{__('Berikan Saran dan Masukan')}}<b></td>
+                                    <td class="col-md-4"><b>{{__('Kritik dan Saran')}}<b></td>
                                     
                                     <td class="col-md-8"><a class="btn btn-primary" href="{{$page->link}}" target="_blank" rel="noopener noreferrer">Klik Disini</a></td>
                                 </tr>

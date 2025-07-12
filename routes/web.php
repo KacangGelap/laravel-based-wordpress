@@ -130,6 +130,8 @@ Route::middleware(['auth'])->group( function () {
         Route::post('/home-video', [App\Http\Controllers\layoutController::class, 'apply_profil'])->name('video.store');
         Route::get('/quote', [App\Http\Controllers\layoutController::class, 'configure_quote'])->name('quote.index');
         Route::post('/quote', [App\Http\Controllers\layoutController::class, 'apply_quote'])->name('quote.store');
+        Route::get('/faq', [App\Http\Controllers\layoutController::class, 'configure_faq'])->name('faq.index');
+        Route::post('/faq', [App\Http\Controllers\layoutController::class, 'apply_faq'])->name('faq.store');
     });
     //manajemen postingan
     Route::get('/post', [App\Http\Controllers\beritaController::class, 'index'])->name('post.index');

@@ -18,7 +18,12 @@ class linkController extends Controller
         return view('link.index')->with('data', $data);
     }
     public function create(){
-        return view('link.create');
+        if(link::all()->count() < 10){
+            return view('link.create');
+        }else{
+            return back()->with('gagal', 'hanya bisa mengisi sebanyak 10 link');
+        }
+        
     }
     public function store(Request $request){
         $validatedData = $request->validate([
@@ -27,13 +32,18 @@ class linkController extends Controller
             'url' => ['required','string', new SafeUrl]
         ]);
         try {
-            $data = new link();
-            $data->nama = $validatedData['nama'];
-            $data->media = $this->storeFile($validatedData['media']);
-            $data->url = $validatedData['url'];
-            $data->save();
+            if(link::all()->count() < 10){
+                $data = new link();
+                $data->nama = $validatedData['nama'];
+                $data->media = $this->storeFile($validatedData['media']);
+                $data->url = $validatedData['url'];
+                $data->save();
 
-            return redirect()->route('link.index')->with('sukses', 'link berhasil ditambah');
+                return redirect()->route('link.index')->with('sukses', 'link berhasil ditambah');
+            }else{
+                return redirect()->route('link.index')->with('gagal', 'hanya bisa mengisi sebanyak 10 link');
+            }
+            
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->route('link.index')->with('gagal', 'terjadi kesalahan');

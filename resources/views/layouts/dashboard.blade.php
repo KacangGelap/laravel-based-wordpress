@@ -72,6 +72,11 @@
                                     <i class="fs-4 bi-quote"></i> <span class="ms-1 d-none d-sm-inline">Quote</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href=" {{ route('faq.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-chat-left-dots"></i> <span class="ms-1 d-none d-sm-inline">FAQ</span>
+                                </a>
+                            </li>
                             @endif
                             <li class="nav-item">
                                 <a href=" {{ route('post.index') }} " class="nav-link align-middle px-0 text-white">

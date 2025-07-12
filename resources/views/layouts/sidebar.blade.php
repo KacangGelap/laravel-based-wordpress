@@ -20,6 +20,7 @@
                     <div>
                         <a href="{{ route('post.view', ['post' => $item->id]) }}" class="fw-bold text-dark">{{ $item->judul }}</a>
                         <p class="text-muted small mb-0">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</p>
+                        <p class="text-muted small mb-0">{{$item->pengunjung}}x dilihat</p>
                     </div>
                 </div>
             </a>
@@ -43,7 +44,7 @@
     @endif
     @if(\Schema::hasTable('page_embed_category') && \Schema::hasTable('page_embed'))
         <!-- Dynamic Tabs -->
-        <ul class="nav nav-tabs" id="embedTab" role="tablist">
+        <ul class="mt-5 nav nav-tabs" id="embedTab" role="tablist">
             @foreach ($embeds as $index => $cat)
                 <li class="nav-item" role="presentation">
                     <a class="nav-link @if ($index === 0) active @endif"
@@ -53,7 +54,7 @@
                     role="tab"
                     aria-controls="tabcontent-{{ $cat->id }}"
                     aria-selected="{{ $index === 0 ? 'true' : 'false' }}"
-                    style="font-size: 12px">
+                    >
                         {{ $cat->kategori }}
                     </a>
                 </li>
@@ -112,7 +113,7 @@
                 @foreach ($link_terkait as $item)
                 <div class="row justify-content-center">
                     <a href="{{$item->url}}" target="_blank" rel="noopener noreferrer" class="d-flex text-decoration-none justify-content-center">
-                        <img src="{{ asset("storage/$item->media")}}" class="my-3 img-fluid" style="object-fit: cover;object-position:50% 50%">
+                        <img src="{{ asset("storage/$item->media")}}" class="w-50 my-3 img-fluid" style="object-fit: cover;object-position:50% 50%">
                     </a>
                 </div>
                 @endforeach

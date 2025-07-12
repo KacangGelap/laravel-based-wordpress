@@ -618,6 +618,42 @@ class layoutController extends Controller
             return redirect()->route('quote.index')->with('gagal', 'Terjadi kesalahan');
         }
     }
+    public function configure_faq(){
+        $faq = Storage::exists('faq.txt') ? Storage::get('faq.txt') : '';
+        return view('misc.faq', compact('faq'));
+    }
+    public function apply_faq(Request $request)
+    {
+        $validated = $request->validate([
+            'faq' => ['required', 'url', function ($attribute, $value, $fail) {
+                $parsedUrl = parse_url($value);
+                $selfHost = parse_url(url('/'), PHP_URL_HOST);
+
+                // 1. Cek domain
+                if (($parsedUrl['host'] ?? '') !== $selfHost) {
+                    return $fail("Link harus berasal dari domain {$selfHost}.");
+                }
+
+                // 2. Cek path harus '/page'
+                if (($parsedUrl['path'] ?? '') !== '/page') {
+                    return $fail("Path URL harus '/page'. Contoh: https://{$selfHost}/page?id=21");
+                }
+
+                // 3. Cek harus ada query 'id'
+                parse_str($parsedUrl['query'] ?? '', $queryParams);
+                if (!isset($queryParams['id'])) {
+                    return $fail("Link harus memiliki parameter ?id= pada URL.");
+                }
+            }],
+        ]);
+        try {
+            Storage::put('faq.txt', $request->input('faq'));
+            return redirect()->route('faq.index')->with('sukses', 'FAQ telah diperbarui!');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('faq.index')->with('gagal', 'Terjadi kesalahan');
+        }
+    }
     public function configure_profil(){
         $profil = Storage::exists('profil.txt') ? Storage::get('profil.txt') : '';
         return view('misc.profil', compact('profil'));
