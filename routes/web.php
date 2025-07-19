@@ -37,13 +37,88 @@ Route::middleware(['auth'])->group( function () {
         Route::delete('/user/delete/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('user.delete');
         Route::get('/user/show/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('user.show');
 
-        //manajemen halaman: menu
-        Route::get('/halaman',[App\Http\Controllers\halamanController::class,'menu'])->name('menu.index');
+        //banner
+        Route::get('/banner',[App\Http\Controllers\layoutController::class, 'index'])->name('banner.index');
+        Route::get('/banner/create',[App\Http\Controllers\layoutController::class, 'create'])->name('banner.create');
+        Route::post('/banner/create',[App\Http\Controllers\layoutController::class, 'store'])->name('banner.store');
+        Route::get('/banner/edit/{banner}', [App\Http\Controllers\layoutController::class, 'edit'])->name('banner.edit');
+        Route::put('/banner/edit/{banner}',[App\Http\Controllers\layoutController::class, 'update'])->name('banner.update');
+        //navigasi :menu only
+        
         Route::post('/halaman',[App\Http\Controllers\halamanController::class,'store_menu'])->name('menu.store');
         Route::get('/halaman/edit/{menu}',[App\Http\Controllers\halamanController::class,'edit_menu'])->name('menu.edit');
         Route::put('/halaman/edit/{menu}', [App\Http\Controllers\halamanController::class, 'update_menu'])->name('menu.update');
         Route::delete('/halaman/delete/{menu}', [App\Http\Controllers\halamanController::class, 'destroy_menu'])->name('menu.delete');
+        
+        //Tautan Laman
+        Route::get('/page-embed',[App\Http\Controllers\layoutController::class, 'embed_category'])->name('embed.index');
+        Route::get('/page-embed/create',[App\Http\Controllers\layoutController::class, 'embed_create_category'])->name('embed.create_category');
+        Route::post('/page-embed/create',[App\Http\Controllers\layoutController::class, 'embed_store_category'])->name('embed.store_category');
+        Route::get('/page-embed/edit/{embed}',[App\Http\Controllers\layoutController::class, 'embed_edit_category'])->name('embed.edit_category');
+        Route::put('/page-embed/edit/{embed}',[App\Http\Controllers\layoutController::class, 'embed_update_category'])->name('embed.update_category');
+        Route::delete('/page-embed/delete/{embed}',[App\Http\Controllers\layoutController::class, 'embed_delete_category'])->name('embed.delete_category');
+        Route::get('/page-embeds/cat/{embed}', [App\Http\Controllers\layoutController::class, 'embeds'])->name('embed.embeds');
+        Route::get('/page-embeds/create', [App\Http\Controllers\layoutController::class, 'embed_create'])->name('embed.create');
+        Route::post('/page-embeds/create', [App\Http\Controllers\layoutController::class, 'embed_store'])->name('embed.store');
+        Route::get('/page-embeds/edit/{embed}', [App\Http\Controllers\layoutController::class, 'embed_edit'])->name('embed.edit');
+        Route::put('/page-embeds/edit/{embed}', [App\Http\Controllers\layoutController::class, 'embed_update'])->name('embed.update');
+        Route::delete('/page-embeds/delete/{embed}', [App\Http\Controllers\layoutController::class, 'embed_delete'])->name('embed.delete');
+
+        //tgl BASTW
+        Route::get('/tgl', [App\Http\Controllers\layoutController::class, 'configure_tgl'])->name('tgl.index');
+        Route::post('/tgl', [App\Http\Controllers\layoutController::class, 'apply_tgl'])->name('tgl.store');
+        
+        //link
+        Route::get('/link', [App\Http\Controllers\linkController::class, 'index'])->name('link.index');
+        Route::get('/link/create', [App\Http\Controllers\linkController::class, 'create'])->name('link.create');
+        Route::post('/link/create', [App\Http\Controllers\linkController::class, 'store'])->name('link.store');
+        Route::get('/link/edit/{link}', [App\Http\Controllers\linkController::class, 'edit'])->name('link.edit');
+        Route::put('/link/edit/{link}', [App\Http\Controllers\linkController::class, 'update'])->name('link.update');
+        Route::delete('/link/delete/{link}', [App\Http\Controllers\linkController::class, 'destroy'])->name('link.delete');
+        //manajemen template /layout website
+        Route::get('/post/category/create',[App\Http\Controllers\beritaController::class, 'kategori_create'])->name('post.category.create');
+        Route::post('/post/category/create',[App\Http\Controllers\beritaController::class, 'kategori_store'])->name('post.category.store');
+        Route::get('/post/category/edit/{cat}',[App\Http\Controllers\beritaController::class, 'kategori_edit'])->name('post.category.edit');
+        Route::put('/post/category/edit/{cat}',[App\Http\Controllers\beritaController::class, 'kategori_update'])->name('post.category.update');
+        Route::delete('/post/category/delete/{cat}',[App\Http\Controllers\beritaController::class, 'kategori_destroy'])->name('post.category.delete');
+        
+    });
+
+        Route::get('/galeri-geser', [App\Http\Controllers\layoutController::class, 'index'])->name('slider.index');
+        Route::get('/galeri-geser/create',[App\Http\Controllers\layoutController::class, 'create'])->name('slider.create');
+        Route::post('/galeri-geser/create',[App\Http\Controllers\layoutController::class, 'store'])->name('slider.store');
+        Route::get('/galeri-geser/edit/{slider}', [App\Http\Controllers\layoutController::class, 'edit'])->name('slider.edit');
+        Route::put('/galeri-geser/edit/{slider}',[App\Http\Controllers\layoutController::class, 'update'])->name('slider.update');
+        Route::get('/card',[App\Http\Controllers\layoutController::class, 'card'])->name('card.index');
+        Route::get('/card/create',[App\Http\Controllers\layoutController::class, 'card_create'])->name('card.create');
+        Route::post('/card/create',[App\Http\Controllers\layoutController::class, 'card_store'])->name('card.store');
+        Route::get('/card/edit/{card}',[App\Http\Controllers\layoutController::class, 'card_edit'])->name('card.edit');
+        Route::put('/card/edit/{card}',[App\Http\Controllers\layoutController::class, 'card_update'])->name('card.update');
+        Route::delete('/card/delete/{card}',[App\Http\Controllers\layoutController::class, 'card_delete'])->name('card.delete');
+
+        Route::get('/carousel', [App\Http\Controllers\layoutController::class, 'carousel_category'])->name('carousel.index');
+        Route::get('/carousel/create', [App\Http\Controllers\layoutController::class, 'carousel_create_category'])->name('carousel.create_category');
+        Route::post('/carousel/create', [App\Http\Controllers\layoutController::class, 'carousel_store_category'])->name('carousel.store_category');
+        Route::get('/carousel/edit/{car}', [App\Http\Controllers\layoutController::class, 'carousel_edit_category'])->name('carousel.edit_category');
+        Route::put('/carousel/edit/{car}', [App\Http\Controllers\layoutController::class, 'carousel_update_category'])->name('carousel.update_category');
+        Route::delete('/carousel/delete/{car}', [App\Http\Controllers\layoutController::class, 'carousel_delete_category'])->name('carousel.delete_category');
+        Route::get('/carousels/cat/{car}', [App\Http\Controllers\layoutController::class, 'carousels'])->name('carousel.carousels');
+        Route::get('/carousels/create', [App\Http\Controllers\layoutController::class, 'carousel_create'])->name('carousel.create');
+        Route::post('/carousels/create', [App\Http\Controllers\layoutController::class, 'carousel_store'])->name('carousel.store');
+        Route::get('/carousels/edit/{car}', [App\Http\Controllers\layoutController::class, 'carousel_edit'])->name('carousel.edit');
+        Route::put('/carousels/edit/{car}', [App\Http\Controllers\layoutController::class, 'carousel_update'])->name('carousel.update');
+        Route::delete('/carousels/delete/{car}', [App\Http\Controllers\layoutController::class, 'carousel_delete'])->name('carousel.delete');
+        
+        Route::get('/home-video', [App\Http\Controllers\layoutController::class, 'configure_profil'])->name('video.index');
+        Route::post('/home-video', [App\Http\Controllers\layoutController::class, 'apply_profil'])->name('video.store');
+        Route::get('/quote', [App\Http\Controllers\layoutController::class, 'configure_quote'])->name('quote.index');
+        Route::post('/quote', [App\Http\Controllers\layoutController::class, 'apply_quote'])->name('quote.store');
+        Route::get('/faq', [App\Http\Controllers\layoutController::class, 'configure_faq'])->name('faq.index');
+        Route::post('/faq', [App\Http\Controllers\layoutController::class, 'apply_faq'])->name('faq.store');
+        Route::get('/jadwal-pelayanan', [App\Http\Controllers\layoutController::class, 'configure_image'])->name('jadwal-pelayanan.index');
+        Route::post('/jadwal-pelayanan', [App\Http\Controllers\layoutController::class, 'apply_image'])->name('jadwal-pelayanan.store');
         //manajemen halaman: submenu
+        Route::get('/halaman',[App\Http\Controllers\halamanController::class,'menu'])->name('menu.index');
         Route::get('/halaman/submenu/{menu}',[App\Http\Controllers\halamanController::class,'submenu'])->name('submenu.index');
         Route::get('/halaman/submenu/{menu}/create',[App\Http\Controllers\halamanController::class, 'create_submenu'])->name('submenu.create');
         Route::post('/halaman/submenu/{menu}/create', [App\Http\Controllers\halamanController::class, 'store'])->name('submenu.store');
@@ -72,67 +147,6 @@ Route::middleware(['auth'])->group( function () {
         Route::get('/halaman/subsubsubsubmenu/{subsubsubmenu}/edit/{subsubsubsubmenu}', [App\Http\Controllers\halamanController::class, 'edit_subsubsubsubmenu'])->name('subsubsubsubmenu.edit');
         Route::put('/halaman/subsubsubsubmenu/{subsubsubmenu}/edit/{subsubsubsubmenu}', [App\Http\Controllers\halamanController::class, 'update'])->name('subsubsubsubmenu.update');
         Route::delete('/halaman/subsubsubsubmenu/{subsubsubmenu}/edit/{subsubsubsubmenu}', [App\Http\Controllers\halamanController::class, 'destroy_subsubsubsubmenu'])->name('subsubsubsubmenu.delete');
-
-        //manajemen template /layout website
-        
-        Route::get('/banner',[App\Http\Controllers\layoutController::class, 'index'])->name('banner.index');
-        Route::get('/banner/create',[App\Http\Controllers\layoutController::class, 'create'])->name('banner.create');
-        Route::post('/banner/create',[App\Http\Controllers\layoutController::class, 'store'])->name('banner.store');
-        Route::get('/banner/edit/{banner}', [App\Http\Controllers\layoutController::class, 'edit'])->name('banner.edit');
-        Route::put('/banner/edit/{banner}',[App\Http\Controllers\layoutController::class, 'update'])->name('banner.update');
-
-        Route::get('/galeri-geser', [App\Http\Controllers\layoutController::class, 'index'])->name('slider.index');
-        Route::get('/galeri-geser/create',[App\Http\Controllers\layoutController::class, 'create'])->name('slider.create');
-        Route::post('/galeri-geser/create',[App\Http\Controllers\layoutController::class, 'store'])->name('slider.store');
-        Route::get('/galeri-geser/edit/{slider}', [App\Http\Controllers\layoutController::class, 'edit'])->name('slider.edit');
-        Route::put('/galeri-geser/edit/{slider}',[App\Http\Controllers\layoutController::class, 'update'])->name('slider.update');
-
-        Route::get('/post/category/create',[App\Http\Controllers\beritaController::class, 'kategori_create'])->name('post.category.create');
-        Route::post('/post/category/create',[App\Http\Controllers\beritaController::class, 'kategori_store'])->name('post.category.store');
-        Route::get('/post/category/edit/{cat}',[App\Http\Controllers\beritaController::class, 'kategori_edit'])->name('post.category.edit');
-        Route::put('/post/category/edit/{cat}',[App\Http\Controllers\beritaController::class, 'kategori_update'])->name('post.category.update');
-        Route::delete('/post/category/delete/{cat}',[App\Http\Controllers\beritaController::class, 'kategori_destroy'])->name('post.category.delete');
-
-        Route::get('/card',[App\Http\Controllers\layoutController::class, 'card'])->name('card.index');
-        Route::get('/card/create',[App\Http\Controllers\layoutController::class, 'card_create'])->name('card.create');
-        Route::post('/card/create',[App\Http\Controllers\layoutController::class, 'card_store'])->name('card.store');
-        Route::get('/card/edit/{card}',[App\Http\Controllers\layoutController::class, 'card_edit'])->name('card.edit');
-        Route::put('/card/edit/{card}',[App\Http\Controllers\layoutController::class, 'card_update'])->name('card.update');
-        Route::delete('/card/delete/{card}',[App\Http\Controllers\layoutController::class, 'card_delete'])->name('card.delete');
-
-        Route::get('/carousel', [App\Http\Controllers\layoutController::class, 'carousel_category'])->name('carousel.index');
-        Route::get('/carousel/create', [App\Http\Controllers\layoutController::class, 'carousel_create_category'])->name('carousel.create_category');
-        Route::post('/carousel/create', [App\Http\Controllers\layoutController::class, 'carousel_store_category'])->name('carousel.store_category');
-        Route::get('/carousel/edit/{car}', [App\Http\Controllers\layoutController::class, 'carousel_edit_category'])->name('carousel.edit_category');
-        Route::put('/carousel/edit/{car}', [App\Http\Controllers\layoutController::class, 'carousel_update_category'])->name('carousel.update_category');
-        Route::delete('/carousel/delete/{car}', [App\Http\Controllers\layoutController::class, 'carousel_delete_category'])->name('carousel.delete_category');
-        Route::get('/carousels/cat/{car}', [App\Http\Controllers\layoutController::class, 'carousels'])->name('carousel.carousels');
-        Route::get('/carousels/create', [App\Http\Controllers\layoutController::class, 'carousel_create'])->name('carousel.create');
-        Route::post('/carousels/create', [App\Http\Controllers\layoutController::class, 'carousel_store'])->name('carousel.store');
-        Route::get('/carousels/edit/{car}', [App\Http\Controllers\layoutController::class, 'carousel_edit'])->name('carousel.edit');
-        Route::put('/carousels/edit/{car}', [App\Http\Controllers\layoutController::class, 'carousel_update'])->name('carousel.update');
-        Route::delete('/carousels/delete/{car}', [App\Http\Controllers\layoutController::class, 'carousel_delete'])->name('carousel.delete');
-
-        Route::get('/page-embed',[App\Http\Controllers\layoutController::class, 'embed_category'])->name('embed.index');
-        Route::get('/page-embed/create',[App\Http\Controllers\layoutController::class, 'embed_create_category'])->name('embed.create_category');
-        Route::post('/page-embed/create',[App\Http\Controllers\layoutController::class, 'embed_store_category'])->name('embed.store_category');
-        Route::get('/page-embed/edit/{embed}',[App\Http\Controllers\layoutController::class, 'embed_edit_category'])->name('embed.edit_category');
-        Route::put('/page-embed/edit/{embed}',[App\Http\Controllers\layoutController::class, 'embed_update_category'])->name('embed.update_category');
-        Route::delete('/page-embed/delete/{embed}',[App\Http\Controllers\layoutController::class, 'embed_delete_category'])->name('embed.delete_category');
-        Route::get('/page-embeds/cat/{embed}', [App\Http\Controllers\layoutController::class, 'embeds'])->name('embed.embeds');
-        Route::get('/page-embeds/create', [App\Http\Controllers\layoutController::class, 'embed_create'])->name('embed.create');
-        Route::post('/page-embeds/create', [App\Http\Controllers\layoutController::class, 'embed_store'])->name('embed.store');
-        Route::get('/page-embeds/edit/{embed}', [App\Http\Controllers\layoutController::class, 'embed_edit'])->name('embed.edit');
-        Route::put('/page-embeds/edit/{embed}', [App\Http\Controllers\layoutController::class, 'embed_update'])->name('embed.update');
-        Route::delete('/page-embeds/delete/{embed}', [App\Http\Controllers\layoutController::class, 'embed_delete'])->name('embed.delete');
-        
-        Route::get('/home-video', [App\Http\Controllers\layoutController::class, 'configure_profil'])->name('video.index');
-        Route::post('/home-video', [App\Http\Controllers\layoutController::class, 'apply_profil'])->name('video.store');
-        Route::get('/quote', [App\Http\Controllers\layoutController::class, 'configure_quote'])->name('quote.index');
-        Route::post('/quote', [App\Http\Controllers\layoutController::class, 'apply_quote'])->name('quote.store');
-        Route::get('/faq', [App\Http\Controllers\layoutController::class, 'configure_faq'])->name('faq.index');
-        Route::post('/faq', [App\Http\Controllers\layoutController::class, 'apply_faq'])->name('faq.store');
-    });
     //manajemen postingan
     Route::get('/post', [App\Http\Controllers\beritaController::class, 'index'])->name('post.index');
     Route::get('/post/create', [App\Http\Controllers\beritaController::class, 'create'])->name('post.create');
@@ -161,18 +175,12 @@ Route::middleware(['auth'])->group( function () {
     Route::put('/file/category/edit/{cat}',[App\Http\Controllers\unduhController::class, 'kategori_update'])->name('unduh.category.update');
     Route::delete('/file/category/delete/{cat}',[App\Http\Controllers\unduhController::class, 'kategori_destroy'])->name('unduh.category.delete');
 
-    Route::get('/link', [App\Http\Controllers\linkController::class, 'index'])->name('link.index');
-    Route::get('/link/create', [App\Http\Controllers\linkController::class, 'create'])->name('link.create');
-    Route::post('/link/create', [App\Http\Controllers\linkController::class, 'store'])->name('link.store');
-    Route::get('/link/edit/{link}', [App\Http\Controllers\linkController::class, 'edit'])->name('link.edit');
-    Route::put('/link/edit/{link}', [App\Http\Controllers\linkController::class, 'update'])->name('link.update');
-    Route::delete('/link/delete/{link}', [App\Http\Controllers\linkController::class, 'destroy'])->name('link.delete');
 });
 //FITUR TANPA AUTENTIKASI
 Route::middleware(['pengunjung','meta'])->group( function (){
     Route::get('/', function () {
         return view('welcome');
-    });
+    })->name('welcome');
     Route::middleware(['trending'])->group( function (){
         Route::get('/berita', [App\Http\Controllers\beritaController::class, 'show'])->name('post.view');    
     });

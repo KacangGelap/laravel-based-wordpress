@@ -38,6 +38,22 @@
                                 </a>
                             </li>
                             <li>
+                                <a href=" {{ route('embed.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-card-list"></i> <span class="ms-1 d-none d-sm-inline">Daftar Inovasi & Hasil Survei</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href=" {{ route('tgl.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-calendar-fill"></i> <span class="ms-1 d-none d-sm-inline">Bulan & Tahun BASTW</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href=" {{ route('link.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-link-45deg"></i> <span class="ms-1 d-none d-sm-inline">Link Terkait</span>
+                                </a>
+                            </li>
+                            @endif
+                            <li>
                                 <a href=" {{ route('menu.index') }} " class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-file-earmark-code"></i> <span class="ms-1 d-none d-sm-inline">Navigasi</span>
                                 </a>
@@ -49,27 +65,27 @@
                             </li>
                             <li>
                                 <a href=" {{ route('card.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-layout-three-columns"></i> <span class="ms-1 d-none d-sm-inline">Kartu Statis</span>
+                                    <i class="fs-4 bi-layout-three-columns"></i> <span class="ms-1 d-none d-sm-inline">Visi & Misi</span>
                                 </a>
                             </li>
                             <li>
                                 <a href=" {{ route('video.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-film"></i> <span class="ms-1 d-none d-sm-inline">Video homepage</span>
+                                    <i class="fs-4 bi-film"></i> <span class="ms-1 d-none d-sm-inline">Video Beranda</span>
                                 </a>
                             </li>
                             <li>
                                 <a href=" {{ route('carousel.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-images"></i> <span class="ms-1 d-none d-sm-inline">Kartu Geser</span>
+                                    <i class="fs-4 bi-images"></i> <span class="ms-1 d-none d-sm-inline">Gambar Beranda</span>
                                 </a>
                             </li>
                             <li>
-                                <a href=" {{ route('embed.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-card-list"></i> <span class="ms-1 d-none d-sm-inline">Tautan Laman</span>
+                                <a href=" {{ route('jadwal-pelayanan.index') }} " class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-card-image"></i> <span class="ms-1 d-none d-sm-inline">Jadwal Pelayanan</span>
                                 </a>
                             </li>
                             <li>
                                 <a href=" {{ route('quote.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-quote"></i> <span class="ms-1 d-none d-sm-inline">Quote</span>
+                                    <i class="fs-4 bi-quote"></i> <span class="ms-1 d-none d-sm-inline">Kata Hari Ini</span>
                                 </a>
                             </li>
                             <li>
@@ -77,7 +93,6 @@
                                     <i class="fs-4 bi-chat-left-dots"></i> <span class="ms-1 d-none d-sm-inline">FAQ</span>
                                 </a>
                             </li>
-                            @endif
                             <li class="nav-item">
                                 <a href=" {{ route('post.index') }} " class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-camera"></i> <span class="ms-1 d-none d-sm-inline">Berita</span>
@@ -93,11 +108,7 @@
                                     <i class="fs-4 bi-download"></i> <span class="ms-1 d-none d-sm-inline">File Unduhan</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href=" {{ route('link.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-link-45deg"></i> <span class="ms-1 d-none d-sm-inline">Link Terkait</span>
-                                </a>
-                            </li>
+                            
                             <li class="nav-item">
                                 <a href=" {{ route('home') }} " class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Informasi Website</span>

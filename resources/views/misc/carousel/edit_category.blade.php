@@ -15,7 +15,7 @@
                             <label for="kategori" class="col-md-4 col-form-label text-md-end">Kategori</label>
 
                             <div class="col-md-6">
-                                <input class="form-control" type="text" name="kategori" id="kategori" value="{{old('kategori') ?? $data->kategori}}">
+                                <input class="form-control @error('kategori') is-invalid @enderror" type="text" name="kategori" id="kategori" value="{{old('kategori') ?? $data->kategori}}">
                                 @error('kategori')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

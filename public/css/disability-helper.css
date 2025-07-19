@@ -1,0 +1,100 @@
+.bigger-text #accessibilityToggle,
+.bigger-text #accessibilityMenu{
+    font-size: 14px !important;
+}
+.bigger-text,
+.bigger-text body,
+.bigger-text p,
+.bigger-text span,
+.bigger-text a,
+.bigger-text button,
+.bigger-text li,
+.bigger-text label,
+.bigger-text input,
+.bigger-text textarea,
+.bigger-text th,
+.bigger-text td{
+    font-size: 1.1em !important;
+}
+
+/* Mode High Contrast */
+.high-contrast {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+/* Override Bootstrap Backgrounds */
+.high-contrast .bg-white,
+.high-contrast .bg-light,
+.high-contrast .bg-secondary,
+.high-contrast .bg-secondary-subtle,
+.high-contrast .bg-primary,
+.high-contrast .bg-primary-subtle,
+.high-contrast .bg-success,
+.high-contrast .bg-info,
+.high-contrast .bg-warning,
+.high-contrast .bg-danger {
+    background-color: #111 !important;
+    color: #fff !important;
+}
+
+/* Optional: Card dan komponen umum */
+.high-contrast .card,
+.high-contrast .card-body,
+.high-contrast .card-header {
+    background-color: #111 !important;
+    color: #fff !important;
+}
+
+/* Link dan button */
+.high-contrast a {
+    color: #0ff !important;
+    text-decoration: underline;
+}
+
+.high-contrast .btn,
+.high-contrast button {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-color: #fff !important;
+}
+
+.highlight-links a { text-decoration: underline; background-color: yellow; }
+
+.text-spacing { letter-spacing: 0.1em; word-spacing: 0.2em; }
+
+.pause-animations * { animation-play-state: paused !important; transition: none !important; }
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('/fonts/OpenDyslexic.otf') format('opentype');
+}
+.dyslexia-mode *  {
+    font-family: 'OpenDyslexic', sans-serif !important;
+}
+
+.cursor-large a,
+.cursor-large button,
+.cursor-large input[type="button"],
+.cursor-large input[type="img"],
+.cursor-large input[type="submit"],
+.cursor-large { cursor: url('https://cur.cursors-4u.net/toons/too-10/too993.cur'), auto; }
+
+.line-height { line-height: 2 !important; }
+
+.text-align-start { text-align: start !important; }
+.text-align-center { text-align: center !important; }
+.text-align-end { text-align: end !important; }
+.text-align-justify { text-align: justify !important; }
+
+.audio-desc::after {
+    content: "🔊 Audio aktif untuk elemen visual";
+    display: block;
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 10px;
+}
+.reading-now {
+  outline: 2px dashed darkblue;
+}
+

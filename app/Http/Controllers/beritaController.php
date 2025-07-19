@@ -29,7 +29,7 @@ class beritaController extends Controller
                 ->with('kategori', $kategori);
     }
     public function list(){
-        $berita = post::orderBy('created_at', 'desc')->simplePaginate(20);
+        $berita = post::orderBy('created_at', 'desc')->simplePaginate(15);
         $kategori = kategori::all();
         return view('post.list')->with('berita', $berita)->with('kategori', $kategori);
     }
@@ -50,8 +50,8 @@ class beritaController extends Controller
         }
     }
     public function categories($id){
-        $data = post::where('kategori_id', $id)->get();
-        return view('post.list')->with('berita', $berita);
+        $data = post::where('kategori_id', $id)->simplePaginate(15);
+        return view('post.list')->with('berita', $data)->with('kategori', kategori::findOrFail($id)->kategori);
     }
     public function create(){
         $kategori = kategori::all();
@@ -60,7 +60,7 @@ class beritaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul'       => 'required|string|min:5|max:100',
+            'judul'       => 'required|string|min:5|max:90',
             'media1'      => 'required|image|mimes:jpeg,png,jpg|max:3000',
             'media2'      => 'nullable|image|mimes:jpeg,png,jpg|max:3000',
             'media3'      => 'nullable|image|mimes:jpeg,png,jpg|max:3000',
@@ -102,7 +102,7 @@ class beritaController extends Controller
     public function update(Request $request, string $postId)
     {
         $request->validate([
-            'judul' => 'required|string|min:5|max:100',
+            'judul' => 'required|string|min:5|max:90',
             'media1' => 'nullable|image|mimes:jpeg,png,jpg|max:3000',
             'media2' => 'nullable|image|mimes:jpeg,png,jpg|max:3000',
             'media3' => 'nullable|image|mimes:jpeg,png,jpg|max:3000',

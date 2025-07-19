@@ -312,7 +312,7 @@ class layoutController extends Controller
     }
     public function carousel_update_category(Request $request, $id){
         $validated = $request->validate([
-            'kategori' => 'nullable|string|max:20'
+            'kategori' => 'nullable|string|max:50'
         ]);
         try {
             $data = advanced_carousel_category::findOrFail($id);
@@ -321,7 +321,7 @@ class layoutController extends Controller
             ]);
             return redirect()->route('carousel.index')->with('sukses', 'data berhasil diubah');
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
             return back()->with('gagal', 'terjadi kesalahan');
         }
     }
@@ -511,7 +511,6 @@ class layoutController extends Controller
             'cat' => $cat,
         ]);
     }
-
     public function embed_create(){
         return view('misc.embed.create')->with('cat', page_embed_category::all());
     }
@@ -605,8 +604,7 @@ class layoutController extends Controller
         $quote = Storage::exists('quote.txt') ? Storage::get('quote.txt') : '';
         return view('misc.quote', compact('quote'));
     }
-    public function apply_quote(Request $request)
-    {
+    public function apply_quote(Request $request){
         $request->validate([
             'quote' => 'required|string|max:120',
         ]);
@@ -618,12 +616,27 @@ class layoutController extends Controller
             return redirect()->route('quote.index')->with('gagal', 'Terjadi kesalahan');
         }
     }
+    public function configure_tgl(){
+        $tgl = Storage::exists('tgl.txt') ? Storage::get('tgl.txt') : '';
+        return view('misc.tgl', compact('tgl'));
+    }
+    public function apply_tgl(Request $request){
+        $request->validate([
+            'tgl' => 'required|date',
+        ]);
+        try {
+            Storage::put('tgl.txt', $request->input('tgl'));
+            return redirect()->route('tgl.index')->with('sukses', 'tanggal telah diperbarui!');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('tgl.index')->with('gagal', 'Terjadi kesalahan');
+        }
+    }
     public function configure_faq(){
         $faq = Storage::exists('faq.txt') ? Storage::get('faq.txt') : '';
         return view('misc.faq', compact('faq'));
     }
-    public function apply_faq(Request $request)
-    {
+    public function apply_faq(Request $request){
         $validated = $request->validate([
             'faq' => ['required', 'url', function ($attribute, $value, $fail) {
                 $parsedUrl = parse_url($value);
@@ -656,24 +669,52 @@ class layoutController extends Controller
     }
     public function configure_profil(){
         $profil = Storage::exists('profil.txt') ? Storage::get('profil.txt') : '';
-        return view('misc.profil', compact('profil'));
+        $video = Storage::exists('profil.mp4') ? 'profil.mp4' : '';
+        return view('misc.profil', compact('profil'))->with('video',$video);
     }
-    public function apply_profil(Request $request)
-    {
+    public function apply_profil(Request $request){
         $validated = $request->validate([
             'profil' => ['required', 'string', new YoutubeUrl],
+            'video' => 'required|file|mimes:mp4|max:200000'
         ]);
         try {
             $isYt = new YoutubeUrl();
             if($isYt->passes('link', $validated['profil'] ?? null)){
                 Storage::put('profil.txt', $isYt->videoId ?? null);
             }
-            
-
+            Storage::put('profil.mp4', file_get_contents($validated['video']));
             return redirect()->route('video.index')->with('sukses', 'data updated successfully!');
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->route('video.index')->with('gagal', 'terjadi kesalahan');
+        }
+        
+    }
+    public function configure_image(){
+        
+        $layanan = null;    
+        $text = '';
+        if (Storage::exists('jadwal-pelayanan.jpeg')) {
+            $text = Storage::get('jadwal-pelayanan.txt');
+            $layanan = 'jadwal-pelayanan.jpeg';
+        }
+        
+        return view('misc.image')
+        ->with('layanan', $layanan)->with('text', $text);
+    }
+    public function apply_image(Request $request){
+        $validated = $request->validate([
+            'image' => 'nullable|image|mimes:png,jpg,jpeg',
+            'judul' => 'required_with:image|string|max:50',
+        ]);
+        try {
+            
+            Storage::put('jadwal-pelayanan.jpeg', file_get_contents($validated['image']));
+            Storage::put('jadwal-pelayanan.txt',$validated['judul']);
+            return redirect()->route('jadwal-pelayanan.index')->with('sukses', 'data updated successfully!');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('jadwal-pelayanan.index')->with('gagal', 'terjadi kesalahan');
         }
         
     }

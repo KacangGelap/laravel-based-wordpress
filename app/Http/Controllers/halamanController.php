@@ -79,11 +79,16 @@ class halamanController extends Controller
                 return view('halaman.link', compact('data'));
                 break;
             case '5':
-                session([
+                if(Auth::user()->role == 'admin'){
+                    session([
                     'type' => 'dropdown',
                     'filetype' => null
                 ]);
-                return view('halaman.dropdown', compact('data'));
+                    return view('halaman.dropdown', compact('data'));
+                }else{
+                    return back()->with('gagal', 'tidak punya akses untuk membuat dropdown');
+                }
+                
                 break;
             // case '6':
             //     session([
@@ -328,9 +333,9 @@ class halamanController extends Controller
                 // $rules['yt_id'] = ['required_if:filetype,video', 'string', 'max:50', new YoutubeUrl]; // Sanitized YouTube ID
             } else {
                 $rules['media'] = 'required|mimes:pdf,png,jpeg,jpg|max:30000';
-                $rules['tambahan1'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
-                $rules['tambahan2'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
-                $rules['tambahan3'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
+                $rules['tambahan1'] = 'nullable|mimes:pdf,png,jpeg,jpg|max:30000';
+                $rules['tambahan2'] = 'nullable|mimes:pdf,png,jpeg,jpg|max:30000';
+                $rules['tambahan3'] = 'nullable|mimes:pdf,png,jpeg,jpg|max:30000';
                 $rules['text'] = 'required_unless:filetype,null|string';
 		        $rules['link'] = ['nullable', 'string', new YoutubeUrl];
             }
@@ -654,9 +659,9 @@ class halamanController extends Controller
                 // $rules['yt_id'] = ['nullable', 'string', 'max:50', new YoutubeUrl]; // Sanitized YouTube ID
             } else {
                 $rules['media'] = 'nullable|mimes:pdf,png,jpeg,jpg|max:30000';
-                $rules['tambahan1'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
-                $rules['tambahan2'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
-                $rules['tambahan3'] = 'nullable|image|mimes:png,jpeg,jpg|max:3000';
+                $rules['tambahan1'] = 'nullable|mimes:pdf,png,jpeg,jpg|max:30000';
+                $rules['tambahan2'] = 'nullable|mimes:pdf,png,jpeg,jpg|max:30000';
+                $rules['tambahan3'] = 'nullable|mimes:pdf,png,jpeg,jpg|max:30000';
                 $rules['text'] = 'nullable|string';
 		$rules['link'] = ['nullable', 'string', new YoutubeUrl];
             }

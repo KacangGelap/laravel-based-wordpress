@@ -4,6 +4,7 @@
         @php
 use Illuminate\Support\Str;
 
+if (!function_exists('makeLinksSmart')) {
 function makeLinksSmart($text) {
     $placeholders = [];
 
@@ -51,7 +52,7 @@ function makeLinksSmart($text) {
 
     return $text;
 }
-
+}
         @endphp
         <div class="row">
             <div class="col-lg-8">
@@ -145,26 +146,39 @@ function makeLinksSmart($text) {
                     
                     @endif
                     @if($page->tambahan1)
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="{{asset('storage/'.$page->tambahan1) }}">
-                            <img src="{{ asset('storage/'.$page->tambahan1) }}" class="w-100 my-4" style="object-fit: cover">
-                        </a>
+                         @if(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'.$page->tambahan1)) === 'application/pdf')
+                            <iframe src="{{ asset('storage/'.$page->tambahan1) }}" class="min-vh-100 w-100 mb-4"></iframe>
+                        @else
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="{{ asset('storage/'.$page->tambahan1) }}">
+                                    <img src="{{ asset('storage/'.$page->tambahan1) }}" class="w-100 py-4" style="object-fit: cover">
+                            </a>
+                        
+                        @endif
                     @endif
                     @if($page->tambahan2)
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="{{ asset('storage/'.$page->tambahan2) }}">
-                            <img src="{{ asset('storage/'.$page->tambahan2) }}" class="w-100 my-4" style="object-fit: cover">
-                        </a>
+                         @if(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'.$page->tambahan2)) === 'application/pdf')
+                            <iframe src="{{ asset('storage/'.$page->tambahan2) }}" class="min-vh-100 w-100 mb-4"></iframe>
+                        @else
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="{{ asset('storage/'.$page->tambahan2) }}">
+                                    <img src="{{ asset('storage/'.$page->tambahan2) }}" class="w-100 py-4" style="object-fit: cover">
+                            </a>
+                        @endif
                     @endif
                     @if($page->tambahan3)
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="{{asset('storage/'.$page->tambahan3) }}">
-                            <img src="{{asset('storage/'.$page->tambahan3) }}" class="w-100 my-4" style="object-fit: cover">
-                        </a>
+                         @if(\Illuminate\Support\Facades\File::mimeType(public_path('storage/'.$page->tambahan3)) === 'application/pdf')
+                            <iframe src="{{ asset('storage/'.$page->tambahan3) }}" class="min-vh-100 w-100 mb-4"></iframe>
+                        @else
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="{{ asset('storage/'.$page->tambahan3) }}">
+                                    <img src="{{ asset('storage/'.$page->tambahan3) }}" class="w-100 py-4" style="object-fit: cover">
+                            </a>
+                        @endif
                     @endif
                     @if($page->link)
                         <iframe src="https://youtube.com/embed/{{$page->link}}" class="w-100" height="450px"></iframe>
                     @endif
                     {{-- Modal for Images --}}
                     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
+                    <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="imageModalLabel">Detail Gambar</h5>

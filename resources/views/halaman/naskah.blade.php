@@ -108,7 +108,7 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label class="col-md-4 col-form-label text-md-end">Gambar Tambahan 1 (opsional)</label>
+                            <label class="col-md-4 col-form-label text-md-end">File Tambahan 1 (opsional)</label>
                             <div class="col-md-6">
                                 <div class="card shadow-sm border position-relative">
                                     <label for="tambahan1" id="label-tambahan1" 
@@ -121,7 +121,7 @@
                                         <input type="file" id="tambahan1" name="tambahan1" class="d-none @error('tambahan1') is-invalid @enderror">
                                         
                                         <div class="position-absolute top-50 start-50 translate-middle">
-                                            <p class="btn btn-primary m-0 px-3 py-1" id="text-tambahan1">Upload gambar</p>
+                                            <p class="btn btn-primary m-0 px-3 py-1" id="text-tambahan1">Upload File</p>
                                         </div>
                                     </label>
 
@@ -130,7 +130,7 @@
                                         <input class="form-check-input me-2" type="checkbox" name="hapus_tambahan1" id="hapus_tambahan1" value="1"
                                             {{ empty($data->tambahan1) ? 'disabled' : '' }}>
                                         <label class="form-check-label small {{ empty($data->tambahan1) ? 'text-muted' : '' }}" for="hapus_tambahan1">
-                                            Hapus gambar
+                                            Hapus File
                                         </label>
                                     </div>
 
@@ -144,7 +144,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label class="col-md-4 col-form-label text-md-end">Gambar Tambahan 2 (opsional)</label>
+                            <label class="col-md-4 col-form-label text-md-end">File Tambahan 2 (opsional)</label>
                             <div class="col-md-6">
                                 <div class="card shadow-sm border position-relative">
                                     <label for="tambahan2" id="label-tambahan2" 
@@ -157,7 +157,7 @@
                                         <input type="file" id="tambahan2" name="tambahan2" class="d-none @error('tambahan2') is-invalid @enderror">
                                         
                                         <div class="position-absolute top-50 start-50 translate-middle">
-                                            <p class="btn btn-primary m-0 px-3 py-1" id="text-tambahan2">Upload gambar</p>
+                                            <p class="btn btn-primary m-0 px-3 py-1" id="text-tambahan2">Upload File</p>
                                         </div>
                                     </label>
 
@@ -166,7 +166,7 @@
                                         <input class="form-check-input me-2" type="checkbox" name="hapus_tambahan2" id="hapus_tambahan2" value="1"
                                             {{ empty($data->tambahan2) ? 'disabled' : '' }}>
                                         <label class="form-check-label small {{ empty($data->tambahan2) ? 'text-muted' : '' }}" for="hapus_tambahan2">
-                                            Hapus gambar
+                                            Hapus File
                                         </label>
                                     </div>
 
@@ -179,7 +179,7 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label class="col-md-4 col-form-label text-md-end">Gambar Tambahan 3 (opsional)</label>
+                            <label class="col-md-4 col-form-label text-md-end">File Tambahan 3 (opsional)</label>
                             <div class="col-md-6">
                                 <div class="card shadow-sm border position-relative">
                                     <label for="tambahan3" id="label-tambahan3" 
@@ -192,7 +192,7 @@
                                         <input type="file" id="tambahan3" name="tambahan3" class="d-none @error('tambahan3') is-invalid @enderror">
                                         
                                         <div class="position-absolute top-50 start-50 translate-middle">
-                                            <p class="btn btn-primary m-0 px-3 py-1" id="text-tambahan3">Upload gambar</p>
+                                            <p class="btn btn-primary m-0 px-3 py-1" id="text-tambahan3">Upload File</p>
                                         </div>
                                     </label>
 
@@ -201,7 +201,7 @@
                                         <input class="form-check-input me-2" type="checkbox" name="hapus_tambahan3" id="hapus_tambahan3" value="1"
                                             {{ empty($data->tambahan3) ? 'disabled' : '' }}>
                                         <label class="form-check-label small {{ empty($data->tambahan3) ? 'text-muted' : '' }}" for="hapus_tambahan3">
-                                            Hapus gambar
+                                            Hapus File
                                         </label>
                                     </div>
 
@@ -249,4 +249,23 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('tambahan1').addEventListener('change', function () {
+        var fileName = this.files[0] ? this.files[0].name : 'Pilih file tambahan 1';
+        document.getElementById('text-tambahan1').textContent = fileName;
+        document.getElementById('label-tambahan1').style.backgroundImage = 'none';
+    });
+
+    document.getElementById('tambahan2').addEventListener('change', function () {
+        var fileName = this.files[0] ? this.files[0].name : 'Pilih file tambahan 2';
+        document.getElementById('text-tambahan2').textContent = fileName;
+        document.getElementById('label-tambahan2').style.backgroundImage = 'none';
+    });
+
+    document.getElementById('tambahan3').addEventListener('change', function () {
+        var fileName = this.files[0] ? this.files[0].name : 'Pilih file tambahan 3';
+        document.getElementById('text-tambahan3').textContent = fileName;
+        document.getElementById('label-tambahan3').style.backgroundImage = 'none';
+    });
+</script>
 @endsection

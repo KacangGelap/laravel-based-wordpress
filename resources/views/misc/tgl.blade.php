@@ -5,27 +5,25 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="d-md-flex card-header justify-content-between">
-                    <h4>Tambah Kategori Galeri Geser</h4>
+                    <h4>Tambah/Ubah tanggal serah terima di footer</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('carousel.store_category')}}" method="post">
+                    <form action="{{route('tgl.store')}}" method="post">
                         @csrf
                         <div class="row mb-3">
-                            <label for="kategori" class="col-md-4 col-form-label text-md-end">Kategori</label>
-
-                            <div class="col-md-6">
-                                <input class="form-control @error('kategori') is-invalid @enderror" type="text" name="kategori" id="kategori">
-                                @error('kategori')
+                            <div class="">
+                                <input type="date" class="form-control border border-dark @error('tgl') is-invalid @enderror" name="tgl" required value="{{ \Carbon\Carbon::parse($tgl)->format('Y-m-d') }}">
+                                @error('tgl')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
+                        <div class="d-flex mb-0 justify-content-end">
+                            <div class="">
                                 <button type="submit" class="btn btn-primary">
-                                    {{__('Tambah')}}
+                                    {{__('Simpan')}}
                                 </button>
                             </div>
                         </div>

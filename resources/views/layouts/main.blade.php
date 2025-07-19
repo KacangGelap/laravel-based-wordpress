@@ -18,11 +18,43 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/disability-helper.css">
     <script src="/js/bootstrap.bundle.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
+        .img-hover-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .img-hover-container img {
+            display: block;
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .img-hover-overlay {
+            position: absolute;
+            bottom: -100%; /* sembunyi di bawah */
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* overlay hitam transparan */
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px;
+            transition: all 0.4s ease-in-out;
+        }
+
+        .img-hover-container:hover .img-hover-overlay {
+            bottom: 0; /* geser ke atas saat hover */
+        }
                 /* Style for the dropright submenu */
         .dropdown-submenu {
             position: relative;
@@ -34,11 +66,23 @@
             top: 0;
             margin-top: -1px;
         }
+        @media (max-width: 576px) {
+        #chatWindow,
+        #toggleChatBtn {
+            bottom: 70px !important;
+            right: 10px !important;
+        }
+
+        #scrollTopBtn {
+            bottom:20px !important;
+            /* display: none !important; */
+        }
+    }
     </style>
 </head>
-<body>
+<body class="">
     <div id="app">
-        <main class="bg-light min-vh-100" style="background-image: url(); background-size:cover; background-attachment: fixed;">    
+        <main class="min-vh-100" style="background-image: url(); background-size:cover; background-attachment: fixed;">    
             {{-- banner --}}
             <div class="container-fluid p-0">
                 @if(isset($banner))
@@ -54,7 +98,7 @@
 
                     <div class="row collapse navbar-collapse mx-auto" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
-                        <ul class="navbar-nav text-white justify-content-evenly">
+                        <ul class="nav navbar-nav text-white justify-content-evenly fs-6">
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="{{url('/')}}" style="font-size: 12px">
                                     {{__("BERANDA")}}
@@ -157,7 +201,7 @@
                                     </ul>
                                 </li>
                             @endforeach
-                            <li>
+                            <li class="nav-item">
                                 <a class="nav-link text-white" href="{{route('kalender.show')}}" style="font-size: 12px">
                                     {{__("AGENDA KEGIATAN")}}
                                 </a>
@@ -172,7 +216,7 @@
                                     {{__("GALERI")}}
                                 </a>
                             </li>
-                            <li>
+                            <li class="nav-item">
                                 <a class="nav-link text-white" href="{{route('unduh.show')}}" style="font-size: 12px">
                                     {{__("UNDUH")}}
                                 </a>
@@ -195,9 +239,10 @@
         </main>
 
         @include('layouts.footer')
-        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;" id="floater">
             <!-- Chat Window -->
-            <div id="chatWindow" class="card shadow-lg border-0 d-none mb-5 rounded" style="width: 300px; position: absolute; bottom: 90px; right: 80px;">
+            <div id="chatWindow" class="card shadow-lg border-0 d-none mb-5 rounded" 
+                style="width: 300px; position: absolute; bottom: 40px; right: 80px;">
                 <div class="card-header d-flex align-items-center bg-success text-white">
                     <div class="me-3">
                         <img src="/img/user.png" alt="Admin" class="rounded-circle" width="50" height="50">
@@ -210,13 +255,16 @@
                 </div>
                 <div class="card-body" style="background-image: url(/img/wa-bg.jpg); background-size: cover;">
                     <div class="mb-3 text-muted small text-center">
-                        <span class="bg-light rounded px-2">{{ Carbon\Carbon::now()->translatedFormat('H:i T') }}</span>
+                        <span class="bg-light rounded px-2">
+                            {{ Carbon\Carbon::now()->translatedFormat('H:i T') }}
+                        </span>
                     </div>
                     <div class="mb-3">
                         <div id="chatMessages" class="d-flex flex-column gap-2"></div>
                     </div>
                     <div class="text-center">
-                        <a href="@if(isset($master->wa)) https://wa.me/62{{intval($master->wa ?? '')}} @endif" class="btn btn-success d-inline-flex align-items-center gap-2 mb-3">
+                        <a href="@if(isset($master->wa)) https://wa.me/62{{ intval($master->wa) }} @endif" 
+                        class="btn btn-success d-inline-flex align-items-center gap-2 mb-3">
                             <i class="bi bi-whatsapp fs-4"></i>
                             Chat on WhatsApp
                         </a>
@@ -224,22 +272,50 @@
                 </div>
             </div>
 
-          <!-- Toggle Chat Button -->
-            <button id="toggleChatBtn" class="btn btn-success rounded-pill shadow-lg align-items-center px-3 py-2" style="position: absolute;bottom:20px; right: 80px; width:275px">
+            <!-- Toggle Chat Button -->
+            <button id="toggleChatBtn" 
+                    class="btn btn-success rounded-pill shadow-lg align-items-center px-3 py-2" 
+                    style="position: absolute; bottom: 20px; right: 80px; width: 275px;">
                 <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle" id="chatBadge">
                     <span class="visually-hidden">New alerts</span>
                 </span>
                 <div class="d-flex justify-content-evenly align-items-center">
-                    <i class="bi bi-whatsapp fs-5 text-white"> </i>
+                    <i class="bi bi-whatsapp fs-5 text-white"></i>
                     <span class="text-white">Ada yang bisa kami bantu?</span>
                 </div>
             </button>
-            <!-- Scroll to Top Button -->
-            <button id="scrollTopBtn" class="btn btn-primary d-none rounded-circle" 
-                    onclick="scrollToTop()" title="Go to top" style="bottom: 20px">
+
+            <!-- Scroll to Top Button (Hidden on Mobile) -->
+            <button id="scrollTopBtn" class="position-absolute btn btn-primary d-none rounded-circle" 
+                    onclick="scrollToTop()" title="Go to top" style="bottom:20px;right:10px">
                 <i class="bi bi-arrow-up fs-4 text-white"></i>
             </button>
-        </div>        
+            <!-- Aksesibilitas Icon -->
+<button class="btn btn-primary position-fixed bottom-0 m-3" id="accessibilityToggle" title="Menu Disabilitas" style="position: absolute; bottom: 20px; left:0px">
+    <i class="bi-person-wheelchair fs-4"></i>
+</button>
+
+<!-- Panel Menu Aksesibilitas -->
+<div id="accessibilityMenu" class="card position-fixed bottom-0 end-0 m-3 p-3 shadow-lg" style="width: 300px; display: none; z-index: 1050; left:0px">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="mb-0">Menu Disabilitas</h5>
+        <button type="button" class="btn" aria-label="Close" id="accessibilityClose">X</button>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><b class="bi-fonts"></b> <span id="btn-bigger-text" class="text-primary" role="button">Bigger Text</span></li>
+        <li class="list-group-item"><b class="bi-circle-half"></b> <span id="btn-contrast" class="text-primary" role="button">Contrast Color</span></li>
+        <li class="list-group-item"><b class="bi-link-45deg"></b> <span id="btn-highlight-links" class="text-primary" role="button">Highlight Links</span></li>
+        <li class="list-group-item"><b class="bi-distribute-horizontal"></b> <span id="btn-text-spacing" class="text-primary" role="button">Text Spacing</span></li>
+        <li class="list-group-item"><b class="bi-images"></b> <span id="btn-pause-animations" class="text-primary" role="button">Disable Animations</span></li>
+        <li class="list-group-item"><b class="bi-type"></b> <span id="btn-dyslexia" class="text-primary" role="button">Dyslexia Friendly</span></li>
+        <li class="list-group-item"><b class="bi-cursor"></b> <span id="btn-cursor" class="text-primary" role="button">Cursor</span></li>
+        <li class="list-group-item"><b class="bi-arrows-expand"></b> <span id="btn-line-height" class="text-primary" role="button">Line Height</span></li>
+        <li class="list-group-item"><b class="bi-justify-left"></b> <span onclick="toggleTextAlign()" class="text-primary" role="button">Text Align</span></li>
+        <li class="list-group-item"><b class="bi-volume-up"></b> <span id="btn-audio-description" class="text-primary" role="button">Audio Description</span></li>
+    </ul>
+</div>
+
+        </div>
           
         @if (session('sukses'))
         <div class="toast-container position-fixed bottom-0 p-3" >
@@ -387,9 +463,115 @@
                 clearMessages();
             });
 
+        document.addEventListener("DOMContentLoaded", function () {
+            const body = document.body;
+            const html = document.documentElement;
+
+            const toggleAndPersist = (btnId, classTarget, className, useHtml = false) => {
+                const element = useHtml ? html : body;
+                const currentState = localStorage.getItem(className) === "true";
+
+                if (currentState) {
+                    element.classList.add(className);
+                }
+
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    btn.addEventListener("click", () => {
+                        element.classList.toggle(className);
+                        localStorage.setItem(className, element.classList.contains(className));
+                    });
+                }
+            };
+
+            toggleAndPersist('btn-bigger-text', html, 'bigger-text', true);
+            toggleAndPersist('btn-contrast', body, 'high-contrast');
+            toggleAndPersist('btn-highlight-links', body, 'highlight-links');
+            toggleAndPersist('btn-text-spacing', body, 'text-spacing');
+            toggleAndPersist('btn-pause-animations', body, 'pause-animations');
+            toggleAndPersist('btn-dyslexia', body, 'dyslexia-mode');
+            toggleAndPersist('btn-cursor', body, 'cursor-large');
+            toggleAndPersist('btn-line-height', body, 'line-height');
+
+            // ALIGNMENT toggle
+            const alignments = ['text-align-start', 'text-align-center', 'text-align-end', 'text-align-justify'];
+            let currentIndex = parseInt(localStorage.getItem('textAlignIndex')) || 0;
+            if (alignments[currentIndex]) body.classList.add(alignments[currentIndex]);
+
+            window.toggleTextAlign = function () {
+                alignments.forEach(cls => body.classList.remove(cls));
+                currentIndex = (currentIndex + 1) % alignments.length;
+                const newClass = alignments[currentIndex];
+                body.classList.add(newClass);
+                localStorage.setItem('textAlignIndex', currentIndex);
+            };
+
+            // AUDIO DESCRIPTION toggle
+            let isAudioDescriptionEnabled = localStorage.getItem('audioDescription') === 'true';
+            const btnAudio = document.getElementById("btn-audio-description");
+            const speakText = (text) => {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = "id-ID";
+                window.speechSynthesis.speak(utterance);
+            };
+
+            const hoverSpeak = (e) => {
+                if (!isAudioDescriptionEnabled) return;
+                const text = e.target.innerText.trim();
+                if (text.length > 0) {
+                    speakText(text);
+                    e.target.classList.add("reading-now");
+                }
+            };
+
+            const removeHoverSpeak = (e) => {
+                if (!isAudioDescriptionEnabled) return;
+                window.speechSynthesis.cancel();
+                e.target.classList.remove("reading-now");
+            };
+
+            const textElements = document.querySelectorAll("p, h1, h2, h3, h4, h5, h6, a, li, button, label, span");
+            const bindAudioEvents = () => {
+                textElements.forEach(el => {
+                    el.addEventListener("mouseenter", hoverSpeak);
+                    el.addEventListener("mouseleave", removeHoverSpeak);
+                });
+                btnAudio?.classList.add("text-danger", "fw-bold");
+            };
+
+            const unbindAudioEvents = () => {
+                textElements.forEach(el => {
+                    el.removeEventListener("mouseenter", hoverSpeak);
+                    el.removeEventListener("mouseleave", removeHoverSpeak);
+                    el.classList.remove("reading-now");
+                });
+                btnAudio?.classList.remove("text-danger", "fw-bold");
+            };
+
+            if (isAudioDescriptionEnabled) bindAudioEvents();
+
+            btnAudio?.addEventListener("click", () => {
+                isAudioDescriptionEnabled = !isAudioDescriptionEnabled;
+                localStorage.setItem("audioDescription", isAudioDescriptionEnabled);
+                if (isAudioDescriptionEnabled) {
+                    bindAudioEvents();
+                } else {
+                    unbindAudioEvents();
+                }
+            });
+
+            // ACCESSIBILITY MENU TOGGLE (doesn't need to persist)
+            document.getElementById('accessibilityToggle')?.addEventListener('click', function () {
+                const menu = document.getElementById('accessibilityMenu');
+                menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
+            });
+            document.getElementById('accessibilityClose')?.addEventListener('click', function () {
+                document.getElementById('accessibilityMenu').style.display = 'none';
+            });
+        });
 
         </script>
-       
     </div>
 </body>
 </html>

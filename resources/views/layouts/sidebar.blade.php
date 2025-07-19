@@ -1,50 +1,86 @@
 <div class="col-lg-4 shadow-sm py-2">
-    @if(\Route::current()->getName() !== 'page.show')
-    <!-- Trending Tabs -->
-    <ul class="nav nav-tabs" id="trendingTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="latest-tab" data-bs-toggle="tab" href="#latest" role="tab">Berita Terkini</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="trending-tab" data-bs-toggle="tab" href="#trending" role="tab">Berita Trending</a>
-        </li>
-    </ul>
-    <div class="tab-content mt-3">
-        <!-- Trending Tab Content -->
-        <div class="tab-pane fade" id="trending" role="tabpanel">
-            {{-- Example trending content --}}
-            @foreach ($trending as $item)
-            <a href="{{route('post.view', ['post' => $item->id])}}" target="_blank" rel="noopener noreferrer">
-                <div class="d-flex mb-3">
-                    <img src="{{ asset('storage/'.$item->media1) }}" class="me-3 rounded" style="width: 70px; height: 70px;" alt="Trending Image">
-                    <div>
-                        <a href="{{ route('post.view', ['post' => $item->id]) }}" class="fw-bold text-dark">{{ $item->judul }}</a>
-                        <p class="text-muted small mb-0">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</p>
-                        <p class="text-muted small mb-0">{{$item->pengunjung}}x dilihat</p>
+    <!-- Trending Tabs (Sidebar Content) -->
+    <div class="bg-light p-3 rounded">
+        <!-- Tab Navigation -->
+        <ul class="nav nav-tabs" id="trendingTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="latest-tab" data-bs-toggle="tab" href="#latest" role="tab">Berita Terkini</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="trending-tab" data-bs-toggle="tab" href="#trending" role="tab">Berita Trending</a>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content mt-3">
+            <!-- Trending Tab -->
+            <div class="tab-pane fade" id="trending" role="tabpanel">
+                @foreach ($trending as $item)
+                <a href="{{ route('post.view', ['post' => $item->id]) }}" target="_blank" rel="noopener noreferrer">
+                    <div class="d-flex mb-3">
+                        <img src="{{ asset('storage/'.$item->media1) }}" class="me-3 rounded" style="width: 70px; height: 70px;" alt="Trending Image">
+                        <div>
+                            <a href="{{ route('post.view', ['post' => $item->id]) }}" class="fw-bold text-dark">{{ $item->judul }}</a>
+                            <p class="text-muted small mb-0">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</p>
+                            <p class="text-muted small mb-0">{{ $item->pengunjung }}x dilihat</p>
+                        </div>
                     </div>
-                </div>
-            </a>
-            @endforeach
+                </a>
+                @endforeach
+            </div>
+
+            <!-- Latest Tab -->
+            <div class="tab-pane fade show active" id="latest" role="tabpanel">
+                @foreach ($latest as $item)
+                <a href="{{ route('post.view', ['post' => $item->id]) }}" target="_blank" rel="noopener noreferrer">
+                    <div class="d-flex mb-3">
+                        <img src="{{ asset('storage/'.$item->media1) }}" class="me-3 rounded" style="width: 70px; height: 70px;" alt="Latest Image">
+                        <div>
+                            <a href="{{ route('post.view', ['post' => $item->id]) }}" class="fw-bold text-dark">{{ $item->judul }}</a>
+                            <p class="text-muted small mb-0">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</p>
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
         </div>
-        <!-- Latest Tab Content -->
-        <div class="tab-pane fade show active" id="latest" role="tabpanel">
-            @foreach ($latest as $item)
-            <a href="{{route('post.view', ['post' => $item->id])}}" target="_blank" rel="noopener noreferrer">
-                <div class="d-flex mb-3">
-                    <img src="{{ asset('storage/'.$item->media1) }}" class="me-3 rounded" style="width: 70px; height: 70px;" alt="Latest Image">
-                    <div>
-                        <a href="{{ route('post.view', ['post' => $item->id]) }}" class="fw-bold text-dark">{{ $item->judul }}</a>
-                        <p class="text-muted small mb-0">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</p>
-                    </div>
-                </div>
-            </a>
-            @endforeach
+
+        <!-- Kategori Berita -->
+        <div class="mt-4">
+            <div class="bg-primary text-white text-center py-2 fw-bold position-relative rounded-top">
+                KATEGORI BERITA
+                <div class="position-absolute top-100 start-50 translate-middle mt-0" style="width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #0d6EFD;"></div>
+            </div>
+            <ul class="list-unstyled bg-light p-2 rounded-bottom mb-0">
+                @foreach ($kategoriBerita as $kategori)
+                <a href="{{route('post.category', $kategori->id)}}" class="text-decoration-none text-dark">
+                <li class="d-flex justify-content-between align-items-center py-1">
+                    <span><i class="bi bi-chevron-right small"></i> {{ $kategori->kategori }}</span>
+                    <span class="badge rounded-pill kategori-badge bg-primary">{{ $kategori->post->count() }}</span>
+                </li>
+                </a>
+                @endforeach
+            </ul>
         </div>
     </div>
-    @endif
+
+    <style>
+        .kategori-badge {
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        li:hover .kategori-badge {
+            background-color: #f4ff54 !important;
+            color : #333;
+        }
+    </style>
+
+
+
     @if(\Schema::hasTable('page_embed_category') && \Schema::hasTable('page_embed'))
         <!-- Dynamic Tabs -->
-        <ul class="mt-5 nav nav-tabs" id="embedTab" role="tablist">
+        <ul class="nav nav-tabs" id="embedTab" role="tablist">
             @foreach ($embeds as $index => $cat)
                 <li class="nav-item" role="presentation">
                     <a class="nav-link @if ($index === 0) active @endif"
@@ -71,26 +107,29 @@
                     @if (isset($cat->paginated_valid_embeds) && $cat->paginated_valid_embeds->count())
                         @foreach ($cat->paginated_valid_embeds as $embed)
                             @php $halaman = $embed->halaman; @endphp
-                            <a href="{{ url('/page?id=' . ($halaman->id ?? 0)) }}" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
                                 <div class="d-flex mb-3">
-                                    <img src="{{ asset('storage/' . ($embed->currentpage->media ?? 'default.jpg')) }}"
+                                    <a href="{{ url('/page?id=' . ($halaman->id ?? 0)) }}" target="_blank" >
+                                    <img src="{{Str::startsWith($embed->currentpage->media, 'images/') ? asset('storage/' . $embed->currentpage->media)
+                                                :(Str::startsWith($embed->currentpage->tambahan1, 'images/') ? asset('storage/' . $embed->currentpage->tambahan1)
+                                                :(Str::startsWith($embed->currentpage->tambahan2, 'images/') ? asset('storage/' . $embed->currentpage->tambahan2)
+                                                : asset('storage/' . $embed->currentpage->tambahan3) )) }}"
                                         class="me-3 rounded"
                                         style="width: 70px; height: 70px;"
                                         alt="Thumb">
+                                    </a>
                                     <div>
-                                        <span class="fw-bold text-dark">
+                                        <a href="{{ url('/page?id=' . ($halaman->id ?? 0)) }}" target="_blank" class="fw-bold text-dark">
                                             {{ $embed->currentpage->sub_sub_sub_sub_menu
                                                 ?? $embed->currentpage->sub_sub_sub_menu
                                                 ?? $embed->currentpage->sub_sub_menu
                                                 ?? $embed->currentpage->sub_menu
                                                 ?? 'Tanpa Judul' }}
-                                        </span>
-                                        <p class="text-muted small mb-0">
+                                        {{-- <p class="text-muted small mb-0">
                                             {{ \Carbon\Carbon::parse($halaman->created_at)->format('F d, Y') }}
-                                        </p>
+                                        </p> --}}
+                                        </a>
                                     </div>
                                 </div>
-                            </a>
                         @endforeach
 
                         {{-- Pagination --}}
@@ -104,33 +143,55 @@
             @endforeach
         </div>
     @endif
-    <h5 class="fw-bold pt-4">Link Terkait</h5>
-    <hr>
-    <div class="tab-content mt-3">
-        <!-- Link Terkait Tab Content -->
-        <div class="tab-pane fade show active" id="link" role="tabpanel">
-            <div class="row mb-3 align-items-center justify-content-center">
-                @foreach ($link_terkait as $item)
-                <div class="row justify-content-center">
-                    <a href="{{$item->url}}" target="_blank" rel="noopener noreferrer" class="d-flex text-decoration-none justify-content-center">
-                        <img src="{{ asset("storage/$item->media")}}" class="w-50 my-3 img-fluid" style="object-fit: cover;object-position:50% 50%">
-                    </a>
+    @if(\Route::current()->getName() !== 'page.show' 
+    && \Route::current()->getName() !== 'post.view' 
+    && \Route::current()->getName() !== 'post.list'
+    && \Route::current()->getName() !== 'post.category'
+    && \Route::current()->getName() !== 'post.search')
+        <h5 class="fw-bold pt-4">Link Terkait</h5>
+        <hr>
+        <div class="tab-content mt-3">
+            <!-- Link Terkait Tab Content -->
+            <div class="tab-pane fade show active" id="link" role="tabpanel">
+                <div class="row mb-3 align-items-center justify-content-center">
+                    @foreach ($link_terkait as $item)
+                    <div class="row justify-content-center">
+                        <a href="{{$item->url}}" target="_blank" rel="noopener noreferrer" class="d-flex text-decoration-none justify-content-center">
+                            <span class="w-50"><img src="{{ asset("/storage/$item->media") }}" class="img-fluid" style="object-fit: cover;object-position:50% 50%"></span>
+                        </a>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
         </div>
-    </div>
-    
-    <h5 class="fw-bold pt-4">Government Public Relation</h5>
-    <hr class="mb-2">
-    <div class="tab-content mt-3">
-        <div class="tab-pane fade show active" id="gpr" role="tabpanel">
-            <div class="mb-3 align-items-center justify-content-center">
-                <script type="text/javascript" src="js/gpr.min.js" async></script>
-                <div class="rounded" style="background-color:#23277B;border: 6px solid #23277B!important">
-                    <div id="gpr-kominfo-widget-body"></div>
-                </div> 
+        
+        <h5 class="fw-bold pt-4">Government Public Relation</h5>
+        <hr class="mb-2">
+        <div class="tab-content mt-3">
+            <div class="tab-pane fade show active" id="gpr" role="tabpanel">
+                <div class="mb-3 align-items-center justify-content-center">
+                    <script type="text/javascript" src="js/gpr.min.js" async></script>
+                    <div class="rounded" style="background-color:#23277B;border: 6px solid #23277B!important">
+                        <div id="gpr-kominfo-widget-body"></div>
+                    </div> 
+                </div>
             </div>
         </div>
-    </div>
+    @endif
+    @if (\Storage::exists('jadwal-pelayanan-1.jpeg') && \Storage::exists('jadwal-pelayanan-2.jpeg'))
+        <h5 class="fw-bold pt-4">Jadwal Pelayanan</h5>
+        <hr class="mb-2">
+        <div class="tab-content mt-3">
+            <div class="tab-pane fade show active" role="tabpanel">
+                <div class="d-flex flex-wrap justify-content-evenly">
+                        <div class="w-75 img-hover-container p-2" data-bs-toggle="modal" data-bs-target="#mediaModal" data-bs-image="{{ asset('storage/jadwal-pelayanan.jpeg ') }}">
+                            <img class="img-fluid h-auto" src="{{ asset('storage/jadwal-pelayanan.jpeg')}}" alt="Image">
+                            <div class="img-hover-overlay">
+                                <h5 class="m-0 fst-italic">{{ \Storage::get('jadwal-pelayanan.txt') }}</h5>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>   
+    @endif 
 </div>

@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">{{ __('Informasi Website') }}</div>
+                <div class="card-header">{{ __('Beranda Dasbor') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -15,6 +15,7 @@
                     <hr>
                     @endif
                     <div>
+                        @if(Auth::user()->role == 'admin')
                         <table class="w-100">
                             <tbody>
                                 <tr class="justify-content-between">
@@ -27,6 +28,11 @@
                                 </tr>
                             </tbody>
                         </table>
+                        @else
+                        <div class="card bg-primary-subtle ">
+                            <div class="card-body">Halo, {{Auth::user()->name}}</div>
+                        </div>
+                        @endif
                     </div>
                     
                     <hr>

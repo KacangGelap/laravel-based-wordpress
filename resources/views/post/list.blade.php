@@ -4,7 +4,7 @@
         <div class="row py-4">
             <div class="col-lg-8">
                 @if($berita->count() >= 1)
-                    <h4 class="mx-4 mb-4">{{\Route::current()->getName() === 'post.list' ? 'List Berita' : 'Hasil Pencarian : '.$query}}</h4>
+                    <h4 class="mx-4 mb-4">{{\Route::current()->getName() === 'post.list' ? 'List Berita' : (\Route::current()->getName() === 'post.category' ? 'List Berita dengan Kategori: '.$kategori: 'Hasil Pencarian : '.$query)}}</h4>
                     <div class="d-flex justify-content-center">{{$berita->links()}}</div>
                     <hr>
                     @foreach ($berita as $item)

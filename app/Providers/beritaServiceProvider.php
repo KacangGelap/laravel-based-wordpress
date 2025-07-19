@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Models\post;
+use App\Models\post, App\Models\kategori;
 use Illuminate\Support\Facades\Schema;
 class beritaServiceProvider extends ServiceProvider
 {
@@ -27,7 +27,8 @@ class beritaServiceProvider extends ServiceProvider
 
             $trending = Post::orderBy('pengunjung', 'desc')->take(5)->get();
             view()->share('trending', $trending);
-            
+            $kategoriBerita = kategori::all();
+            view()->share('kategoriBerita', $kategoriBerita);
         }
     }
 }
