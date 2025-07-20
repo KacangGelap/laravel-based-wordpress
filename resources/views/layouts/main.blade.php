@@ -106,7 +106,7 @@
                             </li>
                             @foreach ($menus as $menu)
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#" id="menu{{ $menu->id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 12px">
+                                    <a class="nav-link dropdown-toggle text-white h-100" href="#" id="menu{{ $menu->id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 12px">
                                         {{ $menu->menu }}
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="menu{{ $menu->id }}">
@@ -202,22 +202,22 @@
                                 </li>
                             @endforeach
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="{{route('kalender.show')}}" style="font-size: 12px">
+                                <a class="nav-link text-white h-100" href="{{route('kalender.show')}}" style="font-size: 12px">
                                     {{__("AGENDA KEGIATAN")}}
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="{{route('post.list')}}" style="font-size: 12px">
+                                <a class="nav-link text-white  h-100" href="{{route('post.list')}}" style="font-size: 12px">
                                     {{__("BERITA")}}
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="{{route('galeri')}}" style="font-size: 12px">
+                                <a class="nav-link text-white h-100" href="{{route('galeri')}}" style="font-size: 12px">
                                     {{__("GALERI")}}
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="{{route('unduh.show')}}" style="font-size: 12px">
+                                <a class="nav-link text-white  h-100" href="{{route('unduh.show')}}" style="font-size: 12px">
                                     {{__("UNDUH")}}
                                 </a>
                             </li>
@@ -302,16 +302,16 @@
         <button type="button" class="btn" aria-label="Close" id="accessibilityClose">X</button>
     </div>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item"><b class="bi-fonts"></b> <span id="btn-bigger-text" class="text-primary" role="button">Bigger Text</span></li>
-        <li class="list-group-item"><b class="bi-circle-half"></b> <span id="btn-contrast" class="text-primary" role="button">Contrast Color</span></li>
-        <li class="list-group-item"><b class="bi-link-45deg"></b> <span id="btn-highlight-links" class="text-primary" role="button">Highlight Links</span></li>
-        <li class="list-group-item"><b class="bi-distribute-horizontal"></b> <span id="btn-text-spacing" class="text-primary" role="button">Text Spacing</span></li>
-        <li class="list-group-item"><b class="bi-images"></b> <span id="btn-pause-animations" class="text-primary" role="button">Disable Animations</span></li>
-        <li class="list-group-item"><b class="bi-type"></b> <span id="btn-dyslexia" class="text-primary" role="button">Dyslexia Friendly</span></li>
+        <li class="list-group-item"><b class="bi-fonts"></b> <span id="btn-bigger-text" class="text-primary" role="button">Memperbesar Teks</span></li>
+        <li class="list-group-item"><b class="bi-circle-half"></b> <span id="btn-contrast" class="text-primary" role="button">Warna Kontras</span></li>
+        <li class="list-group-item"><b class="bi-link-45deg"></b> <span id="btn-highlight-links" class="text-primary" role="button">Menyorot Tautan</span></li>
+        <li class="list-group-item"><b class="bi-distribute-horizontal"></b> <span id="btn-text-spacing" class="text-primary" role="button">Memperlebar Jarak Teks</span></li>
+        <li class="list-group-item"><b class="bi-pause-btn"></b> <span id="btn-pause-animations" class="text-primary" role="button">Mematikan Animasi</span></li>
+        <li class="list-group-item"><b class="bi-type"></b> <span id="btn-dyslexia" class="text-primary" role="button">Ramah Dyslexia</span></li>
         <li class="list-group-item"><b class="bi-cursor"></b> <span id="btn-cursor" class="text-primary" role="button">Cursor</span></li>
-        <li class="list-group-item"><b class="bi-arrows-expand"></b> <span id="btn-line-height" class="text-primary" role="button">Line Height</span></li>
-        <li class="list-group-item"><b class="bi-justify-left"></b> <span onclick="toggleTextAlign()" class="text-primary" role="button">Text Align</span></li>
-        <li class="list-group-item"><b class="bi-volume-up"></b> <span id="btn-audio-description" class="text-primary" role="button">Audio Description</span></li>
+        <li class="list-group-item"><b class="bi-arrows-expand"></b> <span id="btn-line-height" class="text-primary" role="button">Mengatur Tinggi Teks</span></li>
+        <li class="list-group-item"><b class="bi-justify-left"></b> <span onclick="toggleTextAlign()" class="text-primary" role="button">Menyelaraskan Teks</span></li>
+        <li class="list-group-item"><b class="bi-volume-up"></b> <span id="btn-audio-description" class="text-primary" role="button">Membaca Teks</span></li>
     </ul>
 </div>
 
@@ -507,14 +507,26 @@
             };
 
             // AUDIO DESCRIPTION toggle
-            let isAudioDescriptionEnabled = localStorage.getItem('audioDescription') === 'true';
+            let isAudioDescriptionEnabled = localStorage.getItem('audioDescription') !== 'false';
             const btnAudio = document.getElementById("btn-audio-description");
             const speakText = (text) => {
                 window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = "id-ID";
+                utterance.lang = "id-ID"; // preferensi bahasa Indonesia
+
+                const voices = window.speechSynthesis.getVoices();
+                const indoVoice = voices.find(v => v.lang === "id-ID");
+
+                if (indoVoice) {
+                    utterance.voice = indoVoice;
+                } else {
+                    console.warn("⚠️ Suara bahasa Indonesia tidak ditemukan. Menggunakan default.");
+                }
+
                 window.speechSynthesis.speak(utterance);
             };
+
+
 
             const hoverSpeak = (e) => {
                 if (!isAudioDescriptionEnabled) return;
