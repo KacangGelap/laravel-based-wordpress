@@ -22,7 +22,9 @@
                             <label for="video" class="col-md-4 col-form-label text-md-end">Upload Video</label>
 
                             <div class="col-md-6">
-                                <input class="form-control" type="file" name="video" id="video">
+                                <input class="form-control @error('video')
+                                    is-invalid
+                                @enderror" type="file" name="video" id="video">
                                 @error('video')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -35,7 +37,9 @@
                             <label for="profil" class="col-md-4 col-form-label text-md-end">Link Youtube</label>
 
                             <div class="col-md-6">
-                                <input class="form-control" type="text" name="profil" id="profil" value="{{"https://youtube.com/embed/$profil"}}">
+                                <input class="form-control @error('profil')
+                                    is-invalid
+                                @enderror" type="text" name="profil" id="profil" value="{{"https://youtube.com/embed/$profil"}}">
                                 @error('profil')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

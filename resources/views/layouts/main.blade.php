@@ -310,7 +310,8 @@
         <li class="list-group-item"><b class="bi-type"></b> <span id="btn-dyslexia" class="text-primary" role="button">Ramah Dyslexia</span></li>
         <li class="list-group-item"><b class="bi-cursor"></b> <span id="btn-cursor" class="text-primary" role="button">Cursor</span></li>
         <li class="list-group-item"><b class="bi-arrows-expand"></b> <span id="btn-line-height" class="text-primary" role="button">Mengatur Tinggi Teks</span></li>
-        <li class="list-group-item"><b class="bi-justify-left"></b> <span onclick="toggleTextAlign()" class="text-primary" role="button">Menyelaraskan Teks</span></li>
+        <li class="list-group-item"><b id="alignIcon" class="bi bi-justify-left"></b> <span onclick="toggleTextAlign()" class="text-primary" role="button">Menyelaraskan Teks</span></li>
+
         <li class="list-group-item"><b class="bi-volume-up"></b> <span id="btn-audio-description" class="text-primary" role="button">Membaca Teks</span></li>
     </ul>
 </div>
@@ -467,22 +468,30 @@
             const body = document.body;
             const html = document.documentElement;
 
-            const toggleAndPersist = (btnId, classTarget, className, useHtml = false) => {
+           const toggleAndPersist = (btnId, classTarget, className, useHtml = false) => {
                 const element = useHtml ? html : body;
                 const currentState = localStorage.getItem(className) === "true";
 
+                const btn = document.getElementById(btnId);
+
                 if (currentState) {
                     element.classList.add(className);
+                    if (btn) btn.classList.add("text-danger", "fw-bold");
                 }
 
-                const btn = document.getElementById(btnId);
                 if (btn) {
                     btn.addEventListener("click", () => {
                         element.classList.toggle(className);
-                        localStorage.setItem(className, element.classList.contains(className));
+                        const isActive = element.classList.contains(className);
+                        localStorage.setItem(className, isActive);
+
+                        // Toggle gaya tombol juga
+                        btn.classList.toggle("text-danger", isActive);
+                        btn.classList.toggle("fw-bold", isActive);
                     });
                 }
             };
+
 
             toggleAndPersist('btn-bigger-text', html, 'bigger-text', true);
             toggleAndPersist('btn-contrast', body, 'high-contrast');
@@ -492,19 +501,6 @@
             toggleAndPersist('btn-dyslexia', body, 'dyslexia-mode');
             toggleAndPersist('btn-cursor', body, 'cursor-large');
             toggleAndPersist('btn-line-height', body, 'line-height');
-
-            // ALIGNMENT toggle
-            const alignments = ['text-align-start', 'text-align-center', 'text-align-end', 'text-align-justify'];
-            let currentIndex = parseInt(localStorage.getItem('textAlignIndex')) || 0;
-            if (alignments[currentIndex]) body.classList.add(alignments[currentIndex]);
-
-            window.toggleTextAlign = function () {
-                alignments.forEach(cls => body.classList.remove(cls));
-                currentIndex = (currentIndex + 1) % alignments.length;
-                const newClass = alignments[currentIndex];
-                body.classList.add(newClass);
-                localStorage.setItem('textAlignIndex', currentIndex);
-            };
 
             // AUDIO DESCRIPTION toggle
             let isAudioDescriptionEnabled = localStorage.getItem('audioDescription') !== 'false';
@@ -584,6 +580,35 @@
         });
 
         </script>
+        <script>
+        const alignments = [
+            { class: 'text-align-start', icon: 'bi-justify-left' },
+            { class: 'text-align-center', icon: 'bi-text-center' },
+            { class: 'text-align-end', icon: 'bi-justify-right' },
+            { class: 'text-align-justify', icon: 'bi-justify' }
+        ];
+
+        let currentIndex = 0;
+
+        function toggleTextAlign() {
+            const body = document.body;
+            const icon = document.getElementById('alignIcon');
+
+            // Hapus semua class dari body dan ikon
+            alignments.forEach(a => {
+                body.classList.remove(a.class);
+                icon.classList.remove(a.icon);
+            });
+
+            // Tambahkan class berikutnya
+            currentIndex = (currentIndex + 1) % alignments.length;
+            const next = alignments[currentIndex];
+
+            body.classList.add(next.class);
+            icon.classList.add(next.icon);
+        }
+    </script>
+
     </div>
 </body>
 </html>

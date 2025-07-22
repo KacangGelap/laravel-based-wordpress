@@ -51,6 +51,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="d-flex justify-content-center">{{$user->links()}}</div>
                     </div>
                 </div>
             </div>

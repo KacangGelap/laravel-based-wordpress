@@ -25,7 +25,7 @@
                         @foreach ($data as $item)
                             <tr>
                                 <td>{{$loop->iteration}}</td>
-                                <td>{{Str::limit(ucfirst($item->judul),100)}}</td>
+                                <td>{{Str::limit($item->judul,100)}}</td>
                                 <td class="d-flex justify-content-center">
                                     <a href="#" class="btn btn-secondary mx-2" data-bs-toggle="modal" data-bs-target="#mediaModal" data-bs-image="{{asset('storage/'.$item->media)}}">
                                         Pratinjau
@@ -41,7 +41,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div class="d-flex justify-content-center">{{$data->links()}}</div>
             </div>
+            
         </div>
     </div>
     {{-- Modal Gambar --}}

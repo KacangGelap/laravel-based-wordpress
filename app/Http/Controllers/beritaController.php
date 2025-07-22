@@ -23,7 +23,7 @@ class beritaController extends Controller
         return $file->storeAs('images', $filename, 'public');
     }
     public function index(){
-        $data = post::orderBy('created_at', 'desc')->get();
+        $data = post::orderBy('created_at', 'desc')->simplePaginate(15);
         $kategori = kategori::all();
         return view('post.index')->with('data', $data)
                 ->with('kategori', $kategori);

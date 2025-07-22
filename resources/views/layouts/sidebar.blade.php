@@ -1,4 +1,4 @@
-<div class="col-lg-4 shadow-sm py-2">
+<div class="bg-light col-lg-4 shadow-sm py-2">
     <!-- Trending Tabs (Sidebar Content) -->
     <div class="bg-light p-3 rounded">
         <!-- Tab Navigation -->
@@ -178,7 +178,7 @@
             </div>
         </div>
     @endif
-    @if (\Storage::exists('jadwal-pelayanan-1.jpeg') && \Storage::exists('jadwal-pelayanan-2.jpeg'))
+    @if (\Storage::exists('jadwal-pelayanan.jpeg'))
         <h5 class="fw-bold pt-4">Jadwal Pelayanan</h5>
         <hr class="mb-2">
         <div class="tab-content mt-3">

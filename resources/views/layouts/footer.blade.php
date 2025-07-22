@@ -44,9 +44,9 @@
         {{-- Kolom Gambar --}}
         <div class="col-md-3 mb-3 d-flex align-items-stretch">
             <div class="row align-content-between" style="height:500px">
-                <span class="mx-auto row w-50"><img src="/img/btg-112.png" class="w-100"></span>
-                <a href="{{\Storage::exists('faq.txt') ? \Storage::get('faq.txt') : '#'}}" target="_blank"><span class="mx-auto row w-50"><img src="/img/FAQ.png" class="w-100"></span></a>
-                <a href="{{$master->link}}" target="_blank"><span class="mx-auto row w-50"><img src="/img/kritik-saran.png" class="w-100"></span></a>
+                <span class="mx-auto row" style="width:200px"><img src="/img/btg-112.png"></span>
+                <a href="{{\Storage::exists('faq.txt') ? \Storage::get('faq.txt') : '#'}}" target="_blank"><span class="mx-auto row" style="width:200px"><img src="/img/FAQ.png"></span></a>
+                <a href="{{$master->link}}" target="_blank"><span class="mx-auto row " style="width:200px"><img src="/img/kritik-saran.png"></span></a>
             </div>
         </div>
     </div>

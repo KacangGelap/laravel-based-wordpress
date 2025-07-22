@@ -265,7 +265,7 @@ class layoutController extends Controller
                 : $data->image,
             ]);
 
-            return redirect()->route('card.edit', $data->id)->with('sukses', 'data berhasil diubah');
+            return redirect()->route('card.index')->with('sukses', 'data berhasil diubah');
         } catch (\Throwable $th) {
             // throw $th;
             return back()->with('gagal', 'terjadi kesalahan');
@@ -371,7 +371,7 @@ class layoutController extends Controller
     public function carousel_update(Request $request, $id){
         $validated = $request->validate([
             'kategori_id' => 'nullable|numeric|min:1',
-            'judul' => 'nullable|string|max:20',
+            'judul' => 'nullable|string|max:50',
             'image' => 'nullable|max:3000|mimes:png,jpg,jpeg|image'
         ]);
         try {
@@ -460,7 +460,7 @@ class layoutController extends Controller
         }
     }
     public function embeds($id){
-         $cat = page_embed_category::findOrFail($id);
+        $cat = page_embed_category::findOrFail($id);
         $selfHost = parse_url(url('/'), PHP_URL_HOST);
 
         // Ambil semua embed tanpa paginate dulu
@@ -674,18 +674,22 @@ class layoutController extends Controller
     }
     public function apply_profil(Request $request){
         $validated = $request->validate([
-            'profil' => ['required', 'string', new YoutubeUrl],
-            'video' => 'required|file|mimes:mp4|max:200000'
+            'profil' => ['nullable', 'string', new YoutubeUrl],
+            'video' => 'nullable|file|mimes:mp4|max:200000'
         ]);
         try {
             $isYt = new YoutubeUrl();
             if($isYt->passes('link', $validated['profil'] ?? null)){
                 Storage::put('profil.txt', $isYt->videoId ?? null);
             }
-            Storage::put('profil.mp4', file_get_contents($validated['video']));
+            // dd($isYt);
+            if($request->has('video')){
+                Storage::put('profil.mp4', file_get_contents($validated['video']));
+            }
+            
             return redirect()->route('video.index')->with('sukses', 'data updated successfully!');
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
             return redirect()->route('video.index')->with('gagal', 'terjadi kesalahan');
         }
         

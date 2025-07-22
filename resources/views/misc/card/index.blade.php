@@ -12,6 +12,7 @@
                 </div>
             </div>
             <div class="card-body">
+                <p class="text-secondary">Catatan: Tekan Gambar untuk mengubah data</p>
                 <hr class="mb-2">
                 <div class="d-flex justify-content-between">
                 @forelse ($data as $d)

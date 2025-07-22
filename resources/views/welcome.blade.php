@@ -78,7 +78,7 @@
                     @php
                         $carouselChunks = ($catIndex != 0 && $catIndex != 4) ? $category->carousels->chunk(4) : $category->carousels->chunk(8);
                         $colors = ['#e0f0ff', '#d0ffd0', '#ffe0ff', '#fdfdcf'];
-                        $timeinterval = [0, 2000, 5000 ,7000, 0];
+                        $timeinterval = [0, 2000, 5000 ,8000, 0];
                         $bgColor = $colors[$catIndex % count($colors)];
                         $carouselId = 'carouselCat' . $category->id;
                     @endphp
@@ -99,11 +99,11 @@
                                                         data-bs-image="{{ asset('storage/' . $carousel->media) }}">
                                                     <img src="{{ asset('storage/' . $carousel->media) }}"
                                                         class="img-fluid shadow"
-                                                        style="object-fit:{{($catIndex != 0 && $catIndex != 4) ? 'cover':'fill'}};height:144px; cursor:pointer"
+                                                        style="object-fit:{{($catIndex != 0 && $catIndex != 4) ? 'cover':'fill'}};height:120px; cursor:pointer"
                                                         alt="image" 
                                                         loading="lazy"/>
                                                         <div class="img-hover-overlay">
-                                                            <h5 class="fst-italic">{{ $c->judul }}</h5>
+                                                            <h5 class="fst-italic">{{ $carousel->judul }}</h5>
                                                         </div>
                                                 </div>
                                             @endforeach
@@ -170,9 +170,10 @@
                     </div>
             @endif
             @if(\Storage::exists('quote.txt'))
-                <figure class="text-center bg-secondary-subtle">
+                <figure class="text-center" style="background-color: #e7f1ff;
+color: #1a1a1a;">
                     <blockquote class="blockquote fw-bold py-4">
-                        <i>"{{ucfirst($quote)}}"</i>
+                        <i>"{{$quote}}"</i>
                     </blockquote>
                     {{-- <figcaption class="blockquote-footer">
                         {{parse_url(url('/'), PHP_URL_HOST)}}
