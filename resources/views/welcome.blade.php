@@ -49,8 +49,13 @@
             @if(\Storage::exists('profil.txt') &&\Storage::exists('profil.mp4'))
                <div class="row justify-content-center">
                 <div class="position-relative w-100" style="max-width: 720px;">
+                    @php
+                        $videoPath = 'profil.mp4';
+                        $version = \Storage::exists($videoPath) ? \Storage::lastModified($videoPath) : time();
+                    @endphp
+
                     <video 
-                        src="{{ asset('storage/profil.mp4') }}" 
+                        src="{{ asset("storage/$videoPath") }}?v={{ $version }}" 
                         class="w-100"
                         style="height: auto; max-height: 400px;"
                         autoplay
@@ -58,6 +63,7 @@
                         loop
                         loading="lazy">
                     </video>
+
 
                     <a href="https://www.youtube.com/embed/{{ \Storage::get('profil.txt') }}"
                     class="text-white fw-thin text-decoration-none position-absolute px-3 py-2"

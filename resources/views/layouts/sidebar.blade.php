@@ -157,7 +157,7 @@
                     @foreach ($link_terkait as $item)
                     <div class="row justify-content-center">
                         <a href="{{$item->url}}" target="_blank" rel="noopener noreferrer" class="d-flex text-decoration-none justify-content-center">
-                            <span class="w-50"><img src="{{ asset("/storage/$item->media") }}" class="img-fluid" style="object-fit: cover;object-position:50% 50%"></span>
+                            <span class="w-50 d-flex text-decoration-none justify-content-center"><img src="{{ asset("/storage/$item->media") }}" class="img-fluid" style="object-fit: cover;object-position:50% 50%" width="250px" height="250px"></span>
                         </a>
                     </div>
                     @endforeach
@@ -179,19 +179,33 @@
         </div>
     @endif
     @if (\Storage::exists('jadwal-pelayanan.jpeg'))
-        <h5 class="fw-bold pt-4">Jadwal Pelayanan</h5>
-        <hr class="mb-2">
-        <div class="tab-content mt-3">
-            <div class="tab-pane fade show active" role="tabpanel">
-                <div class="d-flex flex-wrap justify-content-evenly">
-                        <div class="w-75 img-hover-container p-2" data-bs-toggle="modal" data-bs-target="#mediaModal" data-bs-image="{{ asset('storage/jadwal-pelayanan.jpeg ') }}">
-                            <img class="img-fluid h-auto" src="{{ asset('storage/jadwal-pelayanan.jpeg')}}" alt="Image">
-                            <div class="img-hover-overlay">
-                                <h5 class="m-0 fst-italic">{{ \Storage::get('jadwal-pelayanan.txt') }}</h5>
-                            </div>
-                        </div>
+    <h5 class="fw-bold pt-4">Jadwal Pelayanan</h5>
+    <hr class="mb-2">
+    <div class="tab-content mt-3">
+        <div class="tab-pane fade show active" role="tabpanel">
+            <div class="d-flex flex-wrap justify-content-evenly">
+                @php
+                    $imagePath = 'jadwal-pelayanan.jpeg';
+                    $judul = \Storage::get('jadwal-pelayanan.txt');
+                    $version = \Storage::lastModified($imagePath);
+                @endphp
+
+                <div class="w-75 img-hover-container p-2"
+                     data-bs-toggle="modal"
+                     data-bs-target="#mediaModal"
+                     data-bs-image="{{ asset('storage/' . $imagePath) . '?v=' . $version }}">
+                    
+                    <img class="img-fluid h-auto"
+                         src="{{ asset('storage/' . $imagePath) . '?v=' . $version }}"
+                         alt="Image">
+
+                    <div class="img-hover-overlay">
+                        <h5 class="m-0 fst-italic">{{ $judul }}</h5>
+                    </div>
                 </div>
             </div>
-        </div>   
-    @endif 
+        </div>
+    </div>   
+@endif
+
 </div>

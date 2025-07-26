@@ -11,9 +11,23 @@
                     
                     <form action="{{route('video.store')}}" method="post" enctype="multipart/form-data">
                         @csrf
-                        @if(\Storage::exists('profil.mp4'))
-                            <video src="{{ asset("storage/$video") }}" autoplay muted loop controls class="w-100" height="400px"></video>
+                        @php
+                            $video = 'profil.mp4';
+                            $version = \Storage::lastModified($video);
+                        @endphp
+
+                        @if (\Storage::exists($video))
+                            <video 
+                                src="{{ asset("storage/$video") }}?v={{ $version }}" 
+                                autoplay 
+                                muted 
+                                loop 
+                                controls 
+                                class="w-100" 
+                                height="400px">
+                            </video>
                         @else
+
                             <div class="d-flex w-100 bg-secondary-subtle align-items-center" style="height: 400px">
                                 <h5 class="mx-auto text-center">Video tidak ditemukan / belum diupload  </h5>
                             </div>

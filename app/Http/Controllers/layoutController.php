@@ -684,6 +684,9 @@ class layoutController extends Controller
             }
             // dd($isYt);
             if($request->has('video')){
+                if(Storage::exists('profil.mp4')){
+                    Storage::delete('profil.mp4');
+                }
                 Storage::put('profil.mp4', file_get_contents($validated['video']));
             }
             
@@ -712,7 +715,9 @@ class layoutController extends Controller
             'judul' => 'required_with:image|string|max:50',
         ]);
         try {
-            
+            if(Storage::exists('jadwal-pelayanan.jpeg')){
+                Storage::delete('jadwal-pelayanan.jpeg');
+            }
             Storage::put('jadwal-pelayanan.jpeg', file_get_contents($validated['image']));
             Storage::put('jadwal-pelayanan.txt',$validated['judul']);
             return redirect()->route('jadwal-pelayanan.index')->with('sukses', 'data updated successfully!');
