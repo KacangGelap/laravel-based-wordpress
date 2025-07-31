@@ -42,7 +42,7 @@ class beritaController extends Controller
             $query = $validated['search'];
             $berita = Post::where('judul', 'like', '%' . $query . '%')
             ->orWhere('deskripsi', 'like', '%' . $query . '%')
-            ->get();
+            ->simplePaginate(20);
         return view('post.list')->with('berita', $berita)->with('query', $query);
         } catch (\Throwable $th) {
             //throw $th;
