@@ -22,7 +22,7 @@ class UserController extends Controller
             'no_hp'     =>  'nullable|numeric|digits_between:11,13',
             'username'  =>  'required|string|unique:users|max:30',
             'opd'       =>  'required|string|in:Diskominfo,Korpri,Pkk,Setda,Setwan,Itda,DIsdikbud,Dinkes,Dpupr,Dpkpp,Dpkp,Dspm,Dpmptsp,Disnaker,Dlh,Disdukcapil,Dishub,Disporapar,Dkukmp,Dpk,Dkppp,Dppkb,Satpol PP,Bkpsdm,Bapperinda,Bapenda,Bpkad,Bakesbangpol,Bpbd,Rsud,Ukpbj,Puskesmas Bontang Selatan 1,Puskesmas Bontang Selatan 2,Puskesmas Bontang Utara 1,Puskesmas Bontang Utara 2,Puskesmas Bontang Barat,Puskesmas Bontang Lestari,Laboratorium Kesehatan,Kec-Bontang Barat,Kec-Bontang Utara,Kec-Bontang Selatan,Kel-Kanaan,Kel-Belimbing,Kel-Gunung Telihan,Kel-Bontang Baru,Kel-Api-Api,Kel-Gunung Elai,Kel-Guntung,Kel-Loktuan,Kel-Tanjung Laut,Kel-Tanjung Laut Indah,Kel-Berbas Tengah,Kel-Berbas Pantai,Kel-Satimpo,Kel-Bontang Lestari',
-            'password' => 'required|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-+.])[A-Za-z\d@$!%*?&_\-+.]+$/'
+            'password' => 'required|string|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/'
         ],[
             'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (@, $, !, %, *, ?, &, _, -, .).',
         ]);
