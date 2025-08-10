@@ -8,7 +8,7 @@ use App\Models\User;
 class UserController extends Controller
 {
     public function index(){
-        $user = User::all();
+        $user = User::simplePaginate(20);
         return view('user.index')->with('user', $user);
     }
 
