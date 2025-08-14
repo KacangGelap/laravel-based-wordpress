@@ -59,6 +59,7 @@ class Kernel extends HttpKernel
         'trending' => \App\Http\Middleware\trending::class,
         'user' => \App\Http\Middleware\user::class,
         'iso' => \App\Http\Middleware\isolate::class,
+        'editor' => \App\Http\Middleware\editor::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

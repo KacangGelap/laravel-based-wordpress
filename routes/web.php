@@ -22,6 +22,21 @@ Route::middleware(['auth'])->group( function () {
         Route::get('/profile/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('user.profile');
         Route::put('/profile/update/{id}', [App\Http\Controllers\UserController::class, 'update_profile'])->name('user.update.profile');
     });
+    // Route::middleware(['editor'])->group(function (){
+    //     //Tautan Laman
+        Route::get('/page-embed',[App\Http\Controllers\layoutController::class, 'embed_category'])->name('embed.index');
+        Route::get('/page-embed/create',[App\Http\Controllers\layoutController::class, 'embed_create_category'])->name('embed.create_category');
+        Route::post('/page-embed/create',[App\Http\Controllers\layoutController::class, 'embed_store_category'])->name('embed.store_category');
+        Route::get('/page-embed/edit/{embed}',[App\Http\Controllers\layoutController::class, 'embed_edit_category'])->name('embed.edit_category');
+        Route::put('/page-embed/edit/{embed}',[App\Http\Controllers\layoutController::class, 'embed_update_category'])->name('embed.update_category');
+        Route::delete('/page-embed/delete/{embed}',[App\Http\Controllers\layoutController::class, 'embed_delete_category'])->name('embed.delete_category');
+        Route::get('/page-embeds/cat/{embed}', [App\Http\Controllers\layoutController::class, 'embeds'])->name('embed.embeds');
+        Route::get('/page-embeds/create', [App\Http\Controllers\layoutController::class, 'embed_create'])->name('embed.create');
+        Route::post('/page-embeds/create', [App\Http\Controllers\layoutController::class, 'embed_store'])->name('embed.store');
+        Route::get('/page-embeds/edit/{embed}', [App\Http\Controllers\layoutController::class, 'embed_edit'])->name('embed.edit');
+        Route::put('/page-embeds/edit/{embed}', [App\Http\Controllers\layoutController::class, 'embed_update'])->name('embed.update');
+        Route::delete('/page-embeds/delete/{embed}', [App\Http\Controllers\layoutController::class, 'embed_delete'])->name('embed.delete');
+    // });
     //FITUR ADMIN 
     Route::middleware(['iso'])->group( function () {
         Route::get('/logs', function() {
@@ -49,20 +64,6 @@ Route::middleware(['auth'])->group( function () {
         Route::get('/halaman/edit/{menu}',[App\Http\Controllers\halamanController::class,'edit_menu'])->name('menu.edit');
         Route::put('/halaman/edit/{menu}', [App\Http\Controllers\halamanController::class, 'update_menu'])->name('menu.update');
         Route::delete('/halaman/delete/{menu}', [App\Http\Controllers\halamanController::class, 'destroy_menu'])->name('menu.delete');
-        
-        //Tautan Laman
-        Route::get('/page-embed',[App\Http\Controllers\layoutController::class, 'embed_category'])->name('embed.index');
-        Route::get('/page-embed/create',[App\Http\Controllers\layoutController::class, 'embed_create_category'])->name('embed.create_category');
-        Route::post('/page-embed/create',[App\Http\Controllers\layoutController::class, 'embed_store_category'])->name('embed.store_category');
-        Route::get('/page-embed/edit/{embed}',[App\Http\Controllers\layoutController::class, 'embed_edit_category'])->name('embed.edit_category');
-        Route::put('/page-embed/edit/{embed}',[App\Http\Controllers\layoutController::class, 'embed_update_category'])->name('embed.update_category');
-        Route::delete('/page-embed/delete/{embed}',[App\Http\Controllers\layoutController::class, 'embed_delete_category'])->name('embed.delete_category');
-        Route::get('/page-embeds/cat/{embed}', [App\Http\Controllers\layoutController::class, 'embeds'])->name('embed.embeds');
-        Route::get('/page-embeds/create', [App\Http\Controllers\layoutController::class, 'embed_create'])->name('embed.create');
-        Route::post('/page-embeds/create', [App\Http\Controllers\layoutController::class, 'embed_store'])->name('embed.store');
-        Route::get('/page-embeds/edit/{embed}', [App\Http\Controllers\layoutController::class, 'embed_edit'])->name('embed.edit');
-        Route::put('/page-embeds/edit/{embed}', [App\Http\Controllers\layoutController::class, 'embed_update'])->name('embed.update');
-        Route::delete('/page-embeds/delete/{embed}', [App\Http\Controllers\layoutController::class, 'embed_delete'])->name('embed.delete');
 
         //tgl BASTW
         Route::get('/tgl', [App\Http\Controllers\layoutController::class, 'configure_tgl'])->name('tgl.index');
