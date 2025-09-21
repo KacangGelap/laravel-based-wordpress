@@ -45,7 +45,7 @@ class metadata
                 $metadata = [
                     'title' => $getBerita->judul,
                     'description' => \Str::limit($getBerita->deskripsi ?? '', 150),
-                    'image' => $imageUrl,
+                    'image' => asset("storage/" . rawurlencode($getBerita->media1)),
                     'image_width' => $width,
                     'image_height' => $height,
                     'url' => request()->fullUrlWithQuery(['utp' => 'share']),
