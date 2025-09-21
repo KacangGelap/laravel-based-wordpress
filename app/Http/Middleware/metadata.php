@@ -33,12 +33,23 @@ class metadata
             $getBerita = Post::find($request->get('post'));
 
             if ($getBerita) {
+                $imagePath = "storage/" . $getBerita->media1;
+                $imageUrl = asset($imagePath);
+
+                // Get image dimensions (optional but good for OG)
+                $width = $height = null;
+                if (file_exists(public_path($imagePath))) {
+                    [$width, $height] = getimagesize(public_path($imagePath));
+                }
+
                 $metadata = [
                     'title' => $getBerita->judul,
-                    'description' => \Str::limit($getBerita->deskripsi ?? '', 50),
-                    'image' => asset("storage/$getBerita->media1"),
+                    'description' => \Str::limit($getBerita->deskripsi ?? '', 150),
+                    'image' => $imageUrl,
+                    'image_width' => $width,
+                    'image_height' => $height,
                     'url' => request()->fullUrlWithQuery(['utp' => 'share']),
-                    'type' => 'berita',
+                    'type' => 'article', 
                 ];
             }
         }elseif($routeName === 'page.show' && $request->has('id')){
