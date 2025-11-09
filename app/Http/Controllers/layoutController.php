@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\Encoders\WebpEncoder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -13,46 +15,51 @@ use App\Models\page_embed, App\Models\page_embed_category;
 use App\Rules\YoutubeUrl, App\Rules\GoogleMapsUrl, App\Rules\SafeUrl, App\Rules\SocialMediaUrl;
 class layoutController extends Controller
 {
-    private function storeFile($file){
-        $filename = $file->getClientOriginalName();
-        $path = 'images/'.$filename;
-        if (\Storage::disk('public')->exists($path)){
-            \Storage::disk('public')->delete($path);
+    private function storeFile($file)
+    {
+        $mime = $file->getMimeType();
+        $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $file->getClientOriginalExtension();
+
+        // sanitize filename for URL safety
+        $safeName = urlencode(str_replace(' ', '_', $filename));
+
+        $folder = str_starts_with($mime, 'image/') ? 'images' : 'files';
+
+        // handle PDF
+        if ($mime === 'application/pdf') {
+            $path = "{$folder}/{$safeName}.pdf";
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+            $file->storeAs($folder, "{$safeName}.pdf", 'public');
+            return $path;
         }
-        return $file->storeAs('images', $filename, 'public');
+
+        // handle image — convert to webp
+        if (str_starts_with($mime, 'image/')) {
+            $path = "{$folder}/{$safeName}.webp";
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+
+            $image = Image::read($file->getRealPath())
+                ->encode(new WebpEncoder(quality: 40));
+
+            Storage::disk('public')->put($path, (string) $image);
+            return $path;
+        }
+
+        // fallback: store as-is
+        $path = "{$folder}/{$safeName}.{$extension}";
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
+
+        $file->storeAs($folder, "{$safeName}.{$extension}", 'public');
+        return $path;
     }
-    // private function getOgMetadata($url){
-    //     try {
-    //         $response = Http::withoutVerifying()->timeout(5)->get($url);
-    //         $html = $response->body();
-
-    //         libxml_use_internal_errors(true);
-    //         $dom = new \DOMDocument();
-    //         $dom->loadHTML($html);
-    //         libxml_clear_errors();
-
-    //         $metaTags = $dom->getElementsByTagName('meta');
-    //         $ogDataRaw = [];
-
-    //         foreach ($metaTags as $tag) {
-    //             if ($tag->hasAttribute('property') && str_starts_with($tag->getAttribute('property'), 'og:')) {
-    //                 $property = $tag->getAttribute('property'); // misal "og:title"
-    //                 $content = $tag->getAttribute('content');
-    //                 $key = str_replace('og:', '', $property); // jadikan "title"
-    //                 $ogDataRaw[$key] = $content;
-    //             }
-    //         }
-
-    //         return $ogDataRaw;
-    //     } catch (\Exception $e) {
-    //         return [
-    //             'title' => null,
-    //             'description' => null,
-    //             'image' => null,
-    //             'error' => $e->getMessage(),
-    //         ];
-    //     }
-    // }
+    
     public function index(){
         if (\Route::current()->getName() === 'banner.index') {
             $layout = layout::where('type', 'banner')->first();
@@ -697,35 +704,48 @@ class layoutController extends Controller
         }
         
     }
-    public function configure_image(){
-        
-        $layanan = null;    
-        $text = '';
-        if (Storage::exists('jadwal-pelayanan.jpeg')) {
-            $text = Storage::get('jadwal-pelayanan.txt');
-            $layanan = 'jadwal-pelayanan.jpeg';
-        }
-        
-        return view('misc.image')
-        ->with('layanan', $layanan)->with('text', $text);
+    public function configure_image()
+    {
+        $imagePath = 'jadwal-pelayanan.webp';
+        $textPath = 'jadwal-pelayanan.txt';
+
+        $layanan = Storage::disk('public')->exists($imagePath) ? $imagePath : null;
+        $text = Storage::disk('public')->exists($textPath) ? Storage::disk('public')->get($textPath) : '';
+
+        return view('misc.image', compact('layanan', 'text'));
     }
-    public function apply_image(Request $request){
-        $validated = $request->validate([
-            'image' => 'nullable|image|mimes:png,jpg,jpeg',
-            'judul' => 'required_with:image|string|max:50',
-        ]);
-        try {
-            if(Storage::exists('jadwal-pelayanan.jpeg')){
-                Storage::delete('jadwal-pelayanan.jpeg');
-            }
-            Storage::put('jadwal-pelayanan.jpeg', file_get_contents($validated['image']));
-            Storage::put('jadwal-pelayanan.txt',$validated['judul']);
-            return redirect()->route('jadwal-pelayanan.index')->with('sukses', 'data updated successfully!');
-        } catch (\Throwable $th) {
-            //throw $th;
-            return redirect()->route('jadwal-pelayanan.index')->with('gagal', 'terjadi kesalahan');
+
+    public function apply_image(Request $request)
+{
+    $validated = $request->validate([
+        'image' => 'nullable|image|mimes:png,jpg,jpeg',
+        'judul' => 'required_with:image|string|max:50',
+    ]);
+
+    try {
+        // delete old file
+        if (Storage::exists('jadwal-pelayanan.webp')) {
+            Storage::delete('jadwal-pelayanan.webp');
         }
-        
+
+        // process new file if uploaded
+        if ($request->hasFile('image')) {
+            $file = $validated['image'];
+
+            $image = Image::read($file->getRealPath())
+                ->encode(new WebpEncoder(quality: 30));
+
+            Storage::put('jadwal-pelayanan.webp', (string) $image);
+        }
+
+        // store title text
+        Storage::put('jadwal-pelayanan.txt', $validated['judul']);
+
+        return redirect()->route('jadwal-pelayanan.index')->with('sukses', 'data updated successfully!');
+    } catch (\Throwable $th) {
+        dd('Error:', $th->getMessage());
+        return redirect()->route('jadwal-pelayanan.index')->with('gagal', 'terjadi kesalahan');
     }
+}
 }
  

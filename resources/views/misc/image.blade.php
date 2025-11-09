@@ -24,11 +24,15 @@
                         <div class="row mb-3">
                             <label for="image" id="label-image" class="mx-auto col-md-8 d-flex flex-column justify-content-center align-items-center border border-dark rounded mb-3" 
                             @php
+                            if($layanan){
                                 $version = \Storage::lastModified($layanan);
+                            }
+                            else{
+                                $version = time();
+                            }
                             @endphp
 
-                            style="height: 200px; cursor: pointer; background-image:url('/storage/{{ $layanan }}?v={{ $version }}'); background-size:cover; background-position:center; background-repeat:no-repeat;"
-
+                            style="height: 200px; cursor: pointer; background-image:url('/storage/{{ $layanan }}?v={{ $version }}'); background-size:cover; background-position:center; background-repeat:no-repeat;">
                                 <input type="file" id="image" name="image" class="d-none @error('image') is-invalid @enderror">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 50px; height: 50px;">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 12m4-4v12" />
@@ -55,10 +59,10 @@
     </div>
 </div>
 <script>
-    document.getElementById('image').addEventListener('change', function () {
-        var fileName = this.files[0] ? this.files[0].name : 'Pilih gambar 1';
-        document.getElementById('text-image').textContent = fileName;
-        document.getElementById('label-image').style.backgroundImage = 'none';
-    });
+document.getElementById('image').addEventListener('change', function () {
+    var fileName = this.files[0] ? this.files[0].name : 'Pilih gambar 1';
+    document.getElementById('text-image').textContent = fileName;
+    document.getElementById('label-image').style.backgroundImage = 'none';
+});
 </script>
 @endsection

@@ -6,11 +6,19 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta property="og:title" content="{{app('metadata')['title']}}" />
-    <meta property="og:description" content="{{app('metadata')['description']}}" />
-    <meta property="og:image" content="{{app('metadata')['image']}}" />
-    <meta property="og:url" content="{{app('metadata')['url']}}" />
-    <meta property="og:type" content="{{app('metadata')['type']}}" />
+    <meta property="og:title" content="{{ app('metadata')['title'] }}" />
+    <meta property="og:description" content="{{ app('metadata')['description'] }}" />
+    <meta property="og:image" content="{{ app('metadata')['image'] ?? asset('storage/default-og.webp') }}" />
+    <meta property="og:url" content="{{ app('metadata')['url'] }}" />
+    <meta property="og:type" content="{{ app('metadata')['type'] }}" />
+    <meta property="og:site_name" content="{{ config('app.name') }}" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ app('metadata')['title'] }}">
+    <meta name="twitter:description" content="{{ app('metadata')['description'] }}">
+    <meta name="twitter:image" content="{{ app('metadata')['image'] ?? asset('storage/default-og.webp') }}">
+
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 

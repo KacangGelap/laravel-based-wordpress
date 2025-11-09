@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\Encoders\WebpEncoder;
+use Illuminate\Support\Facades\Storage;
 use App\Models\menu, App\Models\submenu, App\Models\subsubmenu, App\Models\subsubsubmenu, App\Models\subsubsubsubmenu, App\Models\halaman, App\Models\logs;
 use App\Rules\YoutubeUrl, App\Rules\GoogleMapsUrl, App\Rules\SafeUrl, App\Rules\SocialMediaUrl;
 use App\Helpers\SanitizeHelper, Auth;
@@ -18,16 +20,47 @@ class halamanController extends Controller
     //simpan file
     private function storeFile($file)
     {
-        $filename = $file->getClientOriginalName();
-	if($file->getMimeType() === 'application/pdf'){
-	  $path = 'pdfs/'.$filename;
-	}else{
-	  $path = 'image/'.$filename;
-	}
-	if(\Storage::disk('public')->exists($path)){
-	   \Storage::disk('public')->delete($path);
-	}
-        return $file->storeAs( $file->getMimeType() === 'application/pdf' ? 'pdfs' : 'images', $filename, 'public');
+        $mime = $file->getMimeType();
+        $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $file->getClientOriginalExtension();
+
+        // sanitize filename for URL safety
+        $safeName = urlencode(str_replace(' ', '_', $filename));
+
+        $folder = str_starts_with($mime, 'image/') ? 'images' : 'files';
+
+        // handle PDF
+        if ($mime === 'application/pdf') {
+            $path = "{$folder}/{$safeName}.pdf";
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+            $file->storeAs($folder, "{$safeName}.pdf", 'public');
+            return $path;
+        }
+
+        // handle image — convert to webp
+        if (str_starts_with($mime, 'image/')) {
+            $path = "{$folder}/{$safeName}.webp";
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+
+            $image = Image::read($file->getRealPath())
+                ->encode(new WebpEncoder(quality: 40));
+
+            Storage::disk('public')->put($path, (string) $image);
+            return $path;
+        }
+
+        // fallback: store as-is
+        $path = "{$folder}/{$safeName}.{$extension}";
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
+
+        $file->storeAs($folder, "{$safeName}.{$extension}", 'public');
+        return $path;
     }
     
     /**

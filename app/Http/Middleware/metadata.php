@@ -16,59 +16,50 @@ class metadata
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Get the current route name
-        $routeName = \Route::current() ? \Route::current()->getName() : null;
+        $routeName = \Route::current()?->getName();
 
-        // Initialize metadata
         $metadata = [
             'title' => config('app.name'),
             'description' => '',
             'image' => null,
             'url' => URL::full(),
-            'type' => 'uncategorized',
+            'type' => 'website', // default
         ];
 
-        // Check if the route is 'post.view'
         if ($routeName === 'post.view' && $request->has('post')) {
-            $getBerita = Post::find($request->get('post'));
-
-            if ($getBerita) {
-                $imagePath = "storage/" . $getBerita->media1;
-                $imageUrl = asset($imagePath);
-
-                // Get image dimensions (optional but good for OG)
-                $width = $height = null;
-                if (file_exists(public_path($imagePath))) {
-                    [$width, $height] = getimagesize(public_path($imagePath));
-                }
+            $post = Post::find($request->get('post'));
+            if ($post) {
+                $imagePath = $post->media1 ? "storage/{$post->media1}" : null;
 
                 $metadata = [
-                    'title' => $getBerita->judul,
-                    'description' => \Str::limit($getBerita->deskripsi ?? '', 150),
-                    'image' => asset("storage/" . rawurlencode($getBerita->media1)),
-                    'image_width' => $width,
-                    'image_height' => $height,
+                    'title' => $post->judul,
+                    'description' => \Str::limit($post->deskripsi ?? '', 150),
+                    'image' => $imagePath ? asset("storage/" . rawurlencode($post->media1)) : asset('storage/default-og.webp'),
                     'url' => request()->fullUrlWithQuery(['utp' => 'share']),
-                    'type' => 'article', 
+                    'type' => 'article',
                 ];
             }
-        }elseif($routeName === 'page.show' && $request->has('id')){
-            $getPage = halaman::findOrFail($request->get('id'));
-            $page = subsubsubsubmenu::find($getPage->sub_sub_sub_sub_menu_id) ?? subsubsubmenu::find($getPage->sub_sub_sub_menu_id) ?? subsubmenu::find($getPage->sub_sub_menu_id) ?? submenu::find($getPage->sub_menu_id);
-            if($page){
+        } elseif ($routeName === 'page.show' && $request->has('id')) {
+            $page = halaman::findOrFail($request->get('id'));
+            $parent = subsubsubsubmenu::find($page->sub_sub_sub_sub_menu_id) 
+                    ?? subsubsubmenu::find($page->sub_sub_sub_menu_id) 
+                    ?? subsubmenu::find($page->sub_sub_menu_id) 
+                    ?? submenu::find($page->sub_menu_id);
+
+            if ($parent) {
                 $metadata = [
-                    'title' => $page->sub_sub_sub_sub_menu ?? $page->sub_sub_sub_menu ?? $page->sub_sub_menu ?? $page->sub_menu,
+                    'title' => $parent->sub_sub_sub_sub_menu ?? $parent->sub_sub_sub_menu ?? $parent->sub_sub_menu ?? $parent->sub_menu,
                     'description' => $page->text,
-                    'image' => asset("storage/$page->media"),
+                    'image' => $page->media ? asset("storage/" . rawurlencode($page->media)) : asset('storage/default-og.webp'),
                     'url' => request()->fullUrlWithQuery(['utp' => 'share']),
                     'type' => 'page',
                 ];
             }
         }
 
-        // Store metadata in the service container
         app()->singleton('metadata', fn() => $metadata);
-        // dd($metadata);
+
         return $next($request);
     }
+
 }
