@@ -178,23 +178,26 @@
             </div>
         </div>
     @endif
-    @if (\Storage::exists('jadwal-pelayanan.jpeg'))
+    @php
+        // Check for other image extensions if jadwal-pelayanan.jpeg does not exist
+        $extensions = ['jpg', 'png', 'webp', 'gif'];
+        $exists = false;
+        foreach ($extensions as $ext) {
+            if (\Storage::exists('jadwal-pelayanan.' . $ext)) {
+                $exists = true;
+                break;
+            }
+        }
+        $imagePath = $exists ? 'jadwal-pelayanan.' . $ext : null;
+        
+    @endphp
+    @if ($exists)
     <h5 class="fw-bold pt-4">Jadwal Pelayanan</h5>
     <hr class="mb-2">
     <div class="tab-content mt-3">
         <div class="tab-pane fade show active" role="tabpanel">
             <div class="d-flex flex-wrap justify-content-evenly">
                 @php
-                //find image with extension jpeg, jpg, png, gif
-                    $extension = ['jpeg', 'jpg', 'png', 'webp'];
-                    $imagePath = null;
-                    foreach ($extension as $ext) {
-                        $path = 'jadwal-pelayanan.' . $ext;
-                        if (\Storage::exists($path)) {
-                            $imagePath = $path;
-                            break;
-                        }
-                    }
                     $judul = \Storage::get('jadwal-pelayanan.txt');
                     $version = \Storage::lastModified($imagePath);
                 @endphp
