@@ -185,7 +185,16 @@
         <div class="tab-pane fade show active" role="tabpanel">
             <div class="d-flex flex-wrap justify-content-evenly">
                 @php
-                    $imagePath = 'jadwal-pelayanan.jpeg';
+                //find image with extension jpeg, jpg, png, gif
+                    $extension = ['jpeg', 'jpg', 'png', 'webp'];
+                    $imagePath = null;
+                    foreach ($extension as $ext) {
+                        $path = 'jadwal-pelayanan.' . $ext;
+                        if (\Storage::exists($path)) {
+                            $imagePath = $path;
+                            break;
+                        }
+                    }
                     $judul = \Storage::get('jadwal-pelayanan.txt');
                     $version = \Storage::lastModified($imagePath);
                 @endphp
