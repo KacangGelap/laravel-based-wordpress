@@ -37,11 +37,13 @@
                                     <i class="fs-4 bi-image-fill"></i> <span class="ms-1 d-none d-sm-inline">Banner</span>
                                 </a>
                             </li>
+                            @endif
                             <li>
                                 <a href=" {{ route('embed.index') }} " class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-card-list"></i> <span class="ms-1 d-none d-sm-inline">Daftar Inovasi & Hasil Survei</span>
                                 </a>
                             </li>
+                            @if(\Auth::user()->role === 'admin')
                             <li>
                                 <a href=" {{ route('tgl.index') }} " class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-calendar-fill"></i> <span class="ms-1 d-none d-sm-inline">Bulan & Tahun BASTW</span>
