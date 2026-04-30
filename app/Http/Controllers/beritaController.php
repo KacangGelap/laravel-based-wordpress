@@ -23,7 +23,7 @@ class beritaController extends Controller
         $extension = $file->getClientOriginalExtension();
 
         // sanitize filename for URL safety
-        $safeName = urlencode(str_replace(' ', '_', $filename));
+        $safeName = $filename . now()->format('Ymd');
 
         $folder = str_starts_with($mime, 'image/') ? 'images' : 'files';
 
