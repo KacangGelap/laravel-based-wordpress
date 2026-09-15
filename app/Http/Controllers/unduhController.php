@@ -107,7 +107,7 @@ class unduhController extends Controller
         try {
             $data = new filecat();
             $data->cat = $validated['kategori'];
-            if(filecat::all()->count() !== 6){
+            if(filecat::all()->count() !== 12){
                 $data->save();
                 return redirect()->route('unduh.index')->with('sukses', 'kategori berhasil ditambah');
             }
