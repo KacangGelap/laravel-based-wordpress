@@ -14,7 +14,13 @@ return new class extends Migration
         Schema::create('ajuan_keberatan', function (Blueprint $table) {
             $table->id();
             $table->string('kode_ajuan')->unique();
-            $table->enum('alasan_keberatan', ['Biaya yang dikenakan tidak wajar','Data yang diberikan tidak valid','Perminataan informasiditanggapi tidak sebagaimana diminta','Informasi tidak ditanggapi','Permohonan informasi ditolak']);
+            $table->enum('alasan_keberatan', [
+    'Biaya yang dikenakan tidak wajar',
+    'Data yang diberikan tidak valid',
+    'Permintaan informasi ditanggapi tidak sebagaimana diminta',
+    'Informasi tidak ditanggapi',
+    'Permohonan informasi ditolak',
+]);
             $table->string('nama_pemohon');
             $table->string('alamat');
             $table->string('hp_pemohon');

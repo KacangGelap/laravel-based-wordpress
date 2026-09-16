@@ -7,12 +7,10 @@ use App\Models\opd;
 use App\Models\informasi;
 use App\Models\keberatan;
 use App\Models\survey;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage;
 
 class formController extends Controller
 {
+    //controller ini buat menampung form layanan ajuan informasi, keberatan, dan survey kepuasan masyarakat
     public function informasi_index()
     {
         $data = informasi::with('opd')->paginate(10);
@@ -20,6 +18,22 @@ class formController extends Controller
         
         $perPage = request('per_page', 10);
         $data = informasi::with('opd')->paginate($perPage);
+        //search
+        if (request('q')) {
+            //validate search input
+            request()->validate([
+                'q' => 'required|string|min:2|max:255',
+            ],[
+                'q.required' => 'Kata kunci pencarian tidak boleh kosong.',
+                'q.string' => 'Kata kunci pencarian harus berupa teks.',
+                'q.min' => 'Kata kunci pencarian minimal :min karakter.',
+                'q.max' => 'Kata kunci pencarian maksimal :max karakter.',
+            ]);
+            $search = request('q');
+            $data = informasi::with('opd')
+                ->Where('nama_pemohon', 'like', "%$search%")
+                ->paginate($perPage);
+        }
         return view('halaman.form.informasi', compact('data', 'opd'));
     }
     public function informasi_store(Request $request){
@@ -44,8 +58,7 @@ class formController extends Controller
             do {
                 $kode = 'INF-' . random_int(10000000, 99999999);
             } while (informasi::where('kode_permohonan', $kode)->exists());
-            $data = new informasi(); 
-            $data->create([
+            informasi::create([
                 'kode_permohonan' => $kode,
                 'kategori_permohonan' => $request->kategori_permohonan,
                 'opd_id' => $request->opd,
@@ -62,16 +75,54 @@ class formController extends Controller
                 'cara_mendapatkan_informasi' => $request->mendapatkan_informasi,
                 'identitas' => $request->file('file_identitas')->store('identitas', 'public')
             ]);
-            $data->save();
             // dd($data);
-            return redirect()->back()->with('success', 'Data berhasil disimpan');
+            return redirect()->back()->with('sukses', 'Data berhasil disimpan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+            return redirect()->back()->with('gagal', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
         }
     }
-    public function informasi_detail($id){
+    public function informasi_detail(string $id){
         $data = informasi::where('kode_permohonan', $id)->firstOrFail();
         return view('halaman.form.informasi_detail', compact('data'));
+    }
+    public function keberatan_index()
+    {
+        $data = keberatan::paginate(10);
+        return view('halaman.form.keberatan', compact('data'));
+    }
+    public function keberatan_store(Request $request){
+        // dd($request->all());
+        $q = $request->validate([
+            'alasan_keberatan' => 'required|string',
+            'nama_pemohon' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'hp_pemohon' => 'required|string|max:15',
+            'rincian_keberatan' => 'required|string|max:255',
+            'file_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048', // 2MB
+        ]);
+        try {
+            do {
+                $kode = 'KEB-' . random_int(10000000, 99999999);
+            } while (keberatan::where('kode_ajuan', $kode)->exists());
+            keberatan::create([
+                'kode_ajuan' => $kode,
+                'alasan_keberatan' => $request->alasan_keberatan,
+                'nama_pemohon' => $request->nama_pemohon,
+                'alamat' => $request->alamat,
+                'hp_pemohon' => $request->hp_pemohon,
+                'rincian_keberatan' => $request->rincian_keberatan,
+                'identitas' => $request->file('file_identitas')->store('identitas', 'public')
+            ]);
+            // dd(keberatan::all());
+            return redirect()->back()->with('sukses', 'Data berhasil disimpan');
+        } catch (\Exception $e) {
+            // dd($e->getMessage());
+            return redirect()->back()->with('gagal', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+        }
+    }
+    public function keberatan_detail(string $id){
+        $data = keberatan::where('kode_ajuan', $id)->firstOrFail();
+        return view('halaman.form.keberatan_detail', compact('data'));
     }
     public function survey(){
         return view('halaman.form.survey');
@@ -90,46 +141,13 @@ class formController extends Controller
             'saran' => 'nullable|string|max:255',
         ]);
         try {
-            $data = new survey(); 
-            $data->create($q);
-            $data->save();
-            return redirect()->back()->with('success', 'Data berhasil disimpan');
+            survey::create($q);
+            return redirect()->back()->with('sukses', 'Data berhasil disimpan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+            return redirect()->back()->with('gagal', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
         }
     }
-    public function keberatan_index()
-    {
-        $data = keberatan::paginate(10);
-        return view('halaman.form.keberatan', compact('data'));
-    }
-    public function keberatan_store(Request $request){
-        $q = $request->validate([
-            'alasan_keberatan' => 'required|string',
-            'nama_pemohon' => 'required|string|max:255',
-            'alamat' => 'required|string|max:255',
-            'hp_pemohon' => 'required|string|max:15',
-            'rincian_keberatan' => 'required|string|max:255',
-            'file_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048', // 2MB
-        ]);
-        try {
-            do {
-                $kode = 'KEB-' . random_int(10000000, 99999999);
-            } while (Pengajuan::where('kode_ajuan', $kode)->exists());
-            $data = new keberatan(); 
-            $data->create([
-                'kode_ajuan' => $kode,
-                'alasan_keberatan' => $request->alasan_keberatan,
-                'nama_pemohon' => $request->nama_pemohon,
-                'alamat' => $request->alamat,
-                'hp_pemohon' => $request->hp_pemohon,
-                'rincian_keberatan' => $request->rincian_keberatan,
-                'identitas' => $request->file('file_identitas')->store('identitas', 'public')
-            ]);
-            $data->save();
-            return redirect()->back()->with('success', 'Data berhasil disimpan');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
-        }
+    public function statistik(){
+        //
     }
 }

@@ -1,6 +1,9 @@
 @extends('layouts.main')
 @section('content')
     <div class="container my-4">
+        <div class="my-2">
+            <a href="{{route('form.informasi')}}" class="btn btn-outline-dark">&larr; Kembali ke menu awal</a>
+        </div>
         <div class="row">
             <div class="card bg-success-subtle mx-2">
                 <div class="card-body justify-content-between d-flex align-items-center">

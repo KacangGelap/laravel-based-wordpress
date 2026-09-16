@@ -23,7 +23,8 @@ class informasi extends Model
         'tujuan_informasi',
         'cara_memperoleh_informasi',
         'cara_mendapatkan_informasi',
-        'identitas'
+        'identitas',
+        'status'
     ];
     public function opd()
     {

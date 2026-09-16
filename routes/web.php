@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 /*
@@ -193,7 +193,7 @@ Route::middleware(['pengunjung','meta'])->group( function (){
     Route::get('form-ajuan-keberatan', [App\Http\Controllers\formController::class, 'keberatan_index'])->name('form.keberatan');
     Route::post('form-ajuan-keberatan', [App\Http\Controllers\formController::class, 'keberatan_store'])->name('form.keberatan.store');
     Route::get('form-ajuan-keberatan/detail/{id}', [App\Http\Controllers\formController::class, 'keberatan_detail'])->name('form.keberatan.detail');
-    Route::get('statistik', [App\Http\Controllers\layoutController::class, 'statistik'])->name('statistik');
+    Route::get('statistik', [App\Http\Controllers\formController::class, 'statistik'])->name('statistik');
     Route::get('/list-berita', [App\Http\Controllers\beritaController::class, 'list'])->name('post.list');
     Route::post('/list-berita', [App\Http\Controllers\beritaController::class, 'search'])->name('post.search');
     Route::get('/berita/kategori/{kategori}', [App\Http\Controllers\beritaController::class, 'categories'])->name('post.category');

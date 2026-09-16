@@ -1,19 +1,35 @@
 @extends('layouts.main')
 @section('content')
 <div class="container">
-<!-- Button -->
-<button
-    type="button"
-    class="btn btn-primary my-3"
-    data-bs-toggle="modal"
-    data-bs-target="#exampleModal">
-    Ajukan Permohonan
-</button>
+     <div class="text-center">
+        <h2 class="mt-2"><b>Form Permohonan Informasi</b></h2>
+        <span class="border-top border-primary border-3 mb-4 px-4">&nbsp;</span>
+    </div>
+    <div class="d-flex justify-content-between">
+        <!-- Button -->
+    <button
+        type="button"
+        class="btn btn-primary my-3"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal">
+        Ajukan Permohonan
+    </button>
+     {{-- searchbar --}}
+    <form method="GET" action="{{ url()->current() }}" class="d-flex align-items-center gap-2">
+        <input type="text" name="q" class="form-control form-control-sm @error('q') is-invalid @enderror" placeholder="Cari Nama Pemohon..." value="{{ request('q') }}">
+        <button type="submit" class="btn btn-sm btn-primary">Cari</button>
+        @error('q')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+    </form>
+    </div>
 
 
 
 <!-- Data Table -->
-<div class="table-responsive my-2">
+<div class="table-responsive my-2" style="font-size: 14px; max-height: 400px; overflow-y: auto;">
     <table class="table table-bordered table-hover align-middle">
         <thead class="table-light">
             <tr>
@@ -32,13 +48,23 @@
                 <tr>
                     <th scope="row">{{ $loop->iteration }}</th>
                     <td>
-                        <a href="{{ route('form.informasi.detail', $item->kode_permohonan) }}" class="text-primary">Lihat Detail</a>
+                        <a href="{{ route('form.informasi.detail', $item->kode_permohonan) }}" class="text-primary">Lihat Detail Permohonan</a>
                     </td>
                     <td>{{ $item->nama_pemohon }}</td>
                     <td>{{ $item->kategori_permohonan }}</td>
                     <td>{{ $item->opd->opd }}</td>
                     <td>{{ $item->rincian_kebutuhan }}</td>
-                    <td>{{ $item->status }}</td>
+                    @php
+                    $status = match ($item->status) {
+                        'Dikirim' => '<span class="badge bg-warning text-dark">Permohonan Informasi Dikirim</span>',
+                        'Diproses' => '<span class="badge bg-primary">Diproses PPID Pelaksana</span>',
+                        'Ditolak' => '<span class="badge bg-danger">Ditolak PPID Pelaksana</span>',
+                        'Selesai' => '<span class="badge bg-success">Permohonan Informasi Selesai</span>',
+                        
+                        default => '<span class="badge bg-secondary">Tidak Diketahui</span>',
+                    };
+                    @endphp
+                    <td>{!! $status !!}</td>
                 </tr>
             @empty
                 <tr>

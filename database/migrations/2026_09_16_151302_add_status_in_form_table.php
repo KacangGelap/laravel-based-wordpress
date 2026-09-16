@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('form', function (Blueprint $table) {
-            //
+        Schema::table('permohonan_informasi', function (Blueprint $table) {
+            $table->enum('status', ['Dikirim', 'Diproses', 'Ditolak ', 'Selesai'])->default('Dikirim')->after('id');
+        });
+        Schema::table('ajuan_keberatan', function (Blueprint $table) {
+            $table->enum('status', ['Dikirim', 'Diproses', 'Ditolak ', 'Selesai'])->default('Dikirim')->after('id');
         });
     }
 
@@ -21,8 +24,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('form', function (Blueprint $table) {
-            //
+        Schema::table('permohonan_informasi', function (Blueprint $table) {
+            $table->dropColumn('status');
+        });
+        Schema::table('ajuan_keberatan', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 };
