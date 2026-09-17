@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             init::class,
-            menu::class
+            menu::class,
+            OPDSeed::class
         ]);
     }
 }

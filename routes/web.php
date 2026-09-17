@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 /*
@@ -185,6 +185,15 @@ Route::middleware(['pengunjung','meta'])->group( function (){
     Route::middleware(['trending'])->group( function (){
         Route::get('/berita', [App\Http\Controllers\beritaController::class, 'show'])->name('post.view');    
     });
+    Route::get('form-permohonan-informasi', [App\Http\Controllers\formController::class, 'informasi_index'])->name('form.informasi');
+    Route::post('form-permohonan-informasi', [App\Http\Controllers\formController::class, 'informasi_store'])->name('form.informasi.store');
+    Route::get('detail-permohonan-informasi/{id}', [App\Http\Controllers\formController::class, 'informasi_detail'])->name('form.informasi.detail');
+    Route::get('form-survey-kepuasan-layanan', [App\Http\Controllers\formController::class, 'survey'])->name('form.survey');
+    Route::post('form-survey-kepuasan-layanan', [App\Http\Controllers\formController::class, 'survey_store'])->name('form.survey.store');
+    Route::get('form-ajuan-keberatan', [App\Http\Controllers\formController::class, 'keberatan_index'])->name('form.keberatan');
+    Route::post('form-ajuan-keberatan', [App\Http\Controllers\formController::class, 'keberatan_store'])->name('form.keberatan.store');
+    Route::get('form-ajuan-keberatan/detail/{id}', [App\Http\Controllers\formController::class, 'keberatan_detail'])->name('form.keberatan.detail');
+    Route::get('statistik', [App\Http\Controllers\formController::class, 'statistik'])->name('statistik');
     Route::get('/list-berita', [App\Http\Controllers\beritaController::class, 'list'])->name('post.list');
     Route::post('/list-berita', [App\Http\Controllers\beritaController::class, 'search'])->name('post.search');
     Route::get('/berita/kategori/{kategori}', [App\Http\Controllers\beritaController::class, 'categories'])->name('post.category');

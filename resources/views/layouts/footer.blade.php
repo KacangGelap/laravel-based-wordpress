@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <footer class="container-fluid py-3 text-bg-dark shadow-lg" style="position:absolute;width:100%;">
     <div class="row justify-content-evenly pt-3">
-        <div class="d-flex col-md-3 mb-3 align-items-end">
+        <div class="d-flex col-lg-3 mb-3 align-items-end">
             <div class="">
                 <div class="row">
                     <h4>Website Resmi<br>{{config('app.name' , 'Laravel')}}</h4> 
@@ -32,17 +32,25 @@
                     
                 </div>
             </div>
+        </div>
+        {{-- Kolom Form --}}
+        <div class="col-lg-3 mb-3 align-items-start ">
+            <div class="row"><h4>PPID Pelaksana</h4></div>
+            <div class="row"><a href="{{route('form.informasi')}}" class="text-light">Form Permohonan Informasi</a></div>
+            <div class="row"><a href="{{route('form.keberatan')}}" class="text-light">Form Permohonan Keberatan</a></div>
+            <div class="row"><a href="{{route('statistik')}}" class="text-light">Statistik Pelayanan Publik</a></div>
+            <div class="row"><a href="{{route('form.survey')}}" class="text-light">Survey Kepuasan Layanan</a></div>
             
         </div>  
         {{-- Kolom Maps --}}
-        <div class="col-md-3 mb-3 d-flex align-items-stretch">
+        <div class="col-lg-3 mb-3 d-flex align-items-stretch">
             <div class="w-100 h-100">
                 {!! str_replace('<iframe', '<iframe class="w-100 h-100" style="border:0;"', $master->maps ?? '<iframe class="w-100 h-100" style="border:0;"></iframe>') !!}
             </div>
         </div>
 
         {{-- Kolom Gambar --}}
-        <div class="col-md-3 mb-3 d-flex align-items-stretch">
+        <div class="col-lg-3 mb-3 d-flex align-items-stretch justify-content-center">
             <div class="row align-content-between" style="height:500px">
                 <span class="mx-auto row" style="width:200px"><img src="/img/btg-112.png"></span>
                 <a href="{{\Storage::exists('faq.txt') ? \Storage::get('faq.txt') : '#'}}" target="_blank"><span class="mx-auto row" style="width:200px"><img src="/img/FAQ.png"></span></a>
