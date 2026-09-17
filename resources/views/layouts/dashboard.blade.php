@@ -27,97 +27,123 @@
                             <span class="fs-5 d-none d-sm-inline">Dashboard</span>
                         </p>
                         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                            @if(\Auth::user()->role === 'admin')
-                            <li>
-                                <a href="{{route('user.index')}}" class="nav-link px-0 align-middle text-white">
-                                    <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Pengguna</span> </a>
+                            @php
+                                $isAdmin = Auth::user()->role === 'admin';
+                            @endphp
+
+                            @if($isAdmin)
+                                <li class="nav-item mt-2">
+                                    <span class="nav-link disabled px-0 text-uppercase text-white-50 small">Admin</span>
+                                </li>
+                                <li>
+                                    <a href="{{ route('user.index') }}" class="nav-link px-0 align-middle text-white">
+                                        <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Pengguna</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('banner.index') }}" class="nav-link align-middle px-0 text-white">
+                                        <i class="fs-4 bi-image-fill"></i> <span class="ms-1 d-none d-sm-inline">Banner</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('tgl.index') }}" class="nav-link align-middle px-0 text-white">
+                                        <i class="fs-4 bi-calendar-fill"></i> <span class="ms-1 d-none d-sm-inline">Bulan & Tahun BASTW</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('link.index') }}" class="nav-link align-middle px-0 text-white">
+                                        <i class="fs-4 bi-link-45deg"></i> <span class="ms-1 d-none d-sm-inline">Link Terkait</span>
+                                    </a>
+                                </li>
+                            @endif
+
+                            <li class="nav-item mt-2">
+                                <span class="nav-link disabled px-0 text-uppercase text-white-50 small">PPID Pelaksana</span>
                             </li>
                             <li>
-                                <a href=" {{ route('banner.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-image-fill"></i> <span class="ms-1 d-none d-sm-inline">Banner</span>
+                                <a href="{{ route('permohonan.informasi') }}" class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-folder2"></i> <span class="ms-1 d-none d-sm-inline">Permohonan Informasi</span>
                                 </a>
                             </li>
-                            @endif
                             <li>
-                                <a href=" {{ route('embed.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('ajuan.keberatan') }}" class="nav-link align-middle px-0 text-white">
+                                    <i class="fs-4 bi-folder2"></i> <span class="ms-1 d-none d-sm-inline">Ajuan Keberatan</span>
+                                </a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <span class="nav-link disabled px-0 text-uppercase text-white-50 small">Konten</span>
+                            </li>
+                            <li>
+                                <a href="{{ route('embed.index') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-card-list"></i> <span class="ms-1 d-none d-sm-inline">Daftar Inovasi & Hasil Survei</span>
                                 </a>
                             </li>
-                            @if(\Auth::user()->role === 'admin')
                             <li>
-                                <a href=" {{ route('tgl.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-calendar-fill"></i> <span class="ms-1 d-none d-sm-inline">Bulan & Tahun BASTW</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href=" {{ route('link.index') }} " class="nav-link align-middle px-0 text-white">
-                                    <i class="fs-4 bi-link-45deg"></i> <span class="ms-1 d-none d-sm-inline">Link Terkait</span>
-                                </a>
-                            </li>
-                            @endif
-                            <li>
-                                <a href=" {{ route('menu.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('menu.index') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-file-earmark-code"></i> <span class="ms-1 d-none d-sm-inline">Navigasi</span>
                                 </a>
                             </li>
                             <li>
-                                <a href=" {{ route('slider.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('slider.index') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-images"></i> <span class="ms-1 d-none d-sm-inline">Galeri Geser</span>
                                 </a>
                             </li>
                             <li>
-                                <a href=" {{ route('card.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('card.index') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-layout-three-columns"></i> <span class="ms-1 d-none d-sm-inline">Visi & Misi</span>
                                 </a>
                             </li>
                             <li>
-                                <a href=" {{ route('video.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('video.index') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-film"></i> <span class="ms-1 d-none d-sm-inline">Video Beranda</span>
                                 </a>
                             </li>
                             <li>
-                                <a href=" {{ route('carousel.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('carousel.index') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-images"></i> <span class="ms-1 d-none d-sm-inline">Gambar Beranda</span>
                                 </a>
                             </li>
                             <li>
-                                <a href=" {{ route('jadwal-pelayanan.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('jadwal-pelayanan.index') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-card-image"></i> <span class="ms-1 d-none d-sm-inline">Jadwal Pelayanan</span>
                                 </a>
                             </li>
                             <li>
-                                <a href=" {{ route('quote.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('quote.index') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-quote"></i> <span class="ms-1 d-none d-sm-inline">Kata Hari Ini</span>
                                 </a>
                             </li>
                             <li>
-                                <a href=" {{ route('faq.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('faq.index') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-chat-left-dots"></i> <span class="ms-1 d-none d-sm-inline">FAQ</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href=" {{ route('post.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('post.index') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-camera"></i> <span class="ms-1 d-none d-sm-inline">Berita</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href=" {{ route('kalender.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('kalender.index') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-calendar"></i> <span class="ms-1 d-none d-sm-inline">Agenda Kegiatan</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href=" {{ route('unduh.index') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('unduh.index') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-download"></i> <span class="ms-1 d-none d-sm-inline">File Unduhan</span>
                                 </a>
                             </li>
-                            
+
+                            <li class="nav-item mt-2">
+                                <span class="nav-link disabled px-0 text-uppercase text-white-50 small">Website</span>
+                            </li>
                             <li class="nav-item">
-                                <a href=" {{ route('home') }} " class="nav-link align-middle px-0 text-white">
+                                <a href="{{ route('home') }}" class="nav-link align-middle px-0 text-white">
                                     <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Informasi Website</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href=" {{ url('/') }} " class="nav-link align-middle px-0 text-white w-100">
+                                <a href="{{ url('/') }}" class="nav-link align-middle px-0 text-white w-100">
                                     <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Masuk Website</span>
                                 </a>
                             </li>

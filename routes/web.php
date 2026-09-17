@@ -176,6 +176,10 @@ Route::middleware(['auth'])->group( function () {
     Route::put('/file/category/edit/{cat}',[App\Http\Controllers\unduhController::class, 'kategori_update'])->name('unduh.category.update');
     Route::delete('/file/category/delete/{cat}',[App\Http\Controllers\unduhController::class, 'kategori_destroy'])->name('unduh.category.delete');
 
+    Route::get('permohonan-informasi', [App\Http\Controllers\formController::class, 'informasi'])->name('permohonan.informasi');
+    Route::put('permohonan-informasi/{id}',[App\Http\Controllers\formController::class, 'informasi_update'])->name('permohonan.informasi.update');
+    Route::get('ajuan-keberatan', [App\Http\Controllers\formController::class, 'keberatan'])->name('ajuan.keberatan');
+    Route::put('ajuan-keberatan/{id}',[App\Http\Controllers\formController::class, 'keberatan_update'])->name('ajuan.keberatan.update');
 });
 //FITUR TANPA AUTENTIKASI
 Route::middleware(['pengunjung','meta'])->group( function (){
@@ -192,7 +196,7 @@ Route::middleware(['pengunjung','meta'])->group( function (){
     Route::post('form-survey-kepuasan-layanan', [App\Http\Controllers\formController::class, 'survey_store'])->name('form.survey.store');
     Route::get('form-ajuan-keberatan', [App\Http\Controllers\formController::class, 'keberatan_index'])->name('form.keberatan');
     Route::post('form-ajuan-keberatan', [App\Http\Controllers\formController::class, 'keberatan_store'])->name('form.keberatan.store');
-    Route::get('form-ajuan-keberatan/detail/{id}', [App\Http\Controllers\formController::class, 'keberatan_detail'])->name('form.keberatan.detail');
+    Route::get('detail-ajuan-keberatan/{id}', [App\Http\Controllers\formController::class, 'keberatan_detail'])->name('form.keberatan.detail');
     Route::get('statistik', [App\Http\Controllers\formController::class, 'statistik'])->name('statistik');
     Route::get('/list-berita', [App\Http\Controllers\beritaController::class, 'list'])->name('post.list');
     Route::post('/list-berita', [App\Http\Controllers\beritaController::class, 'search'])->name('post.search');

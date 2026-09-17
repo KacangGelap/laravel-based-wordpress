@@ -31,7 +31,7 @@
     @endphp
 
     <div class="row g-3 mb-4">
-        <div class="col-12 col-lg-6">
+        <div class="col-lg-6">
             <div class="card border-0 shadow-sm overflow-hidden h-100">
                 <div class="card-body bg-primary text-white py-3 px-4">
                     <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
@@ -45,52 +45,55 @@
             </div>
         </div>
         <div class="row col-lg-6">
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 rounded-4">
-                    <div class="card-body bg-primary text-white rounded-4">
-                        <div class="display-6 fw-bold mt-2">{{ $informasi['total'] ?? 0 }}</div>
-                        <div class="small mt-auto">Jumlah Permohonan</div>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 rounded-4">
+                        <div class="card-body bg-primary text-white d-flex flex-column rounded-4">
+                            <div class="display-6 fw-bold mt-2">{{ $informasi['total'] ?? 0 }}</div>
+                            <div class="small mt-auto">Jumlah Permohonan</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 rounded-4">
+                        <div class="card-body bg-warning text-white rounded-4">
+                            <div class="display-6 fw-bold mt-2">{{ $informasi['diproses'] ?? 0 }}</div>
+                            <div class="small mt-auto">Permohonan Diproses</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 rounded-4">
+                        <div class="card-body bg-success text-white d-flex flex-column rounded-4">
+                            <div class="display-6 fw-bold mt-2">{{ $informasi['selesai'] ?? 0 }}</div>
+                            <div class="small mt-auto">Permohonan Selesai</div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 rounded-4">
-                    <div class="card-body bg-warning text-white rounded-4">
-                        <div class="display-6 fw-bold mt-2">{{ $informasi['diproses'] ?? 0 }}</div>
-                        <div class="small mt-auto">Permohonan Diproses</div>
+            <div class="row g-3 mt-1">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 rounded-4">
+                        <div class="card-body bg-danger text-white d-flex flex-column rounded-4">
+                            <div class="display-6 fw-bold mt-2">{{ $informasi['ditolak'] ?? 0 }}</div>
+                            <div class="small mt-auto">Permohonan Ditolak</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 rounded-4">
-                    <div class="card-body bg-success text-white d-flex flex-column rounded-4">
-                        <div class="display-6 fw-bold mt-2">{{ $informasi['selesai'] ?? 0 }}</div>
-                        <div class="small mt-auto">Selesai</div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 rounded-4">
+                        <div class="card-body bg-secondary text-white d-flex flex-column rounded-4">
+                            <div class="display-6 fw-bold mt-2 ">{{ $keberatan['total'] ?? 0 }}</div>
+                            <div class="small mt-auto">Jumlah Keberatan</div>                            
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <div class="text-muted small">Ditolak</div>
-                        <div class="display-6 fw-bold mt-2 text-danger">{{ $informasi['ditolak'] ?? 0 }}</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <div class="text-muted small">Keberatan Total</div>
-                        <div class="display-6 fw-bold mt-2">{{ $keberatan['total'] ?? 0 }}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <div class="text-muted small">Keberatan Ditolak</div>
-                        <div class="display-6 fw-bold mt-2 text-danger">{{ $keberatan['ditolak'] ?? 0 }}</div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 rounded-4">
+                        <div class="card-body bg-danger-subtle d-flex flex-column rounded-4">
+                            <div class="display-6 fw-bold mt-2 text-danger">{{ $keberatan['ditolak'] ?? 0 }}</div>
+                            <div class="small mt-auto">Keberatan Ditolak</div>                            
+                        </div>
                     </div>
                 </div>
             </div>
@@ -98,10 +101,57 @@
         
 
         <div class="col-12">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="card bg-secondary-subtle border-0 shadow-lg h-100">
                 <div class="card-body">
                     <div class="text-muted small">Survey Total</div>
                     <div class="display-6 fw-bold mt-2">{{ $survey['total'] ?? 0 }}</div>
+
+                    <div class="row g-3 mt-2">
+                        @php
+                            $surveyAverages = [
+                                ['key' => 'avg_pelayanan', 'label' => 'Pelayanan Petugas PPID'],
+                                ['key' => 'avg_kecepatan_pelayanan', 'label' => 'Kecepatan Tindak Lanjut Permohonan'],
+                                ['key' => 'avg_kesesuaian_informasi', 'label' => 'Kesesuaian Informasi'],
+                                ['key' => 'avg_kualitas_pelayanan', 'label' => 'Kualitas Pelayanan PPID'],
+                            ];
+
+                            $surveyRatingLabels = [
+                                ['min' => 4.5, 'label' => 'Sangat Baik'],
+                                ['min' => 3.5, 'label' => 'Baik'],
+                                ['min' => 2.5, 'label' => 'Cukup Baik'],
+                                ['min' => 1.5, 'label' => 'Buruk'],
+                                ['min' => 0, 'label' => 'Sangat Buruk'],
+                            ];
+
+                            $formatSurveyRating = function ($value) use ($surveyRatingLabels) {
+                                $avgValue = (float) $value;
+                                if(!empty($avgValue)){
+                                    foreach ($surveyRatingLabels as $rating) {
+                                        if ($avgValue >= $rating['min']) {
+                                            return $rating['label'];
+                                        }
+                                    }
+                                }else{
+                                    return 'Tidak Diketahui';
+                                }
+                            };
+                        @endphp
+
+                        @foreach($surveyAverages as $average)
+                            @php
+                                $avgValue = $survey[$average['key']] ?? 0;
+                                $avgLabel = $formatSurveyRating($avgValue);
+                            @endphp
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="text-muted small">{{ $average['label'] }}</div>
+                                        <div class="display-8 fw-bold mt-auto">{{ $avgLabel }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
@@ -110,8 +160,9 @@
     <div class="row g-4">
         <div class="col-lg-6">
             <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-white border-0">
-                    <h5 class="mb-0">Data Informasi</h5>
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Data Permohonan Informasi</h5>
+                    <a href="{{ route('form.informasi') }}" class="small text-primary text-decoration-none">Lihat semua</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -125,10 +176,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($inf ?? [] as $item)
+                                @forelse(collect($inf ?? [])->take(3) as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->judul ?? '-' }}</td>
+                                        <td title="{{ $item->rincian_kebutuhan ?? '-' }}">
+                                            {{ \Illuminate\Support\Str::limit($item->rincian_kebutuhan ?? '-', 30, '...') }}
+                                        </td>
                                         <td>
                                             @php
                                                 $status = $item->status ?? '';
@@ -159,8 +212,9 @@
 
         <div class="col-lg-6">
             <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-white border-0">
-                    <h5 class="mb-0">Data Keberatan</h5>
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Data Ajuan Keberatan</h5>
+                    <a href="{{ route('form.keberatan') }}" class="small text-primary text-decoration-none">Lihat semua</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -174,10 +228,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($keb ?? [] as $item)
+                                @forelse(collect($keb ?? [])->take(3) as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->nama ?? '-' }}</td>
+                                        <td>{{ $item->nama_pemohon ?? '-' }}</td>
                                         <td>
                                             @php
                                                 $status = $item->status ?? '';
@@ -206,11 +260,17 @@
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Survey Per Bulan</h5>
-                    <span class="badge bg-light text-dark">{{ $survey['total'] ?? 0 }} total</span>
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="downloadSurveyChartJpg">
+                            Download JPG
+                        </button>
+                        <span class="badge bg-light text-dark">{{ $survey['total'] ?? 0 }} total</span>
+                    </div>
                 </div>
                 <div class="card-body">
                     @php
                         $surveyPerBulan = $survey['per_bulan'] ?? [];
+
                         $surveyLabels = collect($surveyPerBulan)->pluck('month')->all();
                         $surveyData = collect($surveyPerBulan)->pluck('count')->all();
                     @endphp
@@ -230,7 +290,7 @@
                                 const labels = @json($surveyLabels);
                                 const values = @json($surveyData);
 
-                                new Chart(document.getElementById('surveyChart'), {
+                                const surveyChart = new Chart(document.getElementById('surveyChart'), {
                                     type: 'bar',
                                     data: {
                                         labels: labels,
@@ -269,6 +329,14 @@
                                             }
                                         }
                                     }
+                                });
+
+                                document.getElementById('downloadSurveyChartJpg').addEventListener('click', function () {
+                                    const canvas = surveyChart.canvas;
+                                    const link = document.createElement('a');
+                                    link.download = 'survey-per-bulan.jpg';
+                                    link.href = canvas.toDataURL('image/jpeg', 0.9);
+                                    link.click();
                                 });
                             });
                         </script>

@@ -180,6 +180,26 @@ class formController extends Controller
             ];
         })->values();
 
+        $surveyData = survey::query()->whereYear('created_at', $year)->get();
+        $ratingValues = [
+            'Sangat Baik' => 5,
+            'Baik' => 4,
+            'Cukup Baik' => 3,
+            'Buruk' => 2,
+            'Sangat Buruk' => 1,
+        ];
+        $averageRating = function (string $field) use ($surveyData, $ratingValues) {
+            if ($surveyData->isEmpty()) {
+                return 0;
+            }
+
+            $average = $surveyData
+                ->map(fn ($item) => $ratingValues[$item->$field] ?? 0)
+                ->avg();
+
+            return round($average, 2);
+        };
+
         $statistik = [
             'informasi' => [
                 'total' => $infAll,
@@ -194,9 +214,92 @@ class formController extends Controller
             'survey' => [
                 'total' => $sur->sum('count'),
                 'per_bulan' => $sur,
+                'avg_pelayanan' => $averageRating('pelayanan'),
+                'avg_kecepatan_pelayanan' => $averageRating('kecepatan_pelayanan'),
+                'avg_kesesuaian_informasi' => $averageRating('kesesuaian_informasi'),
+                'avg_kualitas_pelayanan' => $averageRating('kualitas_pelayanan'),
             ],
         ];
 
         return view('halaman.form.statistik', compact('year', 'inf', 'keb', 'sur', 'statistik', 'infAll', 'infProses', 'infSelesai', 'infDitolak', 'kebAll', 'kebDitolak'));
+    }
+
+    //auth
+    public function informasi(){
+        $perPage = request('per_page', 5);
+        $statuses = ['Dikirim', 'Diproses', 'Selesai', 'Ditolak'];
+        $data = [];
+
+        foreach ($statuses as $status) {
+            $query = informasi::with('opd')
+                ->where('status', $status)
+                ->orderByDesc('created_at');
+
+            if (request('q')) {
+                $search = trim(request('q'));
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_pemohon', 'like', "%{$search}%")
+                        ->orWhere('kode_permohonan', 'like', "%{$search}%");
+                });
+            }
+
+            $pageName = 'page_' . strtolower(str_replace([' ', '-'], '_', $status));
+            $data[$status] = $query->paginate($perPage, ['*'], $pageName);
+        }
+
+        return view('halaman.form.informasi_list', compact('data', 'statuses', 'perPage'));
+    }
+    public function informasi_update(Request $request, string $id){
+        $q = $request->validate([
+            'status' => 'required|string|in:Dikirim,Diproses,Selesai,Ditolak'
+        ]);
+        // dd($request->all());
+        try {
+            informasi::findOrFail($id)->update(['status' => $q['status']]);
+            return redirect()->back()->with('sukses', 'Status berhasil diperbarui');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'Terjadi Kesalahan',
+            ], 500);
+        }
+    }
+    public function keberatan(){
+        $perPage = request('per_page', 5);
+        $statuses = ['Dikirim', 'Diproses', 'Selesai', 'Ditolak'];
+        $data = [];
+
+        foreach ($statuses as $status) {
+            $query = keberatan::where('status', $status)
+                ->orderByDesc('created_at');
+
+            if (request('q')) {
+                $search = trim(request('q'));
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_pemohon', 'like', "%{$search}%")
+                        ->orWhere('kode_permohonan', 'like', "%{$search}%");
+                });
+            }
+
+            $pageName = 'page_' . strtolower(str_replace([' ', '-'], '_', $status));
+            $data[$status] = $query->paginate($perPage, ['*'], $pageName);
+        }
+
+        return view('halaman.form.keberatan_list', compact('data', 'statuses', 'perPage'));
+    }
+    public function keberatan_update(Request $request, string $id){
+         $q = $request->validate([
+            'status' => 'required|string|in:Dikirim,Diproses,Selesai,Ditolak'
+        ]);
+        // dd($request->all());
+        try {
+            keberatan::findOrFail($id)->update(['status' => $q['status']]);
+            return redirect()->back()->with('sukses', 'Status berhasil diperbarui');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'Terjadi Kesalahan',
+            ], 500);
+        }
     }
 }

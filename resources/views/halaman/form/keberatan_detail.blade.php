@@ -1,3 +1,86 @@
-<div>
-    <!-- Order your soul. Reduce your wants. - Augustine -->
-</div>
+@extends('layouts.main')
+@section('content')
+@php
+$statusClasses = [
+        'Dikirim' => ['dot' => 'bg-secondary', 'badge' => 'text-bg-light text-secondary', 'pill' => 'bg-secondary-subtle text-secondary-emphasis', 'label' => 'Permohonan Informasi Dikirim'],
+        'Diproses' => ['dot' => 'bg-primary', 'badge' => 'bg-primary-subtle text-primary-emphasis', 'pill' => 'bg-primary-subtle text-primary-emphasis', 'label' => 'Diproses PPID Pelaksana'],
+        'Selesai' => ['dot' => 'bg-success', 'badge' => 'bg-success-subtle text-success-emphasis', 'pill' => 'bg-success-subtle text-success-emphasis', 'label' => 'Permohonan Informasi Selesai'],
+        'Ditolak' => ['dot' => 'bg-danger', 'badge' => 'bg-danger-subtle text-danger-emphasis', 'pill' => 'bg-danger-subtle text-danger-emphasis', 'label'=> 'Ditolak PPID Pelaksana'],
+    ];
+@endphp
+    @php($status = $statusClasses[$data->status] ?? ['dot' => 'bg-secondary', 'pill' => 'bg-secondary-subtle text-secondary-emphasis', 'label' => $data->status])
+    <div class="container my-4">
+        @auth
+        <div class="my-2">
+            <a href="{{route('ajuan.keberatan')}}" class="btn btn-outline-dark">&larr; Kembali ke dashboard</a>
+        </div>
+        
+        @else
+        <div class="my-2">
+            <a href="{{route('form.keberatan')}}" class="btn btn-outline-dark">&larr; Kembali ke form</a>
+        </div>
+        @endauth
+        <div class="row">
+            <div class="card {{ $status['pill'] }} mx-2">
+                <div class="card-body justify-content-between d-flex align-items-center">
+                    <h5>Status Permohonan</h5>
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <span class="rounded-circle {{ $status['dot'] }}" style="width: 10px; height: 10px;"></span>
+                        {{ $status['label'] }}
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+
+        <div class="row">
+            <div class="col-lg-6">
+                        <h3>Identitas Pemohon</h3>
+                        <div class="table-responsive border">
+                            <table class="table table-striped table-hover align-middle mb-0" style="font-size: 12px">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Tanggal Permohonan</th>
+                                        <td>{{ \Carbon\Carbon::parse($data->tanggal_permohonan)->translatedFormat('d F Y') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Nama Pemohon</th>
+                                        <td>{{ $data->nama_pemohon }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Alamat Pemohon</th>
+                                        <td>{{ $data->alamat }}</td>
+                                    </tr>
+                                    @auth
+                                    <tr>
+                                        <th scope="row">No. HP Pemohon</th>
+                                        <td>{{ $data->hp_pemohon }}</td>
+                                    </tr>
+                                    @endauth
+                                </tbody>
+                            </table>
+                        </div>
+                  
+            </div>
+            <div class="col-lg-6">
+               
+                <h3>Data Pemohon</h3>
+                
+                <div class="table-responsive border">
+                    <table class="table table-striped table-hover align-middle mb-0">
+                        <tbody style="font-size: 12px">
+                            <tr><th colspan="2">Alasan Keberatan</th></tr>
+                            <tr><td colspan="2">{{ $data->alasan_keberatan }}</td></tr>
+                            
+                            <tr><th colspan="2">Rincian Keberatan</th></tr>
+                            <tr><td colspan="2">{{ $data->rincian_keberatan }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+    
+@endsection
