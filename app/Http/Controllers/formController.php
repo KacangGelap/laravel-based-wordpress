@@ -7,7 +7,7 @@ use App\Models\opd;
 use App\Models\informasi;
 use App\Models\keberatan;
 use App\Models\survey;
-
+use Carbon\Carbon;
 class formController extends Controller
 {
     //controller ini buat menampung form layanan ajuan informasi, keberatan, dan survey kepuasan masyarakat
@@ -148,6 +148,55 @@ class formController extends Controller
         }
     }
     public function statistik(){
-        //
+        if (request('year')) {
+            $q = request()->validate(['year' => 'date_format:Y']);
+            $year = $q['year'];
+        } else {
+            $year = Carbon::parse(now())->translatedFormat('Y');
+        }
+        //inf
+        $infQuery = informasi::query()->whereYear('created_at', $year)->with('opd');
+        $inf = $infQuery->get();
+        $infAll = $inf->count();
+        $infProses = (clone $infQuery)->where('status', 'Diproses')->count();
+        $infSelesai = (clone $infQuery)->where('status', 'Selesai')->count();
+        $infDitolak = (clone $infQuery)->where('status', 'Ditolak')->count();
+
+        $kebQuery = keberatan::query()->whereYear('created_at', $year);
+        $keb = $kebQuery->get();
+        $kebAll = $keb->count();
+        $kebDitolak = (clone $kebQuery)->where('status','Ditolak')->count();
+
+        $sur = collect(range(1, 12))->map(function ($month) use ($year) {
+            $items = survey::query()
+                ->whereYear('created_at', $year)
+                ->whereMonth('created_at', $month)
+                ->get();
+
+            return [
+                'month' => Carbon::createFromDate($year, $month, 1)->translatedFormat('F'),
+                'count' => $items->count(),
+                'data' => $items,
+            ];
+        })->values();
+
+        $statistik = [
+            'informasi' => [
+                'total' => $infAll,
+                'diproses' => $infProses,
+                'selesai' => $infSelesai,
+                'ditolak' => $infDitolak,
+            ],
+            'keberatan' => [
+                'total' => $kebAll,
+                'ditolak' => $kebDitolak,
+            ],
+            'survey' => [
+                'total' => $sur->sum('count'),
+                'per_bulan' => $sur,
+            ],
+        ];
+
+        return view('halaman.form.statistik', compact('year', 'inf', 'keb', 'sur', 'statistik', 'infAll', 'infProses', 'infSelesai', 'infDitolak', 'kebAll', 'kebDitolak'));
     }
 }
