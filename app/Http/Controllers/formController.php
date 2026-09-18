@@ -86,7 +86,8 @@ class formController extends Controller
     }
     public function keberatan_index()
     {
-        $data = informasi::with('opd')->orderByDesc('created_at')->paginate($perPage);
+        $perPage = request('per_page', 10);
+        $data = keberatan::orderByDesc('created_at')->paginate($perPage);
         //search
         if (request('q')) {
             //validate search input
@@ -99,13 +100,11 @@ class formController extends Controller
                 'q.max' => 'Kata kunci pencarian maksimal :max karakter.',
             ]);
             $search = request('q');
-            $data = informasi::with('opd')
-                ->Where('nama_pemohon', 'like', "%$search%")
+            $data = keberatan::Where('nama_pemohon', 'like', "%$search%")
                 ->paginate($perPage);
         }
-        return view('halaman.form.informasi', compact('data', 'opd'));
-        $data = keberatan::paginate(10);
         return view('halaman.form.keberatan', compact('data'));
+        
     }
     public function keberatan_store(Request $request){
         // dd($request->all());

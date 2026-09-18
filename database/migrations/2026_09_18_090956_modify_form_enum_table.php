@@ -32,6 +32,6 @@ return new class extends Migration
             $table->string('hp_pemohon')->nullable(false)->change();
         });
         \DB::statement("ALTER TABLE permohonan_informasi MODIFY cara_mendapatkan_informasi ENUM('WhatsApp','Email','Fax','Jasa Expedisi','Mengambil Langsung')");
-        \DB::statement("ALTER TABLE permohonan_informasi MODIFY jenis_permohonan ENUM('KTP','Nomor Badan Hukum','Nomor Surat Mahasiswa')");
+        \DB::statement("ALTER TABLE permohonan_informasi MODIFY jenis_identitas ENUM('KTP','Nomor Badan Hukum','Nomor Surat Mahasiswa')");
     }
 };

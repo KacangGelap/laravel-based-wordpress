@@ -26,7 +26,7 @@
                 <th scope="col">Detail</th>
                 <th scope="col">Alasan Keberatan</th>
                 <th scope="col">Nama Kuasa</th>
-                <th scope="col">Deskripsi Keberatan</th>justify-content-center
+                <th scope="col">Deskripsi Keberatan</th>
                 <th scope="col">Status</th>
             </tr>
         </thead>
