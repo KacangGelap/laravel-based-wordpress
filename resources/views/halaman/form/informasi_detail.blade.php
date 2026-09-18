@@ -42,7 +42,7 @@ $statusClasses = [
                                 <tbody>
                                     <tr>
                                         <th scope="row">Tanggal Permohonan</th>
-                                        <td>{{ \Carbon\Carbon::parse($data->tanggal_permohonan)->translatedFormat('d F Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($data->created_at)->translatedFormat('d F Y') }}</td>
                                     </tr>
                                     <tr>
                                         <th scope="row">Nama Pemohon</th>

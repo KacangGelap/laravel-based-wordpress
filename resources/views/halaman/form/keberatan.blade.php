@@ -193,7 +193,6 @@
                             for="alamat"
                             class="form-label">
                             Alamat Pemohon/Instansi
-                            <span class="text-danger">*</span>
                         </label>
 
                         <textarea
@@ -201,7 +200,7 @@
                             id="alamat"
                             name="alamat"
                             rows="3"
-                            required></textarea>
+                            ></textarea>
                         @error('alamat')
                             <div class="invalid-feedback">
                                 {{ $message }}
