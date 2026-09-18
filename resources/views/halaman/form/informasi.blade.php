@@ -165,7 +165,7 @@
                         <label
                             for="nama_pemohon"
                             class="form-label">
-                            Nama Pemohon
+                            Nama Pemohon / Instansi
                             <span class="text-danger">*</span>
                         </label>
 
@@ -207,6 +207,9 @@
                             <option value="Nomor Surat Mahasiswa">
                                 Nomor Surat Mahasiswa
                             </option>
+                            <option value="Instansi">
+                                Instansi
+                            </option>
                         </select>
 
                         @error('jenis_identitas')
@@ -243,7 +246,7 @@
                         <label
                             for="alamat_pemohon"
                             class="form-label">
-                            Alamat Pemohon
+                            Alamat Pemohon/Instansi
                             <span class="text-danger">*</span>
                         </label>
 
@@ -266,7 +269,6 @@
                             for="pekerjaan_pemohon"
                             class="form-label">
                             Pekerjaan Pemohon
-                            <span class="text-danger">*</span>
                         </label>
 
                         <input
@@ -274,7 +276,7 @@
                             class="form-control @error('pekerjaan_pemohon') is-invalid @enderror"
                             name="pekerjaan_pemohon"
                             id="pekerjaan_pemohon"
-                            required>
+                            >
                         @error('pekerjaan_pemohon')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -288,7 +290,6 @@
                             for="no_hp_pemohon"
                             class="form-label">
                             No HP Pemohon
-                            <span class="text-danger">*</span>
                         </label>
 
                         <input
@@ -297,7 +298,7 @@
                             name="no_hp_pemohon"
                             id="no_hp_pemohon"
                             inputmode="numeric"
-                            required>
+                            >
                         @error('no_hp_pemohon')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -311,7 +312,6 @@
                             for="email_pemohon"
                             class="form-label">
                             Email Pemohon
-                            <span class="text-danger">*</span>
                         </label>
 
                         <input
@@ -319,8 +319,7 @@
                             class="form-control @error('email_pemohon') is-invalid @enderror"
                             id="email_pemohon"
                             name="email_pemohon"
-                            placeholder="name@gmail.com"
-                            required>
+                            placeholder="name@gmail.com">
                         @error('email_pemohon')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -425,8 +424,8 @@
                             <option value="Email">
                                 Email
                             </option>
-                            <option value="Fax">
-                                Fax
+                            <option value="Fotocopy">
+                                Fotocopy
                             </option>
                             <option value="Jasa Expedisi">
                                 Jasa Expedisi
@@ -442,9 +441,9 @@
                         <label
                             for="file_identitas"
                             class="form-label">
-                            Upload Identitas
+                            Upload Identitas/Surat Permohonan Informasi
                             <span class="text-muted">
-                                (KTP, Kartu Mahasiswa atau Kartu Lembaga)
+                                (KTP, Kartu Mahasiswa, Kartu Lembaga atau Surat)
                             </span>
                             <span class="text-danger">*</span>
                         </label>
