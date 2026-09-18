@@ -131,7 +131,27 @@
             >
                 @csrf
                 <div class="modal-body w-100">
+                    <div class="mb-3">
+                        <label
+                            for="tanggal"
+                            class="form-label">
+                            Tanggal Ajuan (opsional)
+                        </label>
 
+                        <input
+                            type="date"
+                            class="form-control @error('tanggal') is-invalid @enderror"
+                            name="tanggal"
+                            id="tanggal"
+                            value="{{ old('tanggal') }}"
+                            autocomplete="off"
+                            lang="id-ID">
+                        @error('tanggal')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
                     <!-- Kategori Permohonan -->
                     <div class="mb-3">
                         <label

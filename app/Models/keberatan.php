@@ -17,6 +17,7 @@ class keberatan extends Model
         'hp_pemohon',
         'rincian_keberatan',
         'identitas',
-        'status'
+        'status',
+        'created_at'
     ];
 }

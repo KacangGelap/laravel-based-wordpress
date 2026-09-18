@@ -49,7 +49,8 @@ class formController extends Controller
             'tujuan_informasi' => 'required|string',
             'memperoleh_informasi' => 'required|string',
             'mendapatkan_informasi' => 'required|string',
-            'file_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5000', // 2MB
+            'file_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5000',
+            'tanggal' => 'nullable|date'
         ]);
         // dd($request->jenis_identitas);
         try {
@@ -71,7 +72,8 @@ class formController extends Controller
                 'tujuan_informasi' => $request->tujuan_informasi,
                 'cara_memperoleh_informasi' => $request->memperoleh_informasi,
                 'cara_mendapatkan_informasi' => $request->mendapatkan_informasi,
-                'identitas' => $request->file('file_identitas')->store('identitas', 'public')
+                'identitas' => $request->file('file_identitas')->store('identitas', 'public'),
+                'created_at' => $request->tanggal ?? now()
             ]);
             // dd($data);
             return redirect()->back()->with('sukses', 'Data berhasil disimpan');
@@ -113,7 +115,8 @@ class formController extends Controller
             'alamat' => 'required|string|max:255',
             'hp_pemohon' => 'required|string|max:15',
             'rincian_keberatan' => 'required|string|max:255',
-            'file_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5000', // 2MB
+            'file_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5000',
+            'tanggal' => 'nullable|date'
         ]);
         try {
             do {
@@ -126,7 +129,8 @@ class formController extends Controller
                 'alamat' => $request->alamat,
                 'hp_pemohon' => $request->hp_pemohon,
                 'rincian_keberatan' => $request->rincian_keberatan,
-                'identitas' => $request->file('file_identitas')->store('identitas', 'public')
+                'identitas' => $request->file('file_identitas')->store('identitas', 'public'),
+                'created_at' => $request->tanggal ?? now()
             ]);
             // dd(keberatan::all());
             return redirect()->back()->with('sukses', 'Data berhasil disimpan');
