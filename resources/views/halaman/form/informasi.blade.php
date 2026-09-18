@@ -37,7 +37,6 @@
                 <th scope="col">Detail</th>
                 <th scope="col">Nama Pemohon</th>
                 <th scope="col">Kategori Permohonan</th>
-                <th scope="col">OPD</th>
                 <th scope="col">Rincian Kebutuhan</th>
                 <th scope="col">Status</th>
             </tr>
@@ -52,7 +51,6 @@
                     </td>
                     <td>{{ $item->nama_pemohon }}</td>
                     <td>{{ $item->kategori_permohonan }}</td>
-                    <td>{{ $item->opd->opd }}</td>
                     <td>{{ $item->rincian_kebutuhan }}</td>
                     @php
                     $status = match ($item->status) {
@@ -156,37 +154,6 @@
                             <option class="" value="Perorangan">Perorangan</option>
                         </select>
                         @error('kategori_permohonan')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <!-- Instansi yang Dituju -->
-                    <div class="mb-3">
-                        <label
-                            for="opd"
-                            class="form-label">
-                            Instansi yang Dituju
-                            <span class="text-danger">*</span>
-                        </label>
-
-                        <select
-                            class="form-select @error('opd') is-invalid @enderror"
-                            name="opd"
-                            id="opd"
-                            required>
-                            <option value="" selected disabled>
-                                Pilih Instansi
-                            </option>
-
-                            @foreach ($opd as $opd)
-                                <option value="{{ $opd->id }}">
-                                    {{ $opd->opd }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('opd')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>

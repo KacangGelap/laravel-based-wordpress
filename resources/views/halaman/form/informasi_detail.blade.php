@@ -89,10 +89,6 @@ $statusClasses = [
                             <tr><th colspan="2">Tujuan Permohonan</th></tr>
                             <tr><td colspan="2">{{ $data->tujuan_informasi }}</td></tr>
                             <tr>
-                                <th scope="row">Instansi yang dituju</th>
-                                <td>{{ $data->opd->opd }}</td>
-                            </tr>
-                            <tr>
                                 <th scope="row">Cara Memperoleh Informasi</th>
                                 <td>{{ $data->cara_memperoleh_informasi }}</td>
                             </tr>

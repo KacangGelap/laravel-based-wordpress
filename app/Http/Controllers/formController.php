@@ -39,7 +39,6 @@ class formController extends Controller
     public function informasi_store(Request $request){
         $q = $request->validate([
             'kategori_permohonan' => 'required|string',
-            'opd' => 'required|exists:opd,id',
             'nama_pemohon' => 'required|string|max:255',
             'jenis_identitas' => 'required|string|in:KTP,Nomor Badan Hukum,Nomor Surat Mahasiswa',
             'no_identitas' => 'required|string|max:255',
@@ -156,14 +155,14 @@ class formController extends Controller
         }
         //inf
         $infQuery = informasi::query()->whereYear('created_at', $year)->with('opd');
-        $inf = $infQuery->get();
+        $inf = $infQuery->orderByDesc('created_at')->get();
         $infAll = $inf->count();
         $infProses = (clone $infQuery)->where('status', 'Diproses')->count();
         $infSelesai = (clone $infQuery)->where('status', 'Selesai')->count();
         $infDitolak = (clone $infQuery)->where('status', 'Ditolak')->count();
 
         $kebQuery = keberatan::query()->whereYear('created_at', $year);
-        $keb = $kebQuery->get();
+        $keb = $kebQuery->orderByDesc('created_at')->get();
         $kebAll = $keb->count();
         $kebDitolak = (clone $kebQuery)->where('status','Ditolak')->count();
 
