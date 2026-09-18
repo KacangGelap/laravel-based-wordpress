@@ -7,7 +7,7 @@ use App\Models\opd;
 use App\Models\informasi;
 use App\Models\keberatan;
 use App\Models\survey;
-
+use Carbon\Carbon;
 class formController extends Controller
 {
     //controller ini buat menampung form layanan ajuan informasi, keberatan, dan survey kepuasan masyarakat
@@ -148,6 +148,158 @@ class formController extends Controller
         }
     }
     public function statistik(){
-        //
+        if (request('year')) {
+            $q = request()->validate(['year' => 'date_format:Y']);
+            $year = $q['year'];
+        } else {
+            $year = Carbon::parse(now())->translatedFormat('Y');
+        }
+        //inf
+        $infQuery = informasi::query()->whereYear('created_at', $year)->with('opd');
+        $inf = $infQuery->get();
+        $infAll = $inf->count();
+        $infProses = (clone $infQuery)->where('status', 'Diproses')->count();
+        $infSelesai = (clone $infQuery)->where('status', 'Selesai')->count();
+        $infDitolak = (clone $infQuery)->where('status', 'Ditolak')->count();
+
+        $kebQuery = keberatan::query()->whereYear('created_at', $year);
+        $keb = $kebQuery->get();
+        $kebAll = $keb->count();
+        $kebDitolak = (clone $kebQuery)->where('status','Ditolak')->count();
+
+        $sur = collect(range(1, 12))->map(function ($month) use ($year) {
+            $items = survey::query()
+                ->whereYear('created_at', $year)
+                ->whereMonth('created_at', $month)
+                ->get();
+
+            return [
+                'month' => Carbon::createFromDate($year, $month, 1)->translatedFormat('F'),
+                'count' => $items->count(),
+                'data' => $items,
+            ];
+        })->values();
+
+        $surveyData = survey::query()->whereYear('created_at', $year)->get();
+        $ratingValues = [
+            'Sangat Baik' => 5,
+            'Baik' => 4,
+            'Cukup Baik' => 3,
+            'Buruk' => 2,
+            'Sangat Buruk' => 1,
+        ];
+        $averageRating = function (string $field) use ($surveyData, $ratingValues) {
+            if ($surveyData->isEmpty()) {
+                return 0;
+            }
+
+            $average = $surveyData
+                ->map(fn ($item) => $ratingValues[$item->$field] ?? 0)
+                ->avg();
+
+            return round($average, 2);
+        };
+
+        $statistik = [
+            'informasi' => [
+                'total' => $infAll,
+                'diproses' => $infProses,
+                'selesai' => $infSelesai,
+                'ditolak' => $infDitolak,
+            ],
+            'keberatan' => [
+                'total' => $kebAll,
+                'ditolak' => $kebDitolak,
+            ],
+            'survey' => [
+                'total' => $sur->sum('count'),
+                'per_bulan' => $sur,
+                'avg_pelayanan' => $averageRating('pelayanan'),
+                'avg_kecepatan_pelayanan' => $averageRating('kecepatan_pelayanan'),
+                'avg_kesesuaian_informasi' => $averageRating('kesesuaian_informasi'),
+                'avg_kualitas_pelayanan' => $averageRating('kualitas_pelayanan'),
+            ],
+        ];
+
+        return view('halaman.form.statistik', compact('year', 'inf', 'keb', 'sur', 'statistik', 'infAll', 'infProses', 'infSelesai', 'infDitolak', 'kebAll', 'kebDitolak'));
+    }
+
+    //auth
+    public function informasi(){
+        $perPage = request('per_page', 5);
+        $statuses = ['Dikirim', 'Diproses', 'Selesai', 'Ditolak'];
+        $data = [];
+
+        foreach ($statuses as $status) {
+            $query = informasi::with('opd')
+                ->where('status', $status)
+                ->orderByDesc('created_at');
+
+            if (request('q')) {
+                $search = trim(request('q'));
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_pemohon', 'like', "%{$search}%")
+                        ->orWhere('kode_permohonan', 'like', "%{$search}%");
+                });
+            }
+
+            $pageName = 'page_' . strtolower(str_replace([' ', '-'], '_', $status));
+            $data[$status] = $query->paginate($perPage, ['*'], $pageName);
+        }
+
+        return view('halaman.form.informasi_list', compact('data', 'statuses', 'perPage'));
+    }
+    public function informasi_update(Request $request, string $id){
+        $q = $request->validate([
+            'status' => 'required|string|in:Dikirim,Diproses,Selesai,Ditolak'
+        ]);
+        // dd($request->all());
+        try {
+            informasi::findOrFail($id)->update(['status' => $q['status']]);
+            return redirect()->back()->with('sukses', 'Status berhasil diperbarui');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'Terjadi Kesalahan',
+            ], 500);
+        }
+    }
+    public function keberatan(){
+        $perPage = request('per_page', 5);
+        $statuses = ['Dikirim', 'Diproses', 'Selesai', 'Ditolak'];
+        $data = [];
+
+        foreach ($statuses as $status) {
+            $query = keberatan::where('status', $status)
+                ->orderByDesc('created_at');
+
+            if (request('q')) {
+                $search = trim(request('q'));
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_pemohon', 'like', "%{$search}%")
+                        ->orWhere('kode_permohonan', 'like', "%{$search}%");
+                });
+            }
+
+            $pageName = 'page_' . strtolower(str_replace([' ', '-'], '_', $status));
+            $data[$status] = $query->paginate($perPage, ['*'], $pageName);
+        }
+
+        return view('halaman.form.keberatan_list', compact('data', 'statuses', 'perPage'));
+    }
+    public function keberatan_update(Request $request, string $id){
+         $q = $request->validate([
+            'status' => 'required|string|in:Dikirim,Diproses,Selesai,Ditolak'
+        ]);
+        // dd($request->all());
+        try {
+            keberatan::findOrFail($id)->update(['status' => $q['status']]);
+            return redirect()->back()->with('sukses', 'Status berhasil diperbarui');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'Terjadi Kesalahan',
+            ], 500);
+        }
     }
 }

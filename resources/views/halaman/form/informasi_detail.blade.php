@@ -1,14 +1,33 @@
 @extends('layouts.main')
 @section('content')
+@php
+$statusClasses = [
+        'Dikirim' => ['dot' => 'bg-secondary', 'badge' => 'text-bg-light text-secondary', 'pill' => 'bg-secondary-subtle text-secondary-emphasis', 'label' => 'Permohonan Informasi Dikirim'],
+        'Diproses' => ['dot' => 'bg-primary', 'badge' => 'bg-primary-subtle text-primary-emphasis', 'pill' => 'bg-primary-subtle text-primary-emphasis', 'label' => 'Diproses PPID Pelaksana'],
+        'Selesai' => ['dot' => 'bg-success', 'badge' => 'bg-success-subtle text-success-emphasis', 'pill' => 'bg-success-subtle text-success-emphasis', 'label' => 'Permohonan Informasi Selesai'],
+        'Ditolak' => ['dot' => 'bg-danger', 'badge' => 'bg-danger-subtle text-danger-emphasis', 'pill' => 'bg-danger-subtle text-danger-emphasis', 'label'=> 'Ditolak PPID Pelaksana'],
+    ];
+@endphp
+    @php($status = $statusClasses[$data->status] ?? ['dot' => 'bg-secondary', 'pill' => 'bg-secondary-subtle text-secondary-emphasis', 'label' => $data->status])
     <div class="container my-4">
+        @auth
         <div class="my-2">
-            <a href="{{route('form.informasi')}}" class="btn btn-outline-dark">&larr; Kembali ke menu awal</a>
+            <a href="{{route('permohonan.informasi')}}" class="btn btn-outline-dark">&larr; Kembali ke dashboard</a>
         </div>
+        
+        @else
+        <div class="my-2">
+            <a href="{{route('form.informasi')}}" class="btn btn-outline-dark">&larr; Kembali ke form</a>
+        </div>
+        @endauth
         <div class="row">
-            <div class="card bg-success-subtle mx-2">
+            <div class="card {{ $status['pill'] }} mx-2">
                 <div class="card-body justify-content-between d-flex align-items-center">
                     <h5>Status Permohonan</h5>
-                    <h5 class="text-success">Test Status</h5>
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <span class="rounded-circle {{ $status['dot'] }}" style="width: 10px; height: 10px;"></span>
+                        {{ $status['label'] }}
+                    </h5>
                 </div>
             </div>
         </div>
