@@ -61,7 +61,6 @@ class formController extends Controller
                 'kategori_permohonan' => $request->kategori_permohonan,
                 'opd_id' => $request->opd,
                 'nama_pemohon' => $request->nama_pemohon,
-                'jenis_permohonan' => $request->jenis_identitas,
                 'jenis_identitas' => $request->jenis_identitas,
                 'nomor_identitas' => $request->no_identitas,
                 'alamat_pemohon' => $request->alamat_pemohon,
