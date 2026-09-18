@@ -13,11 +13,10 @@ class formController extends Controller
     //controller ini buat menampung form layanan ajuan informasi, keberatan, dan survey kepuasan masyarakat
     public function informasi_index()
     {
-        $data = informasi::with('opd')->paginate(10);
         $opd = opd::all();
         
         $perPage = request('per_page', 10);
-        $data = informasi::with('opd')->paginate($perPage);
+        $data = informasi::with('opd')->orderByDesc('created_at')->paginate($perPage);
         //search
         if (request('q')) {
             //validate search input
@@ -40,19 +39,19 @@ class formController extends Controller
         $q = $request->validate([
             'kategori_permohonan' => 'required|string',
             'nama_pemohon' => 'required|string|max:255',
-            'jenis_identitas' => 'required|string|in:KTP,Nomor Badan Hukum,Nomor Surat Mahasiswa',
-            'no_identitas' => 'required|string|max:255',
-            'alamat_pemohon' => 'required|string|max:255',
-            'pekerjaan_pemohon' => 'required|string|max:255',
-            'no_hp_pemohon' => 'required|string|max:15',
-            'email_pemohon' => 'required|email|max:255',
+            'jenis_identitas' => 'required|string|in:KTP,Nomor Badan Hukum,Nomor Surat Mahasiswa,Instansi',
+            'no_identitas' => 'nullable|string|max:255',
+            'alamat_pemohon' => 'nullable|string|max:255',
+            'pekerjaan_pemohon' => 'nullable|string|max:255',
+            'no_hp_pemohon' => 'nullable|string|max:15',
+            'email_pemohon' => 'nullable|email|max:255',
             'rincian_kebutuhan' => 'required|string|max:255',
             'tujuan_informasi' => 'required|string|max:255',
             'memperoleh_informasi' => 'required|string|max:255',
             'mendapatkan_informasi' => 'required|string|max:255',
-            'file_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048', // 2MB
+            'file_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5000', // 2MB
         ]);
-        // dd($request->all());
+        // dd($request->jenis_identitas);
         try {
             do {
                 $kode = 'INF-' . random_int(10000000, 99999999);
@@ -86,6 +85,24 @@ class formController extends Controller
     }
     public function keberatan_index()
     {
+        $data = informasi::with('opd')->orderByDesc('created_at')->paginate($perPage);
+        //search
+        if (request('q')) {
+            //validate search input
+            request()->validate([
+                'q' => 'required|string|min:2|max:255',
+            ],[
+                'q.required' => 'Kata kunci pencarian tidak boleh kosong.',
+                'q.string' => 'Kata kunci pencarian harus berupa teks.',
+                'q.min' => 'Kata kunci pencarian minimal :min karakter.',
+                'q.max' => 'Kata kunci pencarian maksimal :max karakter.',
+            ]);
+            $search = request('q');
+            $data = informasi::with('opd')
+                ->Where('nama_pemohon', 'like', "%$search%")
+                ->paginate($perPage);
+        }
+        return view('halaman.form.informasi', compact('data', 'opd'));
         $data = keberatan::paginate(10);
         return view('halaman.form.keberatan', compact('data'));
     }
