@@ -315,7 +315,7 @@
                         </label>
 
                         <input
-                            type="email"
+                            type="text"
                             class="form-control @error('email_pemohon') is-invalid @enderror"
                             id="email_pemohon"
                             name="email_pemohon"

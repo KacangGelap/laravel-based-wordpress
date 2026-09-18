@@ -45,10 +45,10 @@ class formController extends Controller
             'pekerjaan_pemohon' => 'nullable|string|max:255',
             'no_hp_pemohon' => 'nullable|string|max:15',
             'email_pemohon' => 'nullable|email|max:255',
-            'rincian_kebutuhan' => 'required|string|max:255',
-            'tujuan_informasi' => 'required|string|max:255',
-            'memperoleh_informasi' => 'required|string|max:255',
-            'mendapatkan_informasi' => 'required|string|max:255',
+            'rincian_kebutuhan' => 'required|string',
+            'tujuan_informasi' => 'required|string',
+            'memperoleh_informasi' => 'required|string',
+            'mendapatkan_informasi' => 'required|string',
             'file_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5000', // 2MB
         ]);
         // dd($request->jenis_identitas);
@@ -113,7 +113,7 @@ class formController extends Controller
             'alamat' => 'required|string|max:255',
             'hp_pemohon' => 'required|string|max:15',
             'rincian_keberatan' => 'required|string|max:255',
-            'file_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048', // 2MB
+            'file_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5000', // 2MB
         ]);
         try {
             do {
