@@ -56,7 +56,7 @@ $statusClasses = [
                                     @auth
                                         <tr>
                                             <th scope="row">Jenis Identitas</th>
-                                            <td>{{ $data->jenis_permohonan }}</td>
+                                            <td>{{ $data->jenis_permohonan ?? $data->jenis_identitas}}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Nomor Identitas</th>

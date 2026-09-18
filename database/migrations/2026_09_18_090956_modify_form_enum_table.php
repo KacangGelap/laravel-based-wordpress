@@ -10,7 +10,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-       \DB::statement("ALTER TABLE permohonan_informasi MODIFY jenis_permohonan VARCHAR(255)");
+       \DB::statement("ALTER TABLE permohonan_informasi MODIFY jenis_identitas VARCHAR(255)");
        \DB::statement("ALTER TABLE permohonan_informasi MODIFY cara_mendapatkan_informasi ENUM('WhatsApp','Email','Fotocopy','Jasa Expedisi','Mengambil Langsung')");
        Schema::table('permohonan_informasi', function (Blueprint $table) {
             $table->string('nomor_identitas')->nullable()->change();

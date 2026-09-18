@@ -120,7 +120,7 @@
                                                 @endif
                                             </div>
                                             <div class="col-sm-6"><span class="badge text-bg-light text-secondary fw-semibold text-uppercase small rounded-pill">
-                                            {{ $item->jenis_permohonan }}
+                                            {{ $item->jenis_permohonan ?? $item->jenis_identitas}}
                                         </span>
                                         <p>{{$item->nomor_identitas}}</p></div>
                                         </div>

@@ -15,6 +15,7 @@ class informasi extends Model
         'opd_id',
         'nama_pemohon',
         'jenis_permohonan',
+        'jenis_identitas',
         'nomor_identitas',
         'alamat_pemohon',
         'pekerjaan_pemohon',
