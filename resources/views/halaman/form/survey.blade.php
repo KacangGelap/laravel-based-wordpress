@@ -236,7 +236,7 @@
         <div class="mb-5">
 
             <label class="form-label fw-semibold">
-                1. Bagaimana Pelayanan Petugas PPID Kami?
+                1. Bagaimana Pelayanan Petugas {{config('app.name', 'Puskesmas')}} Kami?
                 <span class="text-danger">*</span>
             </label>
 
@@ -512,7 +512,7 @@
         <div class="mb-5">
 
             <label class="form-label fw-semibold">
-                4. Kualitas Pelayanan PPID Pelaksana
+                4. Kualitas Pelayanan {{config('app.name', 'Puskesmas')}}
                 <span class="text-danger">*</span>
             </label>
 
@@ -630,7 +630,7 @@
     <div id="step-3" class="form-step d-none">
 
         <h4 class="mb-0">
-            Saran PPID
+            Saran {{config('app.name', 'Puskesmas')}}
         </h4>
 
         <hr>
@@ -641,7 +641,7 @@
                 for="saran"
                 class="form-label fw-semibold"
             >
-                Saran Untuk PPID Kota Bontang
+                Saran Untuk {{config('app.name', 'Puskesmas')}}
                 <span class="text-danger">*</span>
             </label>
 
