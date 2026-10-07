@@ -150,7 +150,7 @@
                         <label
                             for="nama_pemohon"
                             class="form-label">
-                            Nama Pemohon
+                            Nama Pemohon/Instansi
                             <span class="text-danger">*</span>
                         </label>
 
@@ -172,7 +172,7 @@
                         <label
                             for="alamat"
                             class="form-label">
-                            Alamat Pemohon
+                            Alamat Pemohon/Instansi
                             <span class="text-danger">*</span>
                         </label>
 
@@ -238,9 +238,9 @@
                         <label
                             for="file_identitas"
                             class="form-label">
-                            Upload Identitas
+                            Upload Identitas / Surat
                             <span class="text-muted">
-                                (KTP, Kartu Mahasiswa atau Kartu Lembaga)
+                                (KTP, Kartu Mahasiswa, Kartu Lembaga atau Surat)
                             </span>
                             <span class="text-danger">*</span>
                         </label>
