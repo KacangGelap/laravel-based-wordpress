@@ -7,7 +7,7 @@ use Intervention\Image\Laravel\Facades\Image;
 use Intervention\Image\Encoders\WebpEncoder;
 use Illuminate\Support\Facades\Storage;
 use App\Models\kategori, App\Models\post, App\Models\logs;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 class beritaController extends Controller
 {
     private function log($action){

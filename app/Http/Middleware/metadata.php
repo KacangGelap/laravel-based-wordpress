@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\halaman, App\models\post, App\Models\submenu, App\Models\subsubmenu, App\Models\subsubsubmenu, App\Models\subsubsubsubmenu;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Route;
 class metadata
 {
     /**
@@ -16,7 +18,7 @@ class metadata
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $routeName = \Route::current()?->getName();
+        $routeName = Route::current()?->getName();
 
         $metadata = [
             'title' => config('app.name'),
@@ -33,8 +35,10 @@ class metadata
 
                 $metadata = [
                     'title' => $post->judul,
-                    'description' => \Str::limit($post->deskripsi ?? '', 150),
-                    'image' => $imagePath ? asset("storage/" . rawurlencode($post->media1)) : asset('storage/default-og.webp'),
+                    'description' => Str::limit($post->deskripsi ?? '', 150),
+                    'image' => $imagePath
+                        ? asset('storage/' . implode('/', array_map('rawurlencode', explode('/', $post->media1))))
+                        : asset('storage/default-og.webp'),
                     'url' => request()->fullUrlWithQuery(['utp' => 'share']),
                     'type' => 'article',
                 ];
@@ -50,7 +54,8 @@ class metadata
                 $metadata = [
                     'title' => $parent->sub_sub_sub_sub_menu ?? $parent->sub_sub_sub_menu ?? $parent->sub_sub_menu ?? $parent->sub_menu,
                     'description' => $page->text,
-                    'image' => $page->media ? asset("storage/" . rawurlencode($page->media)) : asset('storage/default-og.webp'),
+                    'image' => $page->media ? asset('storage/' . implode('/', array_map('rawurlencode', explode('/', $page->media))))
+                        : asset('storage/default-og.webp'),
                     'url' => request()->fullUrlWithQuery(['utp' => 'share']),
                     'type' => 'page',
                 ];
