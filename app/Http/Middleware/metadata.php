@@ -53,8 +53,9 @@ class metadata
             if ($parent) {
                 $metadata = [
                     'title' => $parent->sub_sub_sub_sub_menu ?? $parent->sub_sub_sub_menu ?? $parent->sub_sub_menu ?? $parent->sub_menu,
-                    'description' => $page->text,
-                    'image' => $page->media ? asset('storage/' . implode('/', array_map('rawurlencode', explode('/', $page->media))))
+                    'description' => $parent->text,
+                    'image' => $parent->media
+                        ? asset('storage/' . implode('/', array_map('rawurlencode', explode('/', $parent->media))))
                         : asset('storage/default-og.webp'),
                     'url' => request()->fullUrlWithQuery(['utp' => 'share']),
                     'type' => 'page',
